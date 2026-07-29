@@ -432,6 +432,79 @@
     font-size:12px;font-weight:700;
   }
 
+  /* ===== 桌面概览样式 ===== */
+  .home-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-bottom:12px;
+  }
+  .home-tile{
+    background:var(--card);
+    border:1.5px solid rgba(192,224,240,.6);
+    border-radius:16px;
+    padding:12px 12px 12px 14px;
+    display:flex;align-items:center;gap:10px;
+    cursor:pointer;
+    transition:all .18s;
+    box-shadow:var(--shadow-soft);
+    position:relative;
+  }
+  .home-tile:active{transform:scale(.97)}
+  .home-tile:hover{border-color:var(--pink);box-shadow:0 4px 14px rgba(74,158,196,.18)}
+  .ht-icon{
+    width:40px;height:40px;
+    border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px;flex-shrink:0;
+  }
+  .ht-body{flex:1;min-width:0}
+  .ht-label{font-size:11px;color:var(--text-light);font-weight:600;margin-bottom:2px}
+  .ht-val{font-size:13px;color:var(--text);font-weight:700;display:flex;align-items:baseline;gap:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ht-val b{font-size:19px;color:var(--pink-deep);font-weight:800}
+  .ht-val span{font-size:11px;color:var(--text-light);font-weight:600}
+  .ht-arrow{font-size:18px;color:var(--text-light);font-weight:300;flex-shrink:0}
+  .home-todo-card{padding-bottom:6px}
+  .home-todo-list{padding:0 12px 8px}
+  .home-todo-item{
+    display:flex;align-items:center;gap:9px;
+    padding:9px 10px;
+    background:#f8fcfa;
+    border-radius:10px;
+    margin-bottom:6px;
+  }
+  .home-todo-item:last-child{margin-bottom:0}
+  .htd-check{
+    width:18px;height:18px;
+    border:2px solid var(--pink);
+    border-radius:50%;
+    flex-shrink:0;
+  }
+  .htd-check.done{background:var(--pink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;border-color:var(--pink)}
+  .htd-title{
+    flex:1;font-size:13px;font-weight:600;color:var(--text);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .htd-title.done{text-decoration:line-through;color:var(--text-light)}
+  .home-empty{
+    text-align:center;padding:18px 10px;
+    font-size:12px;color:var(--text-light);
+  }
+  .home-quick-card{padding-bottom:14px}
+  .home-quick-grid{
+    display:grid;grid-template-columns:repeat(6,1fr);
+    gap:6px;padding:4px 12px 0;
+  }
+  .quick-btn{
+    display:flex;flex-direction:column;align-items:center;
+    gap:4px;padding:10px 2px;
+    border-radius:12px;cursor:pointer;
+    transition:all .15s;
+  }
+  .quick-btn:active{transform:scale(.92);background:var(--pink-soft)}
+  .quick-btn span{font-size:22px}
+  .quick-btn label{font-size:10px;color:var(--text);font-weight:700}
+
   /* ===== 经期栏目样式 ===== */
   .period-summary{padding:14px}
   .period-row{
@@ -1317,7 +1390,7 @@
   <div class="kitty-avatar">小悦的<br>工作台</div>
   <div class="kitty-bow">🌿</div>
   <div class="nav-list" id="navList">
-    <div class="nav-item" data-tab="home">
+    <div class="nav-item active" data-tab="home">
       <img src="./icons/desktop.svg" class="nav-icon" alt="桌面">
       <div class="nav-label">桌面</div>
     </div>
@@ -1329,7 +1402,7 @@
       <img src="./icons/money.svg" class="nav-icon" alt="记账">
       <div class="nav-label">记账</div>
     </div>
-    <div class="nav-item active" data-tab="diet">
+    <div class="nav-item" data-tab="diet">
       <img src="./icons/diet.svg" class="nav-icon" alt="减脂">
       <div class="nav-label">减脂</div>
     </div>
@@ -1362,7 +1435,7 @@
 <div class="main">
 
   <!-- 减脂栏目 -->
-  <div class="tab-content active" id="tab-diet">
+  <div class="tab-content" id="tab-diet">
     <div class="header">
       <div class="title-wrap">
         <div>
@@ -1429,24 +1502,95 @@
   </div>
 
   <!-- 桌面栏目 -->
-  <div class="tab-content" id="tab-home">
+  <div class="tab-content active" id="tab-home">
     <div class="header">
       <div class="title-wrap">
         <div>
           <h1><span class="bow">🌿</span> 我的桌面</h1>
-          <div class="sub">美好的一天开始啦～</div>
+          <div class="sub" id="homeSub">美好的一天开始啦～</div>
         </div>
       </div>
-      <div class="date-pill">🏠</div>
+      <div class="date-pill" id="homeDatePill">🏠</div>
     </div>
-    <div class="card">
-      <div class="placeholder-card">
-        <div class="p-icon">🏠</div>
-        <div class="p-title">桌面概览</div>
-        <div class="p-desc">这里将展示你今日的概览信息<br>待办、体重、日程一目了然</div>
-        <div class="p-tag">🌸 敬请期待</div>
+
+    <!-- 概览卡片网格 -->
+    <div class="home-grid" id="homeGrid">
+      <div class="home-tile" data-go="todo">
+        <div class="ht-icon" style="background:#e8f5ee;color:#4a9a78">📋</div>
+        <div class="ht-body">
+          <div class="ht-label">今日待办</div>
+          <div class="ht-val"><b id="hmTodoCount">0</b><span>件未完成</span></div>
+        </div>
+        <div class="ht-arrow">›</div>
+      </div>
+      <div class="home-tile" data-go="diet">
+        <div class="ht-icon" style="background:#e0f0f5;color:#4a9ec4">⚖️</div>
+        <div class="ht-body">
+          <div class="ht-label">今日体重</div>
+          <div class="ht-val"><b id="hmWeight">--</b><span>斤</span></div>
+        </div>
+        <div class="ht-arrow">›</div>
+      </div>
+      <div class="home-tile" data-go="schedule">
+        <div class="ht-icon" style="background:#fff3e0;color:#e8a04a">📅</div>
+        <div class="ht-body">
+          <div class="ht-label">今日日程</div>
+          <div class="ht-val"><b id="hmSchedCount">0</b><span>件安排</span></div>
+        </div>
+        <div class="ht-arrow">›</div>
+      </div>
+      <div class="home-tile" data-go="money">
+        <div class="ht-icon" style="background:#fff0f0;color:#e85a5a">💰</div>
+        <div class="ht-body">
+          <div class="ht-label">今日支出</div>
+          <div class="ht-val"><b id="hmExpense">0</b><span>元</span></div>
+        </div>
+        <div class="ht-arrow">›</div>
+      </div>
+      <div class="home-tile" data-go="period">
+        <div class="ht-icon" style="background:#fce8f0;color:#d080a0">🌸</div>
+        <div class="ht-body">
+          <div class="ht-label">经期预测</div>
+          <div class="ht-val" id="hmPeriod">--</div>
+        </div>
+        <div class="ht-arrow">›</div>
+      </div>
+      <div class="home-tile" data-go="diary">
+        <div class="ht-icon" style="background:#f0e8ff;color:#8a78d0">📔</div>
+        <div class="ht-body">
+          <div class="ht-label">今日日记</div>
+          <div class="ht-val" id="hmDiary">未记录</div>
+        </div>
+        <div class="ht-arrow">›</div>
       </div>
     </div>
+
+    <!-- 今日待办速览 -->
+    <div class="card home-todo-card">
+      <div class="card-head">
+        <div class="card-title"><span class="emoji">☀️</span> 今日待办</div>
+        <div class="card-action" data-go="todo">查看全部 ›</div>
+      </div>
+      <div class="home-todo-list" id="homeTodoList">
+        <div class="home-empty">今天没有待办，享受悠闲时光吧～</div>
+      </div>
+    </div>
+
+    <!-- 快速入口 -->
+    <div class="card home-quick-card">
+      <div class="card-head">
+        <div class="card-title"><span class="emoji">✨</span> 快速入口</div>
+      </div>
+      <div class="home-quick-grid">
+        <div class="quick-btn" data-go="todo"><span>📋</span><label>待办</label></div>
+        <div class="quick-btn" data-go="diet"><span>⚖️</span><label>减脂</label></div>
+        <div class="quick-btn" data-go="money"><span>💰</span><label>记账</label></div>
+        <div class="quick-btn" data-go="schedule"><span>📅</span><label>日程</label></div>
+        <div class="quick-btn" data-go="diary"><span>📔</span><label>日记</label></div>
+        <div class="quick-btn" data-go="period"><span>🌸</span><label>经期</label></div>
+      </div>
+    </div>
+    <div class="footer-space"></div>
   </div>
 
   <!-- 待办栏目 -->
@@ -2054,12 +2198,106 @@ const today = new Date();
 let curYear = today.getFullYear();
 let curMonth = today.getMonth();
 let selectedDate = new Date(today);
-let activeTab = 'diet';
+let activeTab = 'home';
 
 const WEEK_LABEL = ['周日','周一','周二','周三','周四','周五','周六'];
 
 function fmtKey(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 function isSameDay(a,b){ return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate(); }
+
+function escapeHtml(text){
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+/* ===== 桌面概览 ===== */
+function renderHome(){
+  const h = today.getHours();
+  let greet = '美好的一天开始啦～';
+  if(h < 6) greet = '夜深了，早点休息～';
+  else if(h < 12) greet = '早安，今天也要加油鸭～';
+  else if(h < 18) greet = '午后的阳光真好呀～';
+  else if(h < 22) greet = '晚上好，辛苦一天啦～';
+  else greet = '夜深了，早点休息～';
+  const subEl = document.getElementById('homeSub');
+  if(subEl) subEl.textContent = greet;
+  const pillEl = document.getElementById('homeDatePill');
+  if(pillEl) pillEl.textContent = `${today.getMonth()+1}.${today.getDate()}`;
+
+  // 待办
+  const todos = loadTodoData();
+  const todayKey = fmtKey(today);
+  const todayTodos = todos.filter(t => t.date === todayKey && !t.done);
+  const hmTodo = document.getElementById('hmTodoCount');
+  if(hmTodo) hmTodo.textContent = todayTodos.length;
+  // 待办速览列表（最多4条）
+  const listEl = document.getElementById('homeTodoList');
+  if(listEl){
+    const preview = todayTodos.slice(0, 4);
+    if(preview.length === 0){
+      listEl.innerHTML = '<div class="home-empty">今天没有待办，享受悠闲时光吧～</div>';
+    }else{
+      listEl.innerHTML = preview.map(t => {
+        const p = PRIORITY_MAP[t.priority] || PRIORITY_MAP.medium;
+        return `<div class="home-todo-item">
+          <div class="htd-check ${t.done?'done':''}">${t.done?'✓':''}</div>
+          <div class="htd-title ${t.done?'done':''}">${escapeHtml(t.title)}</div>
+          <span class="todo-tag ${p.class}">${p.icon} ${p.label}</span>
+        </div>`;
+      }).join('');
+    }
+  }
+
+  // 体重
+  const wData = loadData();
+  const wVal = wData[todayKey];
+  const hmW = document.getElementById('hmWeight');
+  if(hmW) hmW.textContent = wVal !== undefined ? wVal : '--';
+
+  // 日程
+  const schedCount = loadSchedData().filter(s => s.date === todayKey).length;
+  const hmS = document.getElementById('hmSchedCount');
+  if(hmS) hmS.textContent = schedCount;
+
+  // 今日支出
+  const todayExpense = loadMoneyData()
+    .filter(r => r.date === todayKey && r.type !== 'income')
+    .reduce((s, r) => s + r.amount, 0);
+  const hmE = document.getElementById('hmExpense');
+  if(hmE) hmE.textContent = todayExpense;
+
+  // 经期预测
+  const hmP = document.getElementById('hmPeriod');
+  if(hmP){
+    const next = getNextPeriodDate();
+    if(next){
+      const left = daysDiff(next, today);
+      hmP.innerHTML = left >= 0
+        ? `还有 <b>${left}</b><span>天</span>`
+        : `<b>已逾期</b>`;
+    }else{
+      hmP.textContent = '未记录';
+    }
+  }
+
+  // 日记
+  const hmD = document.getElementById('hmDiary');
+  if(hmD){
+    const entry = loadDiaryData()[todayKey];
+    hmD.textContent = entry && entry.content ? '已记录' : '未记录';
+  }
+}
+
+/* 桌面概览点击跳转 */
+function initHomeNav(){
+  document.querySelectorAll('[data-go]').forEach(el => {
+    el.addEventListener('click', () => {
+      const tab = el.dataset.go;
+      if(tab) switchTab(tab);
+    });
+  });
+}
 
 /* ===== 导航切换 ===== */
 function initNav(){
@@ -2074,6 +2312,10 @@ function switchTab(tab){
   activeTab = tab;
   document.querySelectorAll('.nav-item').forEach(i=>i.classList.toggle('active', i.dataset.tab===tab));
   document.querySelectorAll('.tab-content').forEach(c=>c.classList.toggle('active', c.id==='tab-'+tab));
+  // 桌面栏目需要渲染
+  if(tab === 'home'){
+    renderHome();
+  }
   // 减脂栏目需要渲染
   if(tab === 'diet'){
     renderAll();
@@ -2708,12 +2950,6 @@ function createTodoItem(t, idx){
   div.querySelector('.todo-check').onclick = ()=>toggleTodo(idx);
   div.querySelector('.todo-delete').onclick = ()=>deleteTodo(idx);
   return div;
-}
-
-function escapeHtml(text){
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
 }
 
 function addTodo(){
@@ -3612,6 +3848,7 @@ if('serviceWorker' in navigator){
 }
 
 initNav();
+initHomeNav();
 initPeriod();
 initTodo();
 initDiary();
@@ -3624,6 +3861,7 @@ renderTodoAll();
 renderDiaryAll();
 renderMoneyAll();
 renderSchedAll();
+renderHome();
 
 // 启动云同步（延迟1秒，让页面先加载完）
 setTimeout(initCloudSync, 1000);
