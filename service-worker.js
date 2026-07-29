@@ -1,5 +1,5 @@
 // Kitty 工作台 Service Worker - 离线缓存
-const CACHE_NAME = 'kitty-workbench-v2';
+const CACHE_NAME = 'xiaoyue-workbench-v1';
 const CACHE_FILES = [
   './',
   './index.html',
