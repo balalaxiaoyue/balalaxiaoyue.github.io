@@ -1,9 +1,18 @@
-// Kitty 工作台 Service Worker - 离线缓存
-const CACHE_NAME = 'xiaoyue-workbench-v1';
+// 小悦工作台 Service Worker - 离线缓存
+const CACHE_NAME = 'xiaoyue-workbench-v2';
 const CACHE_FILES = [
   './',
   './index.html',
-  './manifest.json'
+  './manifest.json',
+  './icons/desktop.svg',
+  './icons/todo.svg',
+  './icons/money.svg',
+  './icons/diet.svg',
+  './icons/schedule.svg',
+  './icons/memory.svg',
+  './icons/diary.svg',
+  './icons/period.svg',
+  './icons/settings.svg'
 ];
 
 // 安装时缓存核心文件

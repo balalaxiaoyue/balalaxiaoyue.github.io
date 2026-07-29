@@ -97,7 +97,7 @@
     position:relative;
   }
   .nav-item .nav-icon{
-    font-size:20px;
+    width:34px;height:34px;
     line-height:1;
     margin-bottom:3px;
     transition:transform .2s;
@@ -114,7 +114,7 @@
     box-shadow:var(--shadow-tab);
     transform:translateY(-1px);
   }
-  .nav-item.active .nav-icon{transform:scale(1.15)}
+  .nav-item.active .nav-icon{transform:scale(1.08)}
   .nav-item.active::before{
     content:"";
     position:absolute;
@@ -529,6 +529,132 @@
     border:2px solid var(--pink-deep);
   }
 
+  /* ===== 待办栏目样式 ===== */
+  .todo-add-card{padding:16px}
+  .todo-add-title{
+    font-size:16px;font-weight:800;
+    color:var(--text);margin-bottom:12px;
+    display:flex;align-items:center;gap:5px;
+  }
+  .todo-input{
+    width:100%;
+    border:2px solid var(--pink-soft);
+    border-radius:12px;
+    padding:12px 14px;
+    font-size:15px;font-weight:600;
+    color:var(--text);
+    background:#fff;
+    outline:none;
+    margin-bottom:12px;
+    transition:border-color .2s;
+  }
+  .todo-input:focus{border-color:var(--pink)}
+  .todo-input::placeholder{color:var(--text-light);font-weight:400}
+  .todo-form-row{
+    display:grid;grid-template-columns:1fr 1fr;
+    gap:10px;margin-bottom:14px;
+  }
+  .todo-form-item label{
+    display:block;
+    font-size:12px;color:var(--text-soft);
+    font-weight:700;margin-bottom:5px;
+  }
+  .todo-form-item input,
+  .todo-form-item select{
+    width:100%;
+    border:2px solid var(--pink-soft);
+    border-radius:10px;
+    padding:10px;
+    font-size:14px;
+    color:var(--text);
+    background:#fff;
+    outline:none;
+  }
+  .todo-form-item input:focus,
+  .todo-form-item select:focus{border-color:var(--pink)}
+  .todo-add-btn{
+    width:100%;
+    border:none;
+    padding:13px;
+    border-radius:14px;
+    background:linear-gradient(135deg,var(--pink-light),var(--pink));
+    color:#fff;
+    font-size:15px;font-weight:800;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:5px;
+    box-shadow:var(--shadow);
+    transition:all .15s;
+  }
+  .todo-add-btn:active{transform:scale(.98)}
+  .todo-list-card{padding:14px}
+  .todo-list-head{
+    font-size:15px;font-weight:800;
+    color:var(--text);
+    display:flex;align-items:center;gap:6px;
+    margin-bottom:12px;
+  }
+  .todo-head-icon{font-size:17px}
+  .todo-count{
+    font-size:13px;color:var(--text-light);margin-left:2px;
+  }
+  .todo-empty{
+    text-align:center;
+    padding:24px 10px;
+    color:var(--text-light);
+    font-size:13px;
+  }
+  .todo-empty-icon{font-size:38px;margin-bottom:8px}
+  .todo-item{
+    display:flex;align-items:center;gap:10px;
+    background:#fff;
+    border:1.5px solid var(--pink-soft);
+    border-radius:12px;
+    padding:10px 12px;
+    margin-bottom:8px;
+    transition:all .15s;
+  }
+  .todo-item:active{transform:scale(.98)}
+  .todo-check{
+    width:22px;height:22px;
+    border:2px solid var(--pink);
+    border-radius:50%;
+    flex-shrink:0;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:all .15s;
+  }
+  .todo-check.checked{
+    background:var(--pink);
+    color:#fff;
+    font-size:13px;
+  }
+  .todo-info{flex:1;min-width:0}
+  .todo-title{
+    font-size:14px;font-weight:700;
+    color:var(--text);
+    margin-bottom:2px;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .todo-title.done{text-decoration:line-through;color:var(--text-light)}
+  .todo-meta{
+    font-size:11px;color:var(--text-light);
+    display:flex;align-items:center;gap:6px;
+  }
+  .todo-tag{
+    display:inline-block;
+    padding:1px 6px;border-radius:6px;
+    font-size:10px;font-weight:700;
+  }
+  .todo-tag.high{background:#ffe8e8;color:#e85a5a}
+  .todo-tag.medium{background:#fff0f5;color:#d080a0}
+  .todo-tag.low{background:#e8f5ee;color:#4a9a78}
+  .todo-delete{
+    background:transparent;border:none;
+    font-size:18px;color:var(--text-light);
+    cursor:pointer;padding:4px;
+  }
+  .todo-delete:active{color:#e85a5a}
+
   /* ===== 设置弹窗 ===== */
   .modal-mask{
     position:fixed;inset:0;
@@ -627,7 +753,7 @@
     .month-chip{min-width:46px;padding:7px 9px}
     .cal-grid{gap:2px}
     .cal-cell{font-size:11px}
-    .nav-item .nav-icon{font-size:18px}
+    .nav-item .nav-icon{width:30px;height:30px}
     .nav-item .nav-label{font-size:9px}
   }
 </style>
@@ -640,42 +766,42 @@
   <div class="kitty-bow">🌿</div>
   <div class="nav-list" id="navList">
     <div class="nav-item" data-tab="home">
-      <div class="nav-icon">🏠</div>
+      <img src="./icons/desktop.svg" class="nav-icon" alt="桌面">
       <div class="nav-label">桌面</div>
     </div>
     <div class="nav-item" data-tab="todo">
-      <div class="nav-icon">✅</div>
+      <img src="./icons/todo.svg" class="nav-icon" alt="待办">
       <div class="nav-label">待办</div>
     </div>
     <div class="nav-item" data-tab="money">
-      <div class="nav-icon">💰</div>
+      <img src="./icons/money.svg" class="nav-icon" alt="记账">
       <div class="nav-label">记账</div>
     </div>
     <div class="nav-item active" data-tab="diet">
-      <div class="nav-icon">🍓</div>
+      <img src="./icons/diet.svg" class="nav-icon" alt="减脂">
       <div class="nav-label">减脂</div>
     </div>
     <div class="nav-item" data-tab="schedule">
-      <div class="nav-icon">📅</div>
+      <img src="./icons/schedule.svg" class="nav-icon" alt="日程">
       <div class="nav-label">日程</div>
     </div>
     <div class="nav-item" data-tab="memory">
-      <div class="nav-icon">💝</div>
+      <img src="./icons/memory.svg" class="nav-icon" alt="纪念">
       <div class="nav-label">纪念</div>
     </div>
     <div class="nav-item" data-tab="diary">
-      <div class="nav-icon">📖</div>
+      <img src="./icons/diary.svg" class="nav-icon" alt="日记">
       <div class="nav-label">日记</div>
     </div>
     <div class="nav-item" data-tab="period">
-      <div class="nav-icon">🌸</div>
+      <img src="./icons/period.svg" class="nav-icon" alt="经期">
       <div class="nav-label">经期</div>
     </div>
   </div>
   <div class="nav-divider"></div>
   <div class="sync-status" id="syncStatus">📱 本地模式</div>
   <div class="nav-item" id="settingsBtn" style="margin-bottom:4px">
-    <div class="nav-icon">⚙️</div>
+    <img src="./icons/settings.svg" class="nav-icon" alt="设置">
     <div class="nav-label">设置</div>
   </div>
 </nav>
@@ -780,14 +906,58 @@
           <div class="sub">今天也要加油鸭～</div>
         </div>
       </div>
-      <div class="date-pill">✅</div>
+      <div class="date-pill" id="todoGreeting">下午好，小悦～</div>
     </div>
-    <div class="card">
-      <div class="placeholder-card">
-        <div class="p-icon">✅</div>
-        <div class="p-title">待办清单</div>
-        <div class="p-desc">记录每天的小任务<br>完成一个划掉一个</div>
-        <div class="p-tag">🍓 敬请期待</div>
+
+    <!-- 添加待办卡片 -->
+    <div class="card todo-add-card">
+      <div class="todo-add-title">✨ 添加待办</div>
+      <input type="text" id="todoInput" class="todo-input" placeholder="要做什么呢？">
+      <div class="todo-form-row">
+        <div class="todo-form-item">
+          <label>日期</label>
+          <input type="date" id="todoDate">
+        </div>
+        <div class="todo-form-item">
+          <label>优先级</label>
+          <select id="todoPriority">
+            <option value="high">🔴 高</option>
+            <option value="medium" selected>🌸 中</option>
+            <option value="low">🟢 低</option>
+          </select>
+        </div>
+      </div>
+      <button class="todo-add-btn" id="addTodoBtn">
+        <span>＋</span> 添加待办
+      </button>
+    </div>
+
+    <!-- 今日待办 -->
+    <div class="card todo-list-card">
+      <div class="todo-list-head">
+        <span class="todo-head-icon">☀️</span>
+        <span>今日待办</span>
+        <span class="todo-count" id="todayTodoCount">(0)</span>
+      </div>
+      <div id="todayTodoList">
+        <div class="todo-empty">
+          <div class="todo-empty-icon">🌈</div>
+          <div>今天没有待办，享受美好的一天吧！</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 已完成 -->
+    <div class="card todo-list-card">
+      <div class="todo-list-head">
+        <span class="todo-head-icon">✅</span>
+        <span>已完成</span>
+      </div>
+      <div id="completedTodoList">
+        <div class="todo-empty">
+          <div class="todo-empty-icon">📝</div>
+          <div>还没有完成的待办哦</div>
+        </div>
       </div>
     </div>
   </div>
@@ -982,6 +1152,7 @@ const STORAGE_KEY = 'workbuddy_weight_v1';
 const DATA_VERSION = 'v3_jin_real';
 const PERIOD_KEY = 'workbuddy_period_v1';
 const CYCLE_KEY = 'workbuddy_period_cycle';
+const TODO_KEY = 'workbuddy_todo_v1';
 
 // 云同步配置 - jsonblob 免费云存储
 const CLOUD_BLOB_ID = '019faede-32d6-72ae-a629-ea9be99a4443';
@@ -1008,6 +1179,11 @@ function saveCycle(c){
   localStorage.setItem(CYCLE_KEY, String(c));
   cloudSync();
 }
+function loadTodoData(){ return JSON.parse(localStorage.getItem(TODO_KEY) || '[]'); }
+function saveTodoData(arr){
+  localStorage.setItem(TODO_KEY, JSON.stringify(arr));
+  cloudSync();
+}
 
 // 同步状态
 let syncTimer = null;
@@ -1019,15 +1195,17 @@ function collectAllData(){
     weight: loadData(),
     period: loadPeriodData(),
     cycle: getCycle(),
+    todos: loadTodoData(),
     lastSync: new Date().toISOString()
   };
 }
 
 // 从云端数据恢复到本地
 function restoreFromCloud(data){
-  if(data.weight) localStorage.setItem(STORAGE_KEY, JSON.stringify(data.weight));
-  if(data.period) localStorage.setItem(PERIOD_KEY, JSON.stringify(data.period));
-  if(data.cycle) localStorage.setItem(CYCLE_KEY, String(data.cycle));
+    if(data.weight) localStorage.setItem(STORAGE_KEY, JSON.stringify(data.weight));
+    if(data.period) localStorage.setItem(PERIOD_KEY, JSON.stringify(data.period));
+    if(data.cycle) localStorage.setItem(CYCLE_KEY, String(data.cycle));
+    if(data.todos) localStorage.setItem(TODO_KEY, JSON.stringify(data.todos));
 }
 
 // 自动云同步（防抖，2秒内的多次保存只上传一次）
@@ -1102,7 +1280,7 @@ async function initCloudSync(){
     localStorage.setItem('workbuddy_last_sync', new Date().toISOString());
   }else{
     // 云端为空，把本地数据上传
-    if(loadData().length > 0 || loadPeriodData().length > 0){
+    if(Object.keys(loadData()).length > 0 || loadPeriodData().length > 0 || loadTodoData().length > 0){
       doCloudSync();
     }else{
       updateSyncStatus('offline');
@@ -1157,6 +1335,10 @@ function switchTab(tab){
   // 经期栏目需要渲染
   if(tab === 'period'){
     renderPeriodAll();
+  }
+  // 待办栏目需要渲染
+  if(tab === 'todo'){
+    renderTodoAll();
   }
 }
 
@@ -1642,9 +1824,11 @@ function importData(file){
       if(data.weight) saveData(data.weight);
       if(data.period) savePeriodData(data.period);
       if(data.cycle) saveCycle(data.cycle);
+      if(data.todos) saveTodoData(data.todos);
       showToast('数据导入成功 ✨');
       renderAll();
       renderPeriodAll();
+      renderTodoAll();
       updateDataCounts();
       closeSettings();
     }catch(err){
@@ -1659,9 +1843,12 @@ function clearAllData(){
   localStorage.removeItem(STORAGE_KEY);
   localStorage.removeItem(PERIOD_KEY);
   localStorage.removeItem(CYCLE_KEY);
+  localStorage.removeItem(TODO_KEY);
+  localStorage.removeItem('workbuddy_last_sync');
   showToast('已清空所有数据');
   renderAll();
   renderPeriodAll();
+  renderTodoAll();
   updateDataCounts();
   closeSettings();
 }
@@ -1672,6 +1859,145 @@ function openSettings(){
 }
 function closeSettings(){
   document.getElementById('settingsModal').classList.remove('show');
+}
+
+/* ===== 待办功能 ===== */
+const PRIORITY_MAP = {
+  high:   {label:'高', class:'high', icon:'🔴'},
+  medium: {label:'中', class:'medium', icon:'🌸'},
+  low:    {label:'低', class:'low', icon:'🟢'}
+};
+
+function renderTodoGreeting(){
+  const h = today.getHours();
+  let greet = '下午好';
+  if(h < 12) greet = '上午好';
+  else if(h < 18) greet = '下午好';
+  else greet = '晚上好';
+  const el = document.getElementById('todoGreeting');
+  if(el) el.textContent = `${greet}，小悦～`;
+}
+
+function renderTodoAll(){
+  renderTodoGreeting();
+  const todos = loadTodoData();
+  const todayKey = fmtKey(today);
+  const todayList = todos.filter(t => t.date === todayKey && !t.done);
+  const doneList = todos.filter(t => t.done);
+
+  const todayEl = document.getElementById('todayTodoList');
+  const doneEl = document.getElementById('completedTodoList');
+  document.getElementById('todayTodoCount').textContent = `(${todayList.length})`;
+
+  if(todayList.length === 0){
+    todayEl.innerHTML = `
+      <div class="todo-empty">
+        <div class="todo-empty-icon">🌈</div>
+        <div>今天没有待办，享受美好的一天吧！</div>
+      </div>`;
+  }else{
+    todayEl.innerHTML = '';
+    todayList.forEach((t, idx) => {
+      const globalIdx = todos.indexOf(t);
+      todayEl.appendChild(createTodoItem(t, globalIdx));
+    });
+  }
+
+  if(doneList.length === 0){
+    doneEl.innerHTML = `
+      <div class="todo-empty">
+        <div class="todo-empty-icon">📝</div>
+        <div>还没有完成的待办哦</div>
+      </div>`;
+  }else{
+    doneEl.innerHTML = '';
+    doneList.forEach(t => {
+      const globalIdx = todos.indexOf(t);
+      doneEl.appendChild(createTodoItem(t, globalIdx));
+    });
+  }
+}
+
+function createTodoItem(t, idx){
+  const div = document.createElement('div');
+  div.className = 'todo-item';
+  const p = PRIORITY_MAP[t.priority] || PRIORITY_MAP.medium;
+  const dateObj = parseKeyToDate(t.date);
+  const dateStr = `${dateObj.getMonth()+1}月${dateObj.getDate()}日`;
+  div.innerHTML = `
+    <div class="todo-check ${t.done?'checked':''}" data-idx="${idx}">${t.done?'✓':''}</div>
+    <div class="todo-info">
+      <div class="todo-title ${t.done?'done':''}">${escapeHtml(t.title)}</div>
+      <div class="todo-meta">
+        <span>${dateStr}</span>
+        <span class="todo-tag ${p.class}">${p.icon} ${p.label}</span>
+      </div>
+    </div>
+    <button class="todo-delete" data-idx="${idx}">🗑️</button>
+  `;
+  div.querySelector('.todo-check').onclick = ()=>toggleTodo(idx);
+  div.querySelector('.todo-delete').onclick = ()=>deleteTodo(idx);
+  return div;
+}
+
+function escapeHtml(text){
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function addTodo(){
+  const title = document.getElementById('todoInput').value.trim();
+  const date = document.getElementById('todoDate').value;
+  const priority = document.getElementById('todoPriority').value;
+  if(!title){
+    showToast('请输入待办内容');
+    return;
+  }
+  const d = date ? new Date(date) : new Date(today);
+  const key = fmtKey(d);
+  const todos = loadTodoData();
+  todos.push({
+    id: Date.now(),
+    title: title,
+    date: key,
+    priority: priority,
+    done: false,
+    createAt: new Date().toISOString()
+  });
+  saveTodoData(todos);
+  document.getElementById('todoInput').value = '';
+  showToast('待办已添加 ✨');
+  renderTodoAll();
+}
+
+function toggleTodo(idx){
+  const todos = loadTodoData();
+  if(todos[idx]){
+    todos[idx].done = !todos[idx].done;
+    saveTodoData(todos);
+    renderTodoAll();
+    if(todos[idx].done) showToast('已完成 ✅');
+  }
+}
+
+function deleteTodo(idx){
+  const todos = loadTodoData();
+  if(todos[idx]){
+    todos.splice(idx, 1);
+    saveTodoData(todos);
+    renderTodoAll();
+    showToast('已删除');
+  }
+}
+
+function initTodo(){
+  // 默认日期今天
+  document.getElementById('todoDate').value = fmtKey(today);
+  document.getElementById('addTodoBtn').onclick = addTodo;
+  document.getElementById('todoInput').addEventListener('keydown', e=>{
+    if(e.key === 'Enter') addTodo();
+  });
 }
 
 function initSettings(){
@@ -1741,9 +2067,11 @@ if('serviceWorker' in navigator){
 
 initNav();
 initPeriod();
+initTodo();
 initSettings();
 renderAll();
 renderPeriodAll();
+renderTodoAll();
 
 // 启动云同步（延迟1秒，让页面先加载完）
 setTimeout(initCloudSync, 1000);

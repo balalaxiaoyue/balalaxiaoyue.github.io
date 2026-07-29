@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff9e6"/>
+      <stop offset="100%" stop-color="#ffefc4"/>
+    </linearGradient>
+  </defs>
+  <rect width="100" height="100" rx="22" fill="url(#bg)" stroke="#f0e0a8" stroke-width="2"/>
+  <ellipse cx="50" cy="44" rx="26" ry="22" fill="#fff" stroke="#333" stroke-width="2"/>
+  <path d="M28 30 L24 14 L40 24 Z" fill="#fff" stroke="#333" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M72 30 L76 14 L60 24 Z" fill="#fff" stroke="#333" stroke-width="2" stroke-linejoin="round"/>
+  <ellipse cx="40" cy="45" rx="3" ry="4" fill="#333"/>
+  <ellipse cx="60" cy="45" rx="3" ry="4" fill="#333"/>
+  <ellipse cx="50" cy="51" rx="3" ry="2" fill="#ffce8a"/>
+  <line x1="22" y1="43" x2="32" y2="45" stroke="#333" stroke-width="2"/>
+  <line x1="22" y1="49" x2="32" y2="49" stroke="#333" stroke-width="2"/>
+  <line x1="78" y1="43" x2="68" y2="45" stroke="#333" stroke-width="2"/>
+  <line x1="78" y1="49" x2="68" y2="49" stroke="#333" stroke-width="2"/>
+  <!-- money bag -->
+  <circle cx="50" cy="68" r="14" fill="#ffce8a" stroke="#e0a838" stroke-width="2"/>
+  <text x="50" y="73" text-anchor="middle" font-size="14" fill="#8a6d00" font-weight="bold">¥</text>
+  <!-- bow -->
+  <ellipse cx="66" cy="26" rx="6" ry="4" fill="#ff8fb1" stroke="#e07098" stroke-width="1"/>
+  <circle cx="66" cy="26" r="2.5" fill="#ff8fb1" stroke="#e07098" stroke-width="1"/>
+</svg>
