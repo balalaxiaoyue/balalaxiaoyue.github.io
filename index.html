@@ -892,6 +892,18 @@
     font-size:16px;font-weight:800;
     color:var(--pink-deep);
   }
+  .money-amount.income{color:#4a9a78}
+  .money-amount.expense{color:#e88a8a}
+  .money-type-tag{
+    font-size:10px;font-weight:700;
+    padding:1px 6px;border-radius:6px;
+    margin-right:2px;
+  }
+  .money-type-tag.income{background:#e8f8ee;color:#4a9a78}
+  .money-type-tag.expense{background:#ffe8e8;color:#e88a8a}
+  .money-group-head .gh-total{font-size:11px}
+  .gh-line{display:flex;gap:8px;align-items:center}
+  .gh-line .gh-sub{font-size:11px;font-weight:600}
   .money-empty{
     text-align:center;padding:30px 10px;
     color:var(--text-light);font-size:13px;
@@ -920,6 +932,27 @@
   }
   .money-field input:focus{border-color:var(--pink)}
   .money-field input::placeholder{color:var(--text-light);font-weight:400}
+  .money-type-picker{
+    display:flex;gap:8px;
+  }
+  .money-type-btn{
+    flex:1;text-align:center;
+    padding:10px 0;border-radius:12px;
+    font-size:13px;font-weight:700;
+    color:var(--text-soft);
+    background:#fff;
+    border:2px solid var(--pink-soft);
+    cursor:pointer;transition:all .15s;
+  }
+  .money-type-btn:active{transform:scale(.96)}
+  .money-type-btn.active[data-type="expense"]{
+    background:linear-gradient(135deg,#ffc0c0,#ff8888);
+    color:#fff;border-color:#ff8888;
+  }
+  .money-type-btn.active[data-type="income"]{
+    background:linear-gradient(135deg,#b8e8c8,#7fd8a0);
+    color:#fff;border-color:#7fd8a0;
+  }
   .money-modal-btns{
     display:flex;gap:10px;margin-top:18px;
   }
@@ -1469,8 +1502,10 @@
         <input type="text" id="moneySearch" class="money-search-input" placeholder="🔍 搜索人名">
       </div>
       <div class="money-summary" id="moneySummary">
-        <div class="ms-item"><span class="ms-label">当日合计</span><span class="ms-val" id="moneyDayTotal">0 元</span></div>
-        <div class="ms-item"><span class="ms-label">总支出</span><span class="ms-val" id="moneyAllTotal">0 元</span></div>
+        <div class="ms-item"><span class="ms-label">当日支出</span><span class="ms-val" id="moneyDayExpense" style="color:#e88a8a">0 元</span></div>
+        <div class="ms-item"><span class="ms-label">当日收入</span><span class="ms-val" id="moneyDayIncome" style="color:#4a9a78">0 元</span></div>
+        <div class="ms-item"><span class="ms-label">总支出</span><span class="ms-val" id="moneyAllExpense" style="color:#e88a8a">0 元</span></div>
+        <div class="ms-item"><span class="ms-label">总收入</span><span class="ms-val" id="moneyAllIncome" style="color:#4a9a78">0 元</span></div>
       </div>
     </div>
 
@@ -1500,6 +1535,13 @@
         <div class="money-field">
           <label>对方姓名</label>
           <input type="text" id="moneyFormName" placeholder="如：王阿姨" maxlength="20">
+        </div>
+        <div class="money-field">
+          <label>收支类型</label>
+          <div class="money-type-picker" id="moneyTypePicker">
+            <div class="money-type-btn active" data-type="expense">💸 支出（随礼）</div>
+            <div class="money-type-btn" data-type="income">💰 收入（收礼）</div>
+          </div>
         </div>
         <div class="money-field">
           <label>礼金金额（元）</label>
@@ -2937,7 +2979,8 @@ function renderMoneyList(){
   wrap.innerHTML = '';
   sortedDates.forEach(date => {
     const group = groups[date];
-    const total = group.reduce((s, r) => s + r.amount, 0);
+    const expenseTotal = group.filter(r => r.type !== 'income').reduce((s, r) => s + r.amount, 0);
+    const incomeTotal = group.filter(r => r.type === 'income').reduce((s, r) => s + r.amount, 0);
     const d = parseKeyToDate(date);
     const dateStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 
@@ -2945,17 +2988,26 @@ function renderMoneyList(){
     groupDiv.className = 'money-group';
     let itemsHtml = '';
     group.forEach((r, idx) => {
+      const isIncome = r.type === 'income';
+      const typeTag = isIncome ? '收' : '出';
+      const typeClass = isIncome ? 'income' : 'expense';
+      const sign = isIncome ? '+' : '-';
       itemsHtml += `
         <div class="money-item" data-id="${r.id}">
           <div class="money-seq">${idx+1}</div>
           <div class="money-name">${escapeHtml(r.name)}</div>
-          <div class="money-amount">${r.amount}元</div>
+          <span class="money-type-tag ${typeClass}">${typeTag}</span>
+          <div class="money-amount ${typeClass}">${sign}${r.amount}元</div>
         </div>`;
     });
+    let totalHtml = '';
+    if(expenseTotal > 0) totalHtml += `<span class="gh-sub" style="color:#e88a8a">支出 ${expenseTotal}元</span>`;
+    if(incomeTotal > 0) totalHtml += `<span class="gh-sub" style="color:#4a9a78">收入 ${incomeTotal}元</span>`;
+    if(!totalHtml) totalHtml = `<span class="gh-sub">无</span>`;
     groupDiv.innerHTML = `
       <div class="money-group-head">
         <span>【${dateStr}】</span>
-        <span class="gh-total">合计 ${total}元</span>
+        <span class="gh-total">${totalHtml}</span>
       </div>
       ${itemsHtml}
     `;
@@ -2980,15 +3032,20 @@ function renderMoneyList(){
 
 function renderMoneySummary(){
   const allRecords = loadMoneyData();
-  const allTotal = allRecords.reduce((s, r) => s + r.amount, 0);
-  document.getElementById('moneyAllTotal').textContent = allTotal + ' 元';
-  document.getElementById('moneyTotalPill').textContent = allTotal + '元';
+  const allExpense = allRecords.filter(r => r.type !== 'income').reduce((s, r) => s + r.amount, 0);
+  const allIncome = allRecords.filter(r => r.type === 'income').reduce((s, r) => s + r.amount, 0);
+  document.getElementById('moneyAllExpense').textContent = allExpense + ' 元';
+  document.getElementById('moneyAllIncome').textContent = allIncome + ' 元';
+  const net = allIncome - allExpense;
+  document.getElementById('moneyTotalPill').textContent = (net >= 0 ? '+' : '') + net + '元';
 
-  // 当日合计（顶部日期）
+  // 当日收支（顶部日期）
   const selectedDate = document.getElementById('moneyDate').value;
   const dayRecords = allRecords.filter(r => r.date === selectedDate);
-  const dayTotal = dayRecords.reduce((s, r) => s + r.amount, 0);
-  document.getElementById('moneyDayTotal').textContent = dayTotal + ' 元';
+  const dayExpense = dayRecords.filter(r => r.type !== 'income').reduce((s, r) => s + r.amount, 0);
+  const dayIncome = dayRecords.filter(r => r.type === 'income').reduce((s, r) => s + r.amount, 0);
+  document.getElementById('moneyDayExpense').textContent = dayExpense + ' 元';
+  document.getElementById('moneyDayIncome').textContent = dayIncome + ' 元';
 }
 
 function openMoneyModal(id){
@@ -3005,6 +3062,7 @@ function openMoneyModal(id){
     document.getElementById('moneyFormDate').value = r.date;
     document.getElementById('moneyFormName').value = r.name;
     document.getElementById('moneyFormAmount').value = r.amount;
+    selectMoneyType(r.type === 'income' ? 'income' : 'expense');
     document.getElementById('moneyDelBtn').style.display = '';
   }else{
     // 新增
@@ -3012,6 +3070,7 @@ function openMoneyModal(id){
     document.getElementById('moneyFormDate').value = document.getElementById('moneyDate').value;
     document.getElementById('moneyFormName').value = '';
     document.getElementById('moneyFormAmount').value = '';
+    selectMoneyType('expense');
     document.getElementById('moneyDelBtn').style.display = 'none';
   }
   modal.classList.add('show');
@@ -3026,6 +3085,7 @@ function saveMoneyForm(){
   const date = document.getElementById('moneyFormDate').value;
   const name = document.getElementById('moneyFormName').value.trim();
   const amount = parseInt(document.getElementById('moneyFormAmount').value, 10);
+  const type = getSelectedMoneyType();
 
   if(!date){ showToast('请选择日期'); return; }
   if(!name){ showToast('请输入姓名'); return; }
@@ -3039,6 +3099,7 @@ function saveMoneyForm(){
       records[idx].date = date;
       records[idx].name = name;
       records[idx].amount = amount;
+      records[idx].type = type;
     }
     showToast('已更新');
   }else{
@@ -3047,13 +3108,26 @@ function saveMoneyForm(){
       id: 'm' + Date.now(),
       date: date,
       name: name,
-      amount: amount
+      amount: amount,
+      type: type
     });
-    showToast('已记录 ' + name + ' ' + amount + '元');
+    const typeLabel = type === 'income' ? '收入' : '支出';
+    showToast('已记录 ' + typeLabel + ' ' + name + ' ' + amount + '元');
   }
   saveMoneyData(records);
   closeMoneyModal();
   renderMoneyAll();
+}
+
+function getSelectedMoneyType(){
+  const active = document.querySelector('#moneyTypePicker .money-type-btn.active');
+  return active ? active.dataset.type : 'expense';
+}
+
+function selectMoneyType(type){
+  document.querySelectorAll('#moneyTypePicker .money-type-btn').forEach(el => {
+    el.classList.toggle('active', el.dataset.type === type);
+  });
 }
 
 function deleteMoneyRecord(id){
@@ -3081,6 +3155,9 @@ function initMoney(){
     moneySearch = e.target.value;
     renderMoneyList();
   };
+  document.querySelectorAll('#moneyTypePicker .money-type-btn').forEach(btn => {
+    btn.onclick = () => selectMoneyType(btn.dataset.type);
+  });
   document.querySelectorAll('.money-filter-btn').forEach(btn => {
     btn.onclick = () => {
       moneyFilter = btn.dataset.filter;
