@@ -1,5 +1,5 @@
 // 小悦工作台 Service Worker - 离线缓存
-const CACHE_NAME = 'xiaoyue-workbench-v6';
+const CACHE_NAME = 'xiaoyue-workbench-v7';
 const CACHE_FILES = [
   './',
   './index.html',
