@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>iPhone 安装指南 · Kitty 工作台</title>
+<style>
+  :root{
+    --pink:#ff8fb1;
+    --pink-light:#ffc0d6;
+    --pink-soft:#ffe3ee;
+    --pink-bg:#fff0f5;
+    --pink-deep:#ff6b9d;
+    --mint:#b8f0d8;
+    --text:#6b4a5a;
+    --text-light:#b09aa8;
+    --bg:#fff6f9;
+    --card:#ffffff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;
+    background:linear-gradient(160deg,#fff0f5 0%,#ffe4ef 40%,#fff8fa 100%);
+    color:var(--text);
+    font-size:15px;
+    line-height:1.6;
+    min-height:100vh;
+    padding:16px 16px 40px;
+  }
+  .header{
+    text-align:center;
+    padding:16px 0 22px;
+  }
+  .header h1{
+    font-size:22px;font-weight:800;
+    display:flex;align-items:center;justify-content:center;gap:6px;
+  }
+  .header .sub{font-size:13px;color:var(--text-light);margin-top:6px}
+  .header .link-box{
+    margin-top:16px;
+    background:#fff;
+    border:2px dashed var(--pink);
+    border-radius:14px;
+    padding:12px;
+    font-size:13px;
+    word-break:break-all;
+  }
+  .header .link-box .lbl{
+    font-size:11px;color:var(--pink-deep);font-weight:700;
+    margin-bottom:4px;display:block;
+  }
+  .header .link-box code{
+    font-size:12px;color:var(--text);
+    background:var(--pink-soft);
+    padding:6px 8px;border-radius:8px;
+    display:block;
+  }
+  .header .copy-btn{
+    margin-top:10px;
+    background:linear-gradient(135deg,var(--pink-light),var(--pink));
+    color:#fff;border:none;
+    padding:10px 24px;border-radius:12px;
+    font-size:14px;font-weight:700;
+    cursor:pointer;
+  }
+  .step{
+    background:#fff;
+    border-radius:18px;
+    padding:18px 16px;
+    margin-bottom:14px;
+    box-shadow:0 2px 10px rgba(255,143,177,.1);
+    border:1.5px solid rgba(255,228,238,.6);
+  }
+  .step-num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:30px;height:30px;border-radius:50%;
+    background:linear-gradient(135deg,var(--pink-light),var(--pink));
+    color:#fff;font-size:15px;font-weight:800;
+    margin-bottom:10px;
+  }
+  .step h2{
+    font-size:17px;font-weight:800;
+    margin-bottom:8px;color:var(--text);
+  }
+  .step p{font-size:14px;color:var(--text);margin-bottom:8px}
+  .step .tip{
+    background:var(--pink-soft);
+    border-radius:10px;padding:10px 12px;
+    font-size:12px;color:var(--pink-deep);
+    margin-top:8px;font-weight:600;
+  }
+  .step .mock{
+    background:linear-gradient(135deg,#f9f9f9,#fff);
+    border:1.5px solid #eee;
+    border-radius:12px;
+    padding:14px;
+    margin:10px 0;
+    text-align:center;
+    font-size:13px;color:var(--text-light);
+  }
+  .step .mock .safari-bar{
+    background:#f0f0f0;
+    border-radius:8px;
+    padding:6px 10px;
+    margin-bottom:10px;
+    font-size:11px;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .step .mock .safari-bar .dots{font-size:14px;letter-spacing:2px}
+  .step .mock .share-icon{
+    font-size:28px;
+    display:block;margin:6px 0;
+  }
+  .step .mock .menu{
+    background:#fff;border:1px solid #eee;
+    border-radius:10px;padding:8px;
+    margin-top:8px;font-size:12px;
+  }
+  .step .mock .menu-item{
+    padding:8px 6px;border-bottom:1px solid #f5f5f5;
+    display:flex;align-items:center;gap:6px;
+  }
+  .step .mock .menu-item:last-child{border-bottom:none}
+  .step .mock .menu-item.highlight{
+    background:var(--pink-soft);
+    border-radius:8px;
+    color:var(--pink-deep);font-weight:700;
+  }
+  .home-screen{
+    background:linear-gradient(135deg,#e8f4ff,#fff0f5);
+    border-radius:16px;
+    padding:20px;
+    margin:10px 0;
+    display:flex;justify-content:center;gap:20px;
+  }
+  .app-icon{
+    text-align:center;
+  }
+  .app-icon .icon-box{
+    width:56px;height:56px;
+    border-radius:14px;
+    background:linear-gradient(135deg,#fff,var(--pink-soft));
+    display:flex;align-items:center;justify-content:center;
+    font-size:30px;
+    box-shadow:0 4px 10px rgba(255,143,177,.25);
+    border:2px solid #fff;
+    margin:0 auto 6px;
+  }
+  .app-icon .icon-label{font-size:11px;color:var(--text)}
+  .faq{
+    background:#fff;
+    border-radius:18px;
+    padding:18px 16px;
+    margin-top:14px;
+    box-shadow:0 2px 10px rgba(255,143,177,.1);
+    border:1.5px solid rgba(255,228,238,.6);
+  }
+  .faq h2{font-size:17px;font-weight:800;margin-bottom:12px}
+  .faq-item{margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #f5f5f5}
+  .faq-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+  .faq-item .q{font-size:14px;font-weight:700;color:var(--pink-deep);margin-bottom:4px}
+  .faq-item .a{font-size:13px;color:var(--text)}
+  .footer{
+    text-align:center;
+    margin-top:24px;
+    font-size:12px;color:var(--text-light);
+  }
+  .footer .heart{color:var(--pink)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🎀 iPhone 安装指南</h1>
+  <div class="sub">跟着步骤来，5 分钟搞定！</div>
+  <div class="link-box">
+    <span class="lbl">📋 先复制这个链接（待会用）</span>
+    <code id="appLink">https://webview.e2b.sh2.sandbox.cloudstudio.club/?x-cs-sandbox-id=9011637d35b246c780f9444eb134ef50&x-cs-sandbox-port=8000</code>
+  </div>
+  <button class="copy-btn" onclick="copyLink()">📋 一键复制链接</button>
+</div>
+
+<!-- 第1步 -->
+<div class="step">
+  <div class="step-num">1</div>
+  <h2>打开 Safari 浏览器</h2>
+  <p>在 iPhone 上找到 <b>自带 Safari 浏览器</b>（蓝色指南针图标），打开它。</p>
+  <div class="tip">⚠️ 必须用 Safari！不能用微信、QQ浏览器、Chrome 等，否则无法添加到主屏幕。</div>
+  <div class="mock">
+    <div style="font-size:40px">🧭</div>
+    <div>Safari 浏览器（蓝色指南针）</div>
+  </div>
+</div>
+
+<!-- 第2步 -->
+<div class="step">
+  <div class="step-num">2</div>
+  <h2>粘贴链接并打开</h2>
+  <p>点击上方地址栏，<b>粘贴刚才复制的链接</b>，然后点「前往」。</p>
+  <div class="mock">
+    <div class="safari-bar">
+      <span>‹</span>
+      <span>粘贴链接到这里...</span>
+      <span>›</span>
+    </div>
+    <div style="margin-top:8px;font-size:12px">页面会打开你的工作台 🎀</div>
+  </div>
+</div>
+
+<!-- 第3步 -->
+<div class="step">
+  <div class="step-num">3</div>
+  <h2>点击底部「分享」按钮</h2>
+  <p>页面打开后，看 Safari <b>底部中间</b> 有个「分享」图标（一个方块向上箭头），点它。</p>
+  <div class="mock">
+    <div class="safari-bar">
+      <span>‹</span>
+      <span>工作台页面</span>
+      <span>›</span>
+    </div>
+    <span class="share-icon">⬆️</span>
+    <div>就是这个图标，点它！</div>
+  </div>
+  <div class="tip">💡 分享按钮在底部工具栏正中间，是个「向上箭头从方块里出来」的图标。</div>
+</div>
+
+<!-- 第4步 -->
+<div class="step">
+  <div class="step-num">4</div>
+  <h2>选择「添加到主屏幕」</h2>
+  <p>弹出的菜单里，向下滑动，找到 <b>「添加到主屏幕」</b>，点击它。</p>
+  <div class="mock">
+    <div class="menu">
+      <div class="menu-item">📄 拷贝</div>
+      <div class="menu-item">📤 分享到...</div>
+      <div class="menu-item">🖨️ 打印</div>
+      <div class="menu-item highlight">➕ 添加到主屏幕  ← 点这个！</div>
+      <div class="menu-item">🔖 加入书签</div>
+    </div>
+  </div>
+  <div class="tip">如果没看到，往下滚动菜单，或者点最下面的「编辑」手动添加。</div>
+</div>
+
+<!-- 第5步 -->
+<div class="step">
+  <div class="step-num">5</div>
+  <h2>确认添加</h2>
+  <p>会弹出一个小窗口，显示图标和名称，直接点右上角 <b>「添加」</b> 就行。</p>
+  <div class="mock">
+    <div style="font-size:13px;margin-bottom:8px">添加到主屏幕</div>
+    <div class="home-screen" style="margin:0 0 10px">
+      <div class="app-icon">
+        <div class="icon-box">🎀</div>
+        <div class="icon-label">Kitty工作台</div>
+      </div>
+    </div>
+    <div style="font-size:12px">名称可以改，默认是「Kitty工作台」</div>
+    <div style="margin-top:10px;background:var(--pink);color:#fff;padding:8px 20px;border-radius:10px;display:inline-block;font-weight:700">添加</div>
+  </div>
+</div>
+
+<!-- 完成 -->
+<div class="step">
+  <div class="step-num">✅</div>
+  <h2>完成！桌面上出现了 APP 图标</h2>
+  <p>回到手机桌面，你会看到一个 <b>🎀 图标</b>，名字是「Kitty工作台」。点它就能直接打开，像 APP 一样全屏使用！</p>
+  <div class="home-screen">
+    <div class="app-icon">
+      <div class="icon-box">🎀</div>
+      <div class="icon-label">Kitty工作台</div>
+    </div>
+  </div>
+  <div class="tip">🎉 以后每次用，直接点桌面上的 🎀 图标即可，不需要再开浏览器输链接了！</div>
+</div>
+
+<!-- 常见问题 -->
+<div class="faq">
+  <h2>❓ 常见问题</h2>
+  <div class="faq-item">
+    <div class="q">Q：为什么我找不到「添加到主屏幕」？</div>
+    <div class="a">A：确保你用的是 Safari 浏览器（不是微信/Chrome）。分享菜单可能需要向下滑动才能看到。如果还是没有，点菜单最下方的「编辑」，把「添加到主屏幕」打开。</div>
+  </div>
+  <div class="faq-item">
+    <div class="q">Q：添加后打开是白屏/打不开？</div>
+    <div class="a">A：需要网络连接第一次打开。第一次打开后会自动缓存，之后断网也能用。如果一直白屏，检查链接是否复制完整。</div>
+  </div>
+  <div class="faq-item">
+    <div class="q">Q：数据会丢失吗？</div>
+    <div class="a">A：不会！数据存在你手机本地。但建议定期点工作台左下角 ⚙️ 设置 → 导出备份，保存到网盘，换手机时可以导入恢复。</div>
+  </div>
+  <div class="faq-item">
+    <div class="q">Q：这个链接会过期吗？</div>
+    <div class="a">A：这个预览链接是临时的。如果哪天打不开了，说明服务关闭了。你可以提前下载文件包（找我拿），用本地文件也能用，只是不能跨设备同步。</div>
+  </div>
+  <div class="faq-item">
+    <div class="q">Q：图标能换吗？名称能改吗？</div>
+    <div class="a">A：名称在第 5 步可以改。图标暂时是 🎀 蝴蝶结，如果想换可以告诉我。</div>
+  </div>
+</div>
+
+<div class="footer">
+  做好啦～有问题随时问 <span class="heart">💗</span>
+</div>
+
+<script>
+function copyLink(){
+  const link = document.getElementById('appLink').textContent;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(link).then(()=>{
+      alert('链接已复制！快去 Safari 粘贴吧～');
+    }).catch(()=>{
+      fallbackCopy(link);
+    });
+  }else{
+    fallbackCopy(link);
+  }
+}
+function fallbackCopy(text){
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try{
+    document.execCommand('copy');
+    alert('链接已复制！快去 Safari 粘贴吧～');
+  }catch(e){
+    prompt('请手动复制下方链接：', text);
+  }
+  document.body.removeChild(ta);
+}
+</script>
+</body>
+</html>

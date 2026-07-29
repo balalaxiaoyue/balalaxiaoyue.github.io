@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#ff8fb1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Kitty工作台">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='42' fill='%23fff0f5'/%3E%3Ctext x='96' y='100' font-size='90' text-anchor='middle' dominant-baseline='middle'%3E%F0%9F%8E%80%3C/text%3E%3C/svg%3E">
+<title>Kitty 工作台 · 减脂日记</title>
+<style>
+  :root{
+    --pink:#ff8fb1;
+    --pink-light:#ffc0d6;
+    --pink-soft:#ffe3ee;
+    --pink-bg:#fff0f5;
+    --pink-deep:#ff6b9d;
+    --mint:#b8f0d8;
+    --mint-soft:#dcf7ea;
+    --cream:#fff8f0;
+    --lavender:#e4d4ff;
+    --lav-deep:#c9a8ff;
+    --yellow:#fff3c4;
+    --text:#6b4a5a;
+    --text-light:#b09aa8;
+    --text-soft:#9a8a92;
+    --bg:#fff6f9;
+    --card:#ffffff;
+    --shadow:0 4px 16px rgba(255,143,177,.14);
+    --shadow-soft:0 2px 10px rgba(255,143,177,.08);
+    --shadow-tab:0 2px 8px rgba(255,107,157,.18);
+    --radius:18px;
+    --sidebar-w:72px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;
+    color:var(--text);
+    font-size:14px;
+    line-height:1.5;
+    overflow-x:hidden;
+    background:linear-gradient(160deg,#fff0f5 0%,#ffe4ef 40%,#fff8fa 100%);
+    background-attachment:fixed;
+    min-height:100vh;
+  }
+
+  /* ===== 侧边导航栏 ===== */
+  .sidebar{
+    position:fixed;
+    left:0;top:0;bottom:0;
+    width:var(--sidebar-w);
+    background:linear-gradient(180deg,#fff 0%,var(--pink-soft) 100%);
+    box-shadow:2px 0 16px rgba(255,143,177,.12);
+    z-index:50;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:14px 0 10px;
+  }
+  .kitty-avatar{
+    width:44px;height:44px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#fff,var(--pink-soft));
+    display:flex;align-items:center;justify-content:center;
+    font-size:26px;
+    box-shadow:0 2px 8px rgba(255,143,177,.2);
+    margin-bottom:4px;
+    border:2px solid #fff;
+  }
+  .kitty-bow{
+    font-size:14px;
+    margin-bottom:8px;
+  }
+  .nav-list{
+    display:flex;flex-direction:column;
+    gap:4px;
+    width:100%;
+    padding:0 6px;
+    flex:1;
+  }
+  .nav-item{
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    padding:8px 4px;
+    border-radius:14px;
+    cursor:pointer;
+    transition:all .2s;
+    color:var(--text-soft);
+    position:relative;
+  }
+  .nav-item .nav-icon{
+    font-size:20px;
+    line-height:1;
+    margin-bottom:3px;
+    transition:transform .2s;
+  }
+  .nav-item .nav-label{
+    font-size:10px;
+    font-weight:600;
+    text-align:center;
+  }
+  .nav-item:active{transform:scale(.92)}
+  .nav-item.active{
+    background:linear-gradient(135deg,var(--pink-light),var(--pink));
+    color:#fff;
+    box-shadow:var(--shadow-tab);
+    transform:translateY(-1px);
+  }
+  .nav-item.active .nav-icon{transform:scale(1.15)}
+  .nav-item.active::before{
+    content:"";
+    position:absolute;
+    left:-6px;top:50%;transform:translateY(-50%);
+    width:4px;height:22px;
+    background:var(--pink-deep);
+    border-radius:0 4px 4px 0;
+  }
+  .nav-divider{
+    width:36px;height:2px;
+    background:var(--pink-soft);
+    border-radius:2px;
+    margin:6px auto;
+  }
+
+  /* ===== 主内容区 ===== */
+  .main{
+    margin-left:var(--sidebar-w);
+    padding:0 12px 30px;
+    min-height:100vh;
+  }
+
+  /* 顶部标题 */
+  .header{
+    padding:14px 4px 8px;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .header .title-wrap{display:flex;align-items:center;gap:8px}
+  .header h1{
+    font-size:19px;font-weight:800;
+    color:var(--text);
+    display:flex;align-items:center;gap:5px;
+  }
+  .header h1 .bow{font-size:18px}
+  .header .sub{font-size:11px;color:var(--text-light);margin-top:1px}
+  .header .date-pill{
+    background:linear-gradient(135deg,#fff,var(--pink-soft));
+    padding:6px 12px;border-radius:14px;
+    font-size:11px;font-weight:700;color:var(--pink-deep);
+    box-shadow:var(--shadow-soft);
+    display:flex;align-items:center;gap:4px;
+  }
+
+  /* 月份横滑 */
+  .months-wrap{padding:2px 0 10px}
+  .months{
+    display:flex;gap:7px;
+    overflow-x:auto;
+    padding:0 2px 4px;
+    scroll-behavior:smooth;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .months::-webkit-scrollbar{display:none}
+  .month-chip{
+    flex:0 0 auto;
+    min-width:50px;
+    padding:8px 11px;
+    border-radius:14px;
+    background:var(--card);
+    border:2px solid transparent;
+    text-align:center;
+    cursor:pointer;
+    transition:all .2s;
+    box-shadow:var(--shadow-soft);
+    user-select:none;
+  }
+  .month-chip .m-num{font-size:17px;font-weight:800;color:var(--text)}
+  .month-chip .m-label{font-size:9px;color:var(--text-light);margin-top:1px}
+  .month-chip.active{
+    background:linear-gradient(135deg,var(--pink-light),var(--pink));
+    border-color:var(--pink);
+    transform:translateY(-2px);
+    box-shadow:var(--shadow);
+  }
+  .month-chip.active .m-num,.month-chip.active .m-label{color:#fff}
+
+  /* 卡片容器 */
+  .card{
+    background:var(--card);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow-soft);
+    margin:0 0 12px;
+    overflow:hidden;
+    border:1.5px solid rgba(255,228,238,.6);
+  }
+  .card-head{
+    padding:13px 15px 7px;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .card-title{
+    font-size:15px;font-weight:800;
+    display:flex;align-items:center;gap:6px;
+    color:var(--text);
+  }
+  .card-title .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--pink);
+  }
+  .card-title .emoji{font-size:16px}
+  .card-action{
+    font-size:11px;color:var(--pink-deep);
+    padding:4px 10px;border-radius:10px;
+    background:var(--pink-soft);
+    cursor:pointer;font-weight:700;
+  }
+
+  /* 日历 */
+  .cal-week{
+    display:grid;grid-template-columns:repeat(7,1fr);
+    padding:0 10px 4px;
+  }
+  .cal-week div{
+    text-align:center;font-size:10px;color:var(--text-light);
+    padding:5px 0;font-weight:700;
+  }
+  .cal-grid{
+    display:grid;grid-template-columns:repeat(7,1fr);
+    gap:3px;padding:0 10px 11px;
+  }
+  .cal-cell{
+    aspect-ratio:1;
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    border-radius:11px;
+    font-size:12px;font-weight:700;
+    position:relative;
+    cursor:pointer;
+    transition:all .15s;
+    background:transparent;
+    color:var(--text);
+  }
+  .cal-cell.other{color:var(--text-light);opacity:.35}
+  .cal-cell.today{
+    background:linear-gradient(135deg,var(--mint),#8fe5c4);
+    color:#fff;
+  }
+  .cal-cell.selected{
+    background:linear-gradient(135deg,var(--pink-light),var(--pink))!important;
+    color:#fff!important;
+    transform:scale(1.06);
+    box-shadow:0 4px 10px rgba(255,143,177,.35);
+  }
+  .cal-cell.has-data::after{
+    content:"";
+    position:absolute;bottom:4px;
+    width:5px;height:5px;border-radius:50%;
+    background:var(--pink);
+  }
+  .cal-cell.today.has-data::after,.cal-cell.selected.has-data::after{background:#fff}
+  .cal-cell:active{transform:scale(.9)}
+
+  /* 体重展示区 */
+  .weight-display{padding:0 15px 13px}
+  .weight-hero{
+    background:linear-gradient(135deg,var(--lavender),var(--lav-deep));
+    border-radius:16px;
+    padding:14px 16px;
+    color:#fff;
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:11px;
+    position:relative;
+    overflow:hidden;
+  }
+  .weight-hero::before{
+    content:"🎀";
+    position:absolute;
+    right:10px;top:-6px;
+    font-size:34px;
+    opacity:.18;
+    transform:rotate(15deg);
+  }
+  .weight-hero .left .lbl{font-size:11px;opacity:.92}
+  .weight-hero .left .val{font-size:25px;font-weight:800;margin-top:2px}
+  .weight-hero .left .val .unit{font-size:12px;font-weight:600;margin-left:3px}
+  .weight-hero .right{text-align:right;position:relative;z-index:1}
+  .weight-hero .right .diff{font-size:13px;font-weight:800;opacity:.95}
+  .weight-hero .right .diff-lbl{font-size:10px;opacity:.85;margin-top:2px}
+  .weight-hero.empty{
+    background:linear-gradient(135deg,#f0ecf8,#e8e0f5);
+    color:var(--text-light);
+  }
+
+  /* 体重输入行 */
+  .weight-input-row{
+    display:flex;gap:7px;align-items:center;
+    margin-bottom:11px;
+  }
+  .weight-input-row input{
+    flex:1;
+    border:2px solid var(--pink-soft);
+    border-radius:12px;
+    padding:10px 14px;
+    font-size:15px;font-weight:700;
+    color:var(--text);
+    background:#fff;
+    outline:none;
+    transition:border-color .2s;
+  }
+  .weight-input-row input:focus{border-color:var(--pink)}
+  .weight-input-row input::placeholder{color:var(--text-light);font-weight:400}
+  .btn{
+    border:none;cursor:pointer;
+    padding:10px 16px;
+    border-radius:12px;
+    font-size:14px;font-weight:800;
+    transition:all .15s;
+  }
+  .btn-pink{
+    background:linear-gradient(135deg,var(--pink-light),var(--pink));
+    color:#fff;
+    box-shadow:0 2px 8px rgba(255,143,177,.3);
+  }
+  .btn-pink:active{transform:scale(.93)}
+  .btn-ghost{
+    background:var(--pink-soft);color:var(--pink-deep);
+    padding:10px 13px;
+  }
+  .btn-ghost:active{transform:scale(.93)}
+
+  /* 月度统计 */
+  .stats{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    gap:7px;
+  }
+  .stat-item{
+    background:linear-gradient(135deg,var(--cream),#fff5ec);
+    border-radius:14px;
+    padding:10px 6px;
+    text-align:center;
+    border:1px solid rgba(255,228,238,.5);
+  }
+  .stat-item .s-val{font-size:16px;font-weight:800;color:var(--text)}
+  .stat-item .s-lbl{font-size:9px;color:var(--text-light);margin-top:2px}
+
+  /* 表格 */
+  .table-wrap{
+    padding:0 11px 13px;
+    max-height:260px;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .table-wrap::-webkit-scrollbar{width:4px}
+  .table-wrap::-webkit-scrollbar-thumb{background:var(--pink-soft);border-radius:4px}
+  table{
+    width:100%;border-collapse:collapse;
+    font-size:12px;
+  }
+  thead th{
+    position:sticky;top:0;
+    background:#fff;
+    padding:7px 5px;
+    font-size:10px;color:var(--text-light);
+    font-weight:700;
+    border-bottom:2px solid var(--pink-soft);
+    z-index:2;
+  }
+  tbody td{
+    padding:8px 5px;
+    text-align:center;
+    border-bottom:1px solid #faf4f8;
+  }
+  tbody tr.today-row{background:var(--mint-soft)}
+  tbody tr.today-row td{font-weight:700}
+  tbody tr.selected-row{background:var(--pink-soft)}
+  tbody td .w-val{font-weight:800;color:var(--text)}
+  tbody td .w-empty{color:var(--text-light);opacity:.4}
+  tbody td .day-tag{
+    display:inline-block;
+    padding:2px 6px;border-radius:7px;
+    font-size:10px;font-weight:700;
+  }
+  tbody td .day-tag.weekend{background:var(--lavender);color:#8a6bbf}
+  tbody td .day-tag.weekday{background:var(--mint-soft);color:#4a9a78}
+
+  /* 占位栏目 */
+  .placeholder-card{
+    text-align:center;
+    padding:50px 20px;
+  }
+  .placeholder-card .p-icon{
+    font-size:48px;
+    margin-bottom:12px;
+    display:inline-block;
+    animation:float 2.5s ease-in-out infinite;
+  }
+  @keyframes float{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-8px)}
+  }
+  .placeholder-card .p-title{
+    font-size:18px;font-weight:800;color:var(--text);
+    margin-bottom:6px;
+  }
+  .placeholder-card .p-desc{
+    font-size:13px;color:var(--text-light);
+    line-height:1.7;
+  }
+  .placeholder-card .p-tag{
+    display:inline-block;
+    margin-top:14px;
+    padding:6px 16px;
+    background:var(--pink-soft);
+    color:var(--pink-deep);
+    border-radius:14px;
+    font-size:12px;font-weight:700;
+  }
+
+  /* ===== 经期栏目样式 ===== */
+  .period-summary{padding:14px}
+  .period-row{
+    display:grid;grid-template-columns:1fr 1fr;
+    gap:10px;margin-bottom:14px;
+  }
+  .period-box{
+    background:linear-gradient(135deg,var(--pink-soft),#fff5f9);
+    border-radius:16px;
+    padding:14px 8px;
+    text-align:center;
+    border:1.5px solid rgba(255,192,214,.5);
+  }
+  .period-box .p-label{font-size:11px;color:var(--text-soft);margin-bottom:4px;font-weight:700}
+  .period-box .p-num{font-size:28px;font-weight:800;color:var(--pink-deep);line-height:1}
+  .period-box .p-date{font-size:18px;font-weight:800;color:var(--pink-deep);line-height:1.2}
+  .period-box .p-sub{font-size:10px;color:var(--text-light);margin-top:4px}
+  .period-setting{
+    background:var(--cream);
+    border-radius:14px;
+    padding:12px;
+    margin-bottom:12px;
+  }
+  .period-setting .ps-label{font-size:12px;color:var(--text);font-weight:700;margin-bottom:8px}
+  .period-setting .ps-row{display:flex;align-items:center;gap:8px}
+  .period-setting .ps-row input{
+    width:70px;
+    border:2px solid var(--pink-soft);
+    border-radius:10px;
+    padding:9px 10px;
+    font-size:15px;font-weight:700;
+    color:var(--text);
+    text-align:center;
+    outline:none;
+  }
+  .period-setting .ps-row input:focus{border-color:var(--pink)}
+  .period-setting .ps-tip{font-size:10px;color:var(--text-light);font-weight:600}
+  .period-record-btn{
+    width:100%;
+    border:none;
+    padding:13px;
+    border-radius:14px;
+    background:linear-gradient(135deg,var(--pink),var(--pink-deep));
+    color:#fff;
+    font-size:15px;font-weight:800;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:6px;
+    box-shadow:var(--shadow);
+    transition:all .15s;
+  }
+  .period-record-btn:active{transform:scale(.98)}
+  .period-record-btn.recorded{
+    background:linear-gradient(135deg,#ccc,#aaa);
+  }
+
+  .period-calendar-card .period-cal-header{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:0 12px 8px;
+  }
+  .period-cal-header .pc-arrow{
+    background:transparent;border:none;
+    font-size:22px;color:var(--text-soft);
+    cursor:pointer;padding:4px 12px;
+    font-weight:800;
+  }
+  .period-cal-header .pc-arrow:active{color:var(--pink-deep)}
+  .period-cal-header .pc-month{font-size:16px;font-weight:800;color:var(--text)}
+  .period-legend{
+    display:flex;justify-content:center;gap:16px;
+    padding:10px 0 4px;
+  }
+  .period-legend .legend-item{
+    display:flex;align-items:center;gap:5px;
+    font-size:10px;color:var(--text-light);font-weight:600;
+  }
+  .period-legend .dot-record{width:8px;height:8px;border-radius:50%;background:var(--pink)}
+  .period-legend .dot-predict{width:8px;height:8px;border-radius:50%;background:#6bb8ff}
+  .period-legend .dot-today{width:8px;height:8px;border-radius:50%;border:2px solid var(--pink-deep);background:transparent}
+
+  /* 经期日历特殊日期样式 */
+  .cal-cell.recorded{
+    background:linear-gradient(135deg,var(--pink-light),var(--pink));
+    color:#fff;
+  }
+  .cal-cell.predict{
+    position:relative;
+  }
+  .cal-cell.predict::after{
+    content:"";
+    position:absolute;bottom:4px;
+    width:5px;height:5px;border-radius:50%;
+    background:#6bb8ff;
+  }
+  .cal-cell.today-period{
+    border:2px solid var(--pink-deep);
+  }
+
+  /* ===== 设置弹窗 ===== */
+  .modal-mask{
+    position:fixed;inset:0;
+    background:rgba(107,74,90,.45);
+    backdrop-filter:blur(4px);
+    z-index:200;
+    display:none;
+    align-items:flex-end;justify-content:center;
+    padding:0 0 0 var(--sidebar-w);
+  }
+  .modal-mask.show{display:flex;animation:fadeIn .25s ease}
+  .modal-card{
+    background:#fff;
+    border-radius:22px 22px 0 0;
+    width:100%;max-width:460px;
+    padding:18px 18px 26px;
+    animation:slideUp .3s ease;
+    box-shadow:0 -4px 24px rgba(0,0,0,.12);
+  }
+  @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+  .modal-head{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:14px;
+  }
+  .modal-title{font-size:17px;font-weight:800;color:var(--text)}
+  .modal-close{
+    font-size:16px;color:var(--text-light);
+    cursor:pointer;padding:4px 8px;
+  }
+  .modal-body{display:flex;flex-direction:column;gap:10px}
+  .data-info{
+    background:linear-gradient(135deg,var(--pink-soft),#fff5f9);
+    border-radius:14px;padding:12px 14px;
+    margin-bottom:4px;
+  }
+  .di-row{
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:13px;color:var(--text);
+    padding:4px 0;font-weight:600;
+  }
+  .di-row b{color:var(--pink-deep);font-size:16px;margin:0 3px}
+  .modal-btn{
+    border:none;cursor:pointer;
+    padding:13px;border-radius:14px;
+    font-size:14px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;gap:6px;
+    transition:all .15s;
+  }
+  .modal-btn:active{transform:scale(.98)}
+  .modal-btn.export{
+    background:linear-gradient(135deg,var(--pink-light),var(--pink));
+    color:#fff;
+  }
+  .modal-btn.import{
+    background:linear-gradient(135deg,#b8e8ff,#7fc8ff);
+    color:#fff;
+  }
+  .modal-btn.danger{
+    background:#fff0f0;color:#e85a5a;
+    border:1.5px solid #ffd5d5;
+  }
+  .modal-tip{
+    font-size:11px;color:var(--text-light);
+    line-height:1.6;
+    background:var(--cream);
+    border-radius:10px;padding:10px;
+    margin-top:4px;
+  }
+
+  /* 栏目容器 */
+  .tab-content{display:none;animation:fadeIn .3s ease}
+  .tab-content.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+  /* Toast */
+  .toast{
+    position:fixed;left:50%;bottom:40px;
+    transform:translateX(-50%) translateY(20px);
+    background:rgba(107,74,90,.94);
+    color:#fff;
+    padding:10px 20px;border-radius:20px;
+    font-size:13px;font-weight:700;
+    opacity:0;pointer-events:none;
+    transition:all .3s;z-index:100;
+    backdrop-filter:blur(6px);
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* 底部留白 */
+  .footer-space{height:24px}
+
+  /* 超小屏适配 */
+  @media(max-width:360px){
+    :root{--sidebar-w:64px}
+    .header h1{font-size:17px}
+    .month-chip{min-width:46px;padding:7px 9px}
+    .cal-grid{gap:2px}
+    .cal-cell{font-size:11px}
+    .nav-item .nav-icon{font-size:18px}
+    .nav-item .nav-label{font-size:9px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== 侧边导航栏 ===== -->
+<nav class="sidebar">
+  <div class="kitty-avatar">🐱</div>
+  <div class="kitty-bow">🎀</div>
+  <div class="nav-list" id="navList">
+    <div class="nav-item" data-tab="home">
+      <div class="nav-icon">🏠</div>
+      <div class="nav-label">桌面</div>
+    </div>
+    <div class="nav-item" data-tab="todo">
+      <div class="nav-icon">✅</div>
+      <div class="nav-label">待办</div>
+    </div>
+    <div class="nav-item" data-tab="money">
+      <div class="nav-icon">💰</div>
+      <div class="nav-label">记账</div>
+    </div>
+    <div class="nav-item active" data-tab="diet">
+      <div class="nav-icon">🍓</div>
+      <div class="nav-label">减脂</div>
+    </div>
+    <div class="nav-item" data-tab="schedule">
+      <div class="nav-icon">📅</div>
+      <div class="nav-label">日程</div>
+    </div>
+    <div class="nav-item" data-tab="memory">
+      <div class="nav-icon">💝</div>
+      <div class="nav-label">纪念</div>
+    </div>
+    <div class="nav-item" data-tab="diary">
+      <div class="nav-icon">📖</div>
+      <div class="nav-label">日记</div>
+    </div>
+    <div class="nav-item" data-tab="period">
+      <div class="nav-icon">🌸</div>
+      <div class="nav-label">经期</div>
+    </div>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-item" id="settingsBtn" style="margin-bottom:4px">
+    <div class="nav-icon">⚙️</div>
+    <div class="nav-label">设置</div>
+  </div>
+</nav>
+
+<!-- ===== 主内容区 ===== -->
+<div class="main">
+
+  <!-- 减脂栏目 -->
+  <div class="tab-content active" id="tab-diet">
+    <div class="header">
+      <div class="title-wrap">
+        <div>
+          <h1><span class="bow">🎀</span> 减脂日记</h1>
+          <div class="sub">每天进步一点点～</div>
+        </div>
+      </div>
+      <div class="date-pill" id="todayStr">🍓</div>
+    </div>
+
+    <!-- 月份横滑 -->
+    <div class="months-wrap">
+      <div class="months" id="months"></div>
+    </div>
+
+    <!-- 日历卡片 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title"><span class="dot"></span><span id="calTitle">日历</span></div>
+        <div class="card-action" id="todayBtn">回到今天</div>
+      </div>
+      <div class="cal-week">
+        <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+
+    <!-- 体重记录卡片 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title"><span class="emoji">⚖️</span> 体重记录</div>
+      </div>
+      <div class="weight-display">
+        <div class="weight-hero empty" id="weightHero">
+          <div class="left">
+            <div class="lbl" id="heroDate">请选择日期</div>
+            <div class="val" id="heroVal">--<span class="unit">斤</span></div>
+          </div>
+          <div class="right">
+            <div class="diff" id="heroDiff">—</div>
+            <div class="diff-lbl">较上次</div>
+          </div>
+        </div>
+        <div class="weight-input-row">
+          <input type="number" id="weightInput" placeholder="输入体重 (斤)" step="0.1" min="40" max="600" inputmode="decimal">
+          <button class="btn btn-ghost" id="delBtn" style="display:none">删除</button>
+          <button class="btn btn-pink" id="saveBtn">保存</button>
+        </div>
+        <div class="stats" id="stats">
+          <div class="stat-item"><div class="s-val" id="sAvg">--</div><div class="s-lbl">月均 (斤)</div></div>
+          <div class="stat-item"><div class="s-val" id="sMax">--</div><div class="s-lbl">最高 (斤)</div></div>
+          <div class="stat-item"><div class="s-val" id="sMin">--</div><div class="s-lbl">最低 (斤)</div></div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>日期</th><th>星期</th><th>体重(斤)</th><th>变化</th></tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 桌面栏目 -->
+  <div class="tab-content" id="tab-home">
+    <div class="header">
+      <div class="title-wrap">
+        <div>
+          <h1><span class="bow">🎀</span> 我的桌面</h1>
+          <div class="sub">美好的一天开始啦～</div>
+        </div>
+      </div>
+      <div class="date-pill">🏠</div>
+    </div>
+    <div class="card">
+      <div class="placeholder-card">
+        <div class="p-icon">🏠</div>
+        <div class="p-title">桌面概览</div>
+        <div class="p-desc">这里将展示你今日的概览信息<br>待办、体重、日程一目了然</div>
+        <div class="p-tag">🌸 敬请期待</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 待办栏目 -->
+  <div class="tab-content" id="tab-todo">
+    <div class="header">
+      <div class="title-wrap">
+        <div>
+          <h1><span class="bow">🎀</span> 待办事项</h1>
+          <div class="sub">今天也要加油鸭～</div>
+        </div>
+      </div>
+      <div class="date-pill">✅</div>
+    </div>
+    <div class="card">
+      <div class="placeholder-card">
+        <div class="p-icon">✅</div>
+        <div class="p-title">待办清单</div>
+        <div class="p-desc">记录每天的小任务<br>完成一个划掉一个</div>
+        <div class="p-tag">🍓 敬请期待</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 记账栏目 -->
+  <div class="tab-content" id="tab-money">
+    <div class="header">
+      <div class="title-wrap">
+        <div>
+          <h1><span class="bow">🎀</span> 小账本</h1>
+          <div class="sub">记账使我富有～</div>
+        </div>
+      </div>
+      <div class="date-pill">💰</div>
+    </div>
+    <div class="card">
+      <div class="placeholder-card">
+        <div class="p-icon">💰</div>
+        <div class="p-title">记账本</div>
+        <div class="p-desc">记录每一笔收入支出<br>月底清清楚楚</div>
+        <div class="p-tag">💝 敬请期待</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 日程栏目 -->
+  <div class="tab-content" id="tab-schedule">
+    <div class="header">
+      <div class="title-wrap">
+        <div>
+          <h1><span class="bow">🎀</span> 日程安排</h1>
+          <div class="sub">规划好每一天～</div>
+        </div>
+      </div>
+      <div class="date-pill">📅</div>
+    </div>
+    <div class="card">
+      <div class="placeholder-card">
+        <div class="p-icon">📅</div>
+        <div class="p-title">日程管理</div>
+        <div class="p-desc">安排你的每日行程<br>不再错过重要事项</div>
+        <div class="p-tag">📖 敬请期待</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 纪念栏目 -->
+  <div class="tab-content" id="tab-memory">
+    <div class="header">
+      <div class="title-wrap">
+        <div>
+          <h1><span class="bow">🎀</span> 纪念日</h1>
+          <div class="sub">每一个特别的日子～</div>
+        </div>
+      </div>
+      <div class="date-pill">💝</div>
+    </div>
+    <div class="card">
+      <div class="placeholder-card">
+        <div class="p-icon">💝</div>
+        <div class="p-title">纪念日</div>
+        <div class="p-desc">记录那些重要的日子<br>生日、纪念日、倒计时</div>
+        <div class="p-tag">🌸 敬请期待</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 日记栏目 -->
+  <div class="tab-content" id="tab-diary">
+    <div class="header">
+      <div class="title-wrap">
+        <div>
+          <h1><span class="bow">🎀</span> 心情日记</h1>
+          <div class="sub">写下今天的小确幸～</div>
+        </div>
+      </div>
+      <div class="date-pill">📖</div>
+    </div>
+    <div class="card">
+      <div class="placeholder-card">
+        <div class="p-icon">📖</div>
+        <div class="p-title">心情日记</div>
+        <div class="p-desc">记录每天的点滴心情<br>文字是最好的陪伴</div>
+        <div class="p-tag">🎀 敬请期待</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 经期栏目 -->
+  <div class="tab-content" id="tab-period">
+    <div class="header">
+      <div class="title-wrap">
+        <div>
+          <h1><span class="bow">🎀</span> 经期记录</h1>
+          <div class="sub">记录周期、预测下次，贴心守护每一天</div>
+        </div>
+      </div>
+      <div class="date-pill">🌸</div>
+    </div>
+
+    <!-- 经期统计卡片 -->
+    <div class="card period-summary">
+      <div class="period-row">
+        <div class="period-box">
+          <div class="p-label">距上次经期</div>
+          <div class="p-num" id="lastPeriodDays">--</div>
+          <div class="p-sub">天前</div>
+        </div>
+        <div class="period-box">
+          <div class="p-label">预计下次</div>
+          <div class="p-date" id="nextPeriodDate">--</div>
+          <div class="p-sub" id="nextPeriodLeft">--</div>
+        </div>
+      </div>
+      <div class="period-setting">
+        <div class="ps-label">设置平均周期（天）</div>
+        <div class="ps-row">
+          <input type="number" id="cycleInput" value="28" min="20" max="45">
+          <button class="btn btn-pink" id="saveCycleBtn">保存</button>
+          <span class="ps-tip">用于预测下次经期</span>
+        </div>
+      </div>
+      <button class="period-record-btn" id="recordTodayBtn">
+        <span>📝</span> 记录今天来月经
+      </button>
+    </div>
+
+    <!-- 经期日历 -->
+    <div class="card period-calendar-card">
+      <div class="card-head">
+        <div class="card-title"><span class="emoji">📅</span> 经期日历</div>
+      </div>
+      <div class="period-cal-header">
+        <button class="pc-arrow" id="prevMonth">‹</button>
+        <div class="pc-month" id="periodCalTitle">2026年7月</div>
+        <button class="pc-arrow" id="nextMonth">›</button>
+      </div>
+      <div class="cal-week">
+        <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
+      </div>
+      <div class="cal-grid" id="periodCalGrid"></div>
+      <div class="period-legend">
+        <div class="legend-item"><span class="dot-record"></span>已记录</div>
+        <div class="legend-item"><span class="dot-predict"></span>预测</div>
+        <div class="legend-item"><span class="dot-today"></span>今天</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-space"></div>
+</div>
+
+<!-- ===== 设置弹窗 ===== -->
+<div class="modal-mask" id="settingsModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <span class="modal-title">⚙️ 数据管理</span>
+      <span class="modal-close" id="closeSettings">✕</span>
+    </div>
+    <div class="modal-body">
+      <div class="data-info">
+        <div class="di-row"><span>📊 体重记录</span><b id="dataCountWeight">0</b> 条</div>
+        <div class="di-row"><span>🌸 经期记录</span><b id="dataCountPeriod">0</b> 条</div>
+      </div>
+      <button class="modal-btn export" id="exportBtn">
+        <span>📤</span> 导出备份
+      </button>
+      <button class="modal-btn import" id="importBtn">
+        <span>📥</span> 导入恢复
+      </button>
+      <input type="file" id="importFile" accept=".json" style="display:none">
+      <button class="modal-btn danger" id="clearBtn">
+        <span>🗑️</span> 清空所有数据
+      </button>
+      <div class="modal-tip">
+        💡 提示：导出后会下载一个 JSON 文件，换手机/设备时点击「导入恢复」选择该文件即可同步数据。
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===== 数据层 ===== */
+const STORAGE_KEY = 'workbuddy_weight_v1';
+const DATA_VERSION = 'v3_jin_real'; // 使用真实体重数据
+if(localStorage.getItem('workbuddy_weight_ver') !== DATA_VERSION){
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.setItem('workbuddy_weight_ver', DATA_VERSION);
+}
+function loadData(){ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+function saveData(d){ localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); }
+
+/* ===== 状态 ===== */
+const today = new Date();
+let curYear = today.getFullYear();
+let curMonth = today.getMonth();
+let selectedDate = new Date(today);
+let activeTab = 'diet';
+
+const WEEK_LABEL = ['周日','周一','周二','周三','周四','周五','周六'];
+
+function fmtKey(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+function isSameDay(a,b){ return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate(); }
+
+/* ===== 导航切换 ===== */
+function initNav(){
+  document.querySelectorAll('.nav-item').forEach(item=>{
+    item.addEventListener('click', ()=>{
+      const tab = item.dataset.tab;
+      switchTab(tab);
+    });
+  });
+}
+function switchTab(tab){
+  activeTab = tab;
+  document.querySelectorAll('.nav-item').forEach(i=>i.classList.toggle('active', i.dataset.tab===tab));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.toggle('active', c.id==='tab-'+tab));
+  // 减脂栏目需要渲染
+  if(tab === 'diet'){
+    renderAll();
+  }
+  // 经期栏目需要渲染
+  if(tab === 'period'){
+    renderPeriodAll();
+  }
+}
+
+/* ===== 月份渲染 ===== */
+function renderMonths(){
+  const wrap = document.getElementById('months');
+  wrap.innerHTML = '';
+  const months = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
+  months.forEach((m,i)=>{
+    const el = document.createElement('div');
+    el.className = 'month-chip' + (i===curMonth ? ' active':'');
+    el.innerHTML = `<div class="m-num">${i+1}</div><div class="m-label">${m}</div>`;
+    el.onclick = ()=>{
+      curMonth = i;
+      selectedDate = new Date(curYear, curMonth, 1);
+      renderAll();
+      el.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+    };
+    wrap.appendChild(el);
+  });
+  setTimeout(()=>{
+    const active = wrap.children[curMonth];
+    if(active) active.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+  },50);
+}
+
+/* ===== 日历渲染 ===== */
+function renderCalendar(){
+  document.getElementById('calTitle').textContent = `${curYear}年${curMonth+1}月`;
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+  const data = loadData();
+  const firstDay = new Date(curYear, curMonth, 1).getDay();
+  const daysInMonth = new Date(curYear, curMonth+1, 0).getDate();
+  const prevDays = new Date(curYear, curMonth, 0).getDate();
+
+  for(let i=firstDay-1;i>=0;i--){
+    const cell = document.createElement('div');
+    cell.className = 'cal-cell other';
+    cell.textContent = prevDays - i;
+    grid.appendChild(cell);
+  }
+  for(let d=1; d<=daysInMonth; d++){
+    const cell = document.createElement('div');
+    cell.className = 'cal-cell';
+    const cellDate = new Date(curYear, curMonth, d);
+    if(isSameDay(cellDate, today)) cell.classList.add('today');
+    if(isSameDay(cellDate, selectedDate)) cell.classList.add('selected');
+    if(data[fmtKey(cellDate)] !== undefined) cell.classList.add('has-data');
+    cell.textContent = d;
+    cell.onclick = ()=>{
+      selectedDate = cellDate;
+      renderCalendar();
+      renderWeightPanel();
+      renderTableAndStats();
+    };
+    grid.appendChild(cell);
+  }
+  const total = firstDay + daysInMonth;
+  const remain = (7 - total % 7) % 7;
+  for(let d=1; d<=remain; d++){
+    const cell = document.createElement('div');
+    cell.className = 'cal-cell other';
+    cell.textContent = d;
+    grid.appendChild(cell);
+  }
+}
+
+/* ===== 体重面板 ===== */
+function renderWeightPanel(){
+  const data = loadData();
+  const key = fmtKey(selectedDate);
+  const val = data[key];
+  const hero = document.getElementById('weightHero');
+  const heroDate = document.getElementById('heroDate');
+  const heroVal = document.getElementById('heroVal');
+  const heroDiff = document.getElementById('heroDiff');
+  const input = document.getElementById('weightInput');
+  const delBtn = document.getElementById('delBtn');
+
+  heroDate.textContent = `${selectedDate.getMonth()+1}月${selectedDate.getDate()}日 ${WEEK_LABEL[selectedDate.getDay()]}`;
+  input.value = val !== undefined ? val : '';
+
+  if(val !== undefined){
+    hero.classList.remove('empty');
+    heroVal.innerHTML = `${val}<span class="unit">斤</span>`;
+    const prev = new Date(selectedDate);
+    prev.setDate(prev.getDate()-1);
+    let prevVal = data[fmtKey(prev)];
+    let lookBack = 1;
+    while(prevVal === undefined && lookBack < 30){
+      const p = new Date(selectedDate);
+      p.setDate(p.getDate()-lookBack);
+      prevVal = data[fmtKey(p)];
+      lookBack++;
+    }
+    if(prevVal !== undefined && prevVal !== val){
+      const diff = (val - prevVal).toFixed(1);
+      heroDiff.textContent = (diff>0?'+':'') + diff + ' 斤';
+      heroDiff.style.color = diff>0 ? '#ffd6e0' : '#d4ffe8';
+    }else{
+      heroDiff.textContent = '—';
+      heroDiff.style.color = '';
+    }
+    delBtn.style.display = '';
+  }else{
+    hero.classList.add('empty');
+    heroVal.innerHTML = `--<span class="unit">斤</span>`;
+    heroDiff.textContent = '—';
+    heroDiff.style.color = '';
+    delBtn.style.display = 'none';
+  }
+}
+
+/* ===== 月度统计 + 表格 ===== */
+function renderTableAndStats(){
+  const data = loadData();
+  const daysInMonth = new Date(curYear, curMonth+1, 0).getDate();
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = '';
+
+  let vals = [];
+  let lastVal = null;
+
+  for(let d=1; d<=daysInMonth; d++){
+    const date = new Date(curYear, curMonth, d);
+    const key = fmtKey(date);
+    const val = data[key];
+    const tr = document.createElement('tr');
+    if(isSameDay(date, today)) tr.classList.add('today-row');
+    if(isSameDay(date, selectedDate)) tr.classList.add('selected-row');
+
+    let diffHtml = '<span class="w-empty">—</span>';
+    if(val !== undefined){
+      vals.push(val);
+      if(lastVal !== null){
+        const diff = (val - lastVal).toFixed(1);
+        const color = diff>0 ? '#ff8fb1' : (diff<0 ? '#4a9a78' : 'var(--text-light)');
+        diffHtml = `<span class="w-val" style="color:${color}">${diff>0?'+':''}${diff}</span>`;
+      }
+      lastVal = val;
+    }
+
+    const weekIdx = date.getDay();
+    const weekClass = (weekIdx===0 || weekIdx===6) ? 'weekend' : 'weekday';
+
+    tr.innerHTML = `
+      <td>${d}</td>
+      <td><span class="day-tag ${weekClass}">${WEEK_LABEL[weekIdx]}</span></td>
+      <td>${val !== undefined ? `<span class="w-val">${val}</span>` : '<span class="w-empty">—</span>'}</td>
+      <td>${diffHtml}</td>
+    `;
+    tr.onclick = ()=>{
+      selectedDate = date;
+      renderCalendar();
+      renderWeightPanel();
+      renderTableAndStats();
+    };
+    tbody.appendChild(tr);
+  }
+
+  document.getElementById('sAvg').textContent = vals.length ? (vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1) : '--';
+  document.getElementById('sMax').textContent = vals.length ? Math.max(...vals).toFixed(1) : '--';
+  document.getElementById('sMin').textContent = vals.length ? Math.min(...vals).toFixed(1) : '--';
+}
+
+/* ===== 操作 ===== */
+function saveWeight(){
+  const input = document.getElementById('weightInput');
+  const v = parseFloat(input.value);
+  if(!v || v < 40 || v > 600){
+    showToast('请输入有效的体重 (40-600斤)');
+    return;
+  }
+  const data = loadData();
+  data[fmtKey(selectedDate)] = Math.round(v*10)/10;
+  saveData(data);
+  showToast('已保存 ' + Math.round(v*10)/10 + ' 斤 ✨');
+  renderCalendar();
+  renderWeightPanel();
+  renderTableAndStats();
+}
+
+function deleteWeight(){
+  const data = loadData();
+  delete data[fmtKey(selectedDate)];
+  saveData(data);
+  showToast('已删除');
+  renderCalendar();
+  renderWeightPanel();
+  renderTableAndStats();
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(()=>t.classList.remove('show'), 1800);
+}
+
+function renderAll(){
+  renderMonths();
+  renderCalendar();
+  renderWeightPanel();
+  renderTableAndStats();
+}
+
+/* ===== 初始化 ===== */
+document.getElementById('todayStr').textContent = `${today.getMonth()+1}.${today.getDate()} ${WEEK_LABEL[today.getDay()]}`;
+document.getElementById('todayBtn').onclick = ()=>{
+  curYear = today.getFullYear();
+  curMonth = today.getMonth();
+  selectedDate = new Date(today);
+  renderAll();
+};
+document.getElementById('saveBtn').onclick = saveWeight;
+document.getElementById('delBtn').onclick = deleteWeight;
+document.getElementById('weightInput').addEventListener('keydown', e=>{
+  if(e.key === 'Enter') saveWeight();
+});
+
+// 填充真实体重数据
+if(Object.keys(loadData()).length === 0){
+  const sample = {
+    '2026-06-28': 155.5,
+    '2026-06-29': 154.2,
+    '2026-06-30': 152.9,
+    '2026-07-01': 150.5,
+    '2026-07-02': 149.4,
+    '2026-07-03': 148.8,
+    '2026-07-04': 148.2,
+    '2026-07-05': 148.0,
+    '2026-07-06': 147.4,
+    '2026-07-07': 146.8,
+    '2026-07-08': 147.3,
+    '2026-07-09': 146.3,
+    '2026-07-10': 146.8,
+    '2026-07-11': 146.3,
+    '2026-07-12': 145.0,
+    '2026-07-13': 145.9,
+    '2026-07-14': 145.4,
+    '2026-07-15': 146.2,
+    '2026-07-16': 145.6,
+    '2026-07-17': 144.9,
+    '2026-07-18': 144.6,
+    '2026-07-19': 145.8,
+    '2026-07-20': 145.2,
+    '2026-07-21': 145.1,
+    '2026-07-22': 145.7,
+    '2026-07-23': 145.9,
+    '2026-07-24': 144.8,
+    '2026-07-25': 144.6,
+    '2026-07-26': 145.7,
+    '2026-07-27': 145.6,
+    '2026-07-28': 145.7,
+    '2026-07-29': 144.1,
+    '2026-07-30': 144.8
+  };
+  saveData(sample);
+}
+
+/* ===== 经期数据与逻辑 ===== */
+const PERIOD_KEY = 'workbuddy_period_v1';
+const CYCLE_KEY = 'workbuddy_period_cycle';
+function loadPeriodData(){ return JSON.parse(localStorage.getItem(PERIOD_KEY) || '[]'); }
+function savePeriodData(arr){ localStorage.setItem(PERIOD_KEY, JSON.stringify(arr)); }
+function getCycle(){ return parseInt(localStorage.getItem(CYCLE_KEY) || '28', 10); }
+function saveCycle(c){ localStorage.setItem(CYCLE_KEY, String(c)); }
+
+let periodCurYear = today.getFullYear();
+let periodCurMonth = today.getMonth();
+
+function parseKeyToDate(key){
+  const [y,m,d] = key.split('-').map(Number);
+  return new Date(y, m-1, d);
+}
+
+function getLastPeriodDate(){
+  const arr = loadPeriodData().map(parseKeyToDate).sort((a,b)=>b-a);
+  return arr[0] || null;
+}
+
+function getNextPeriodDate(){
+  const last = getLastPeriodDate();
+  if(!last) return null;
+  const next = new Date(last);
+  next.setDate(next.getDate() + getCycle());
+  return next;
+}
+
+function getPredictedPeriodDates(){
+  const last = getLastPeriodDate();
+  const cycle = getCycle();
+  if(!last) return [];
+  const predicted = [];
+  let start = new Date(last);
+  start.setDate(start.getDate() + cycle);
+  // 预测 5 天经期
+  for(let i=0;i<5;i++){
+    const d = new Date(start);
+    d.setDate(d.getDate()+i);
+    predicted.push(fmtKey(d));
+  }
+  return predicted;
+}
+
+function daysDiff(a,b){
+  const ms = 24*60*60*1000;
+  return Math.round((a - b) / ms);
+}
+
+function renderPeriodSummary(){
+  const last = getLastPeriodDate();
+  const next = getNextPeriodDate();
+
+  if(last){
+    const diff = Math.abs(daysDiff(today, last));
+    document.getElementById('lastPeriodDays').textContent = diff;
+  }else{
+    document.getElementById('lastPeriodDays').textContent = '--';
+  }
+
+  if(next){
+    document.getElementById('nextPeriodDate').textContent = `${next.getMonth()+1}月${next.getDate()}日`;
+    const left = daysDiff(next, today);
+    document.getElementById('nextPeriodLeft').textContent = left >= 0 ? `还有 ${left} 天` : '已逾期';
+  }else{
+    document.getElementById('nextPeriodDate').textContent = '--';
+    document.getElementById('nextPeriodLeft').textContent = '--';
+  }
+
+  document.getElementById('cycleInput').value = getCycle();
+
+  // 今日按钮状态
+  const todayKey = fmtKey(today);
+  const btn = document.getElementById('recordTodayBtn');
+  if(loadPeriodData().includes(todayKey)){
+    btn.classList.add('recorded');
+    btn.innerHTML = '<span>✅</span> 今天已记录';
+  }else{
+    btn.classList.remove('recorded');
+    btn.innerHTML = '<span>📝</span> 记录今天来月经';
+  }
+}
+
+function renderPeriodCalendar(){
+  document.getElementById('periodCalTitle').textContent = `${periodCurYear}年${periodCurMonth+1}月`;
+  const grid = document.getElementById('periodCalGrid');
+  grid.innerHTML = '';
+  const records = loadPeriodData();
+  const predicted = getPredictedPeriodDates();
+
+  const firstDay = new Date(periodCurYear, periodCurMonth, 1).getDay();
+  const daysInMonth = new Date(periodCurYear, periodCurMonth+1, 0).getDate();
+  const prevDays = new Date(periodCurYear, periodCurMonth, 0).getDate();
+
+  // 上月填充
+  for(let i=firstDay-1;i>=0;i--){
+    const cell = document.createElement('div');
+    cell.className = 'cal-cell other';
+    cell.textContent = prevDays - i;
+    grid.appendChild(cell);
+  }
+  // 本月
+  for(let d=1; d<=daysInMonth; d++){
+    const cell = document.createElement('div');
+    cell.className = 'cal-cell';
+    const cellDate = new Date(periodCurYear, periodCurMonth, d);
+    const key = fmtKey(cellDate);
+    if(isSameDay(cellDate, today)) cell.classList.add('today-period');
+    if(records.includes(key)) cell.classList.add('recorded');
+    else if(predicted.includes(key)) cell.classList.add('predict');
+    cell.textContent = d;
+    cell.onclick = ()=>{
+      togglePeriodRecord(key);
+    };
+    grid.appendChild(cell);
+  }
+  // 下月填充
+  const total = firstDay + daysInMonth;
+  const remain = (7 - total % 7) % 7;
+  for(let d=1; d<=remain; d++){
+    const cell = document.createElement('div');
+    cell.className = 'cal-cell other';
+    cell.textContent = d;
+    grid.appendChild(cell);
+  }
+}
+
+function togglePeriodRecord(key){
+  let arr = loadPeriodData();
+  if(arr.includes(key)){
+    arr = arr.filter(k => k !== key);
+    showToast('已取消记录');
+  }else{
+    arr.push(key);
+    showToast('已记录经期 ' + key);
+  }
+  savePeriodData(arr);
+  renderPeriodAll();
+}
+
+function recordToday(){
+  const todayKey = fmtKey(today);
+  togglePeriodRecord(todayKey);
+}
+
+function saveCycleSetting(){
+  const v = parseInt(document.getElementById('cycleInput').value, 10);
+  if(!v || v < 20 || v > 45){
+    showToast('请输入有效的周期 (20-45天)');
+    return;
+  }
+  saveCycle(v);
+  showToast('周期已保存为 ' + v + ' 天');
+  renderPeriodAll();
+}
+
+function renderPeriodAll(){
+  renderPeriodSummary();
+  renderPeriodCalendar();
+}
+
+function initPeriod(){
+  document.getElementById('saveCycleBtn').onclick = saveCycleSetting;
+  document.getElementById('recordTodayBtn').onclick = recordToday;
+  document.getElementById('prevMonth').onclick = ()=>{
+    periodCurMonth--;
+    if(periodCurMonth < 0){ periodCurMonth = 11; periodCurYear--; }
+    renderPeriodCalendar();
+  };
+  document.getElementById('nextMonth').onclick = ()=>{
+    periodCurMonth++;
+    if(periodCurMonth > 11){ periodCurMonth = 0; periodCurYear++; }
+    renderPeriodCalendar();
+  };
+}
+
+// 初始化示例经期数据（首次使用）- 复刻图片：7.21-7.26 经期
+if(loadPeriodData().length === 0){
+  const samplePeriod = [
+    '2026-07-21','2026-07-22','2026-07-23','2026-07-24','2026-07-25','2026-07-26'
+  ];
+  savePeriodData(samplePeriod);
+  saveCycle(28);
+}
+
+/* ===== 数据导入导出 ===== */
+function getAllData(){
+  return {
+    version: 'kitty-workbench-v1',
+    exportDate: new Date().toISOString(),
+    weight: loadData(),
+    period: loadPeriodData(),
+    cycle: getCycle()
+  };
+}
+
+function updateDataCounts(){
+  document.getElementById('dataCountWeight').textContent = Object.keys(loadData()).length;
+  document.getElementById('dataCountPeriod').textContent = loadPeriodData().length;
+}
+
+function exportData(){
+  const data = getAllData();
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const d = new Date();
+  const fname = `kitty备份_${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}.json`;
+  a.href = url;
+  a.download = fname;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('备份已导出 ✅');
+}
+
+function importData(file){
+  const reader = new FileReader();
+  reader.onload = e => {
+    try{
+      const data = JSON.parse(e.target.result);
+      if(data.version !== 'kitty-workbench-v1'){
+        showToast('文件格式不正确 ❌');
+        return;
+      }
+      if(data.weight) saveData(data.weight);
+      if(data.period) savePeriodData(data.period);
+      if(data.cycle) saveCycle(data.cycle);
+      showToast('数据导入成功 ✨');
+      renderAll();
+      renderPeriodAll();
+      updateDataCounts();
+      closeSettings();
+    }catch(err){
+      showToast('导入失败，文件格式错误 ❌');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function clearAllData(){
+  if(!confirm('确定要清空所有数据吗？此操作不可恢复！')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(PERIOD_KEY);
+  localStorage.removeItem(CYCLE_KEY);
+  showToast('已清空所有数据');
+  renderAll();
+  renderPeriodAll();
+  updateDataCounts();
+  closeSettings();
+}
+
+function openSettings(){
+  updateDataCounts();
+  document.getElementById('settingsModal').classList.add('show');
+}
+function closeSettings(){
+  document.getElementById('settingsModal').classList.remove('show');
+}
+
+function initSettings(){
+  document.getElementById('settingsBtn').onclick = openSettings;
+  document.getElementById('closeSettings').onclick = closeSettings;
+  document.getElementById('settingsModal').onclick = e=>{
+    if(e.target.id === 'settingsModal') closeSettings();
+  };
+  document.getElementById('exportBtn').onclick = exportData;
+  document.getElementById('importBtn').onclick = ()=>{
+    document.getElementById('importFile').click();
+  };
+  document.getElementById('importFile').onchange = e=>{
+    if(e.target.files[0]) importData(e.target.files[0]);
+    e.target.value = '';
+  };
+  document.getElementById('clearBtn').onclick = clearAllData;
+}
+
+/* ===== 注册 Service Worker（离线可用） ===== */
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(() => console.log('✨ SW 已注册，可离线使用'))
+      .catch(err => console.log('SW 注册失败:', err));
+  });
+}
+
+initNav();
+initPeriod();
+initSettings();
+renderAll();
+renderPeriodAll();
+</script>
+</body>
+</html>
