@@ -432,6 +432,141 @@
     font-size:12px;font-weight:700;
   }
 
+  /* ===== 成长记录样式 ===== */
+  .mem-profile-card{padding:16px}
+  .mem-age-line{margin-bottom:14px}
+  .mem-greeting{font-size:13px;color:var(--text-light);font-weight:600;margin-bottom:4px}
+  .mem-age{font-size:18px;font-weight:800;color:var(--text)}
+  .mem-age b{color:var(--pink-deep);font-size:22px;margin-left:4px}
+  .mem-profile-body{
+    display:flex;align-items:center;gap:14px;
+    background:linear-gradient(135deg,var(--pink-soft),#f0f8fb);
+    border-radius:16px;padding:14px;
+    margin-bottom:12px;
+  }
+  .mem-avatar{
+    width:64px;height:64px;
+    border-radius:50%;
+    background:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:36px;box-shadow:var(--shadow-soft);
+  }
+  .mem-info{flex:1;min-width:0}
+  .mem-name-row{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:10px;
+  }
+  .mem-name{font-size:18px;font-weight:800;color:var(--text)}
+  .mem-edit{
+    font-size:11px;color:var(--pink-deep);font-weight:700;
+    background:#fff;padding:4px 10px;border-radius:10px;cursor:pointer;
+  }
+  .mem-metrics{display:flex;gap:10px}
+  .mem-metric{
+    flex:1;text-align:center;
+    background:#fff;border-radius:12px;padding:10px 4px;
+    min-height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  }
+  .mem-metric-val{font-size:17px;font-weight:800;color:#b8835e}
+  .mem-metric-label{font-size:10px;color:var(--text-light);margin-top:2px}
+  .mem-birth-line{
+    font-size:12px;color:var(--text-light);font-weight:600;text-align:center;
+  }
+
+  .mem-quick-card{padding-bottom:14px}
+  .mem-quick-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+    padding:0 14px;
+  }
+  .mem-quick-tile{
+    background:linear-gradient(160deg,#fff 0%,#f8fcfb 100%);
+    border:1.5px solid var(--pink-soft);
+    border-radius:16px;padding:14px 8px;
+    text-align:center;cursor:pointer;transition:all .15s;
+  }
+  .mem-quick-tile:active{transform:scale(.95)}
+  .mem-q-icon{
+    width:42px;height:42px;
+    border-radius:12px;display:flex;align-items:center;justify-content:center;
+    font-size:22px;margin:0 auto 8px;
+  }
+  .mem-q-title{font-size:14px;font-weight:800;color:var(--text);margin-bottom:3px}
+  .mem-q-sub{font-size:10px;color:var(--text-light);font-weight:600}
+
+  .mem-chart-card{padding-bottom:14px}
+  .mem-chart-tabs{
+    display:flex;gap:6px;padding:0 14px;margin-bottom:10px;
+  }
+  .mem-chart-tab{
+    flex:1;text-align:center;padding:7px 0;
+    border-radius:10px;font-size:13px;font-weight:700;
+    color:var(--text-soft);background:#f0f8fb;cursor:pointer;
+    transition:all .15s;
+  }
+  .mem-chart-tab.active{
+    background:linear-gradient(135deg,var(--pink-light),var(--pink));
+    color:#fff;
+  }
+  .mem-chart-wrap{
+    padding:0 14px;height:180px;
+  }
+  .mem-chart-wrap canvas{width:100%;height:100%}
+  .mem-chart-tip{
+    text-align:center;font-size:11px;color:var(--text-light);
+    padding:10px 14px 0;
+  }
+
+  .mem-list-card{padding-bottom:10px}
+  .mem-list{padding:0 14px 4px}
+  .mem-empty{
+    text-align:center;padding:18px 10px;font-size:12px;color:var(--text-light);
+  }
+  .mem-item{
+    background:#f8fcfa;border-radius:12px;padding:12px;
+    margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;
+  }
+  .mem-item:last-child{margin-bottom:0}
+  .mem-item-icon{
+    width:34px;height:34px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:16px;flex-shrink:0;
+  }
+  .mem-item-body{flex:1;min-width:0}
+  .mem-item-title{font-size:14px;font-weight:800;color:var(--text);margin-bottom:3px}
+  .mem-item-meta{font-size:11px;color:var(--text-light);font-weight:600;line-height:1.5}
+  .mem-item-note{font-size:12px;color:var(--text);margin-top:4px;line-height:1.4}
+  .mem-item-del{
+    font-size:18px;color:var(--text-light);cursor:pointer;padding:2px 4px;
+  }
+  .mem-item-del:active{color:#e85a5a}
+  .mem-vaccine-soon{
+    margin:0 14px 10px;
+    background:#fff5f5;border:1.5px solid #f8d8d8;
+    border-radius:12px;padding:10px 12px;
+    font-size:12px;color:#c97a7a;font-weight:600;
+  }
+  .mem-vaccine-soon:empty{display:none}
+  .mem-status{
+    display:inline-block;font-size:10px;font-weight:700;
+    padding:2px 8px;border-radius:8px;margin-left:6px;
+  }
+  .mem-status.done{background:#e8f5ee;color:#4a9a78}
+  .mem-status.pending{background:#fff3e0;color:#e8a04a}
+
+  .mem-modal-card .modal-body{display:flex;flex-direction:column;gap:10px}
+  .mem-form-row{display:flex;flex-direction:column;gap:4px}
+  .mem-form-row label{font-size:12px;color:var(--text);font-weight:700}
+  .mem-form-row input,.mem-form-row select,.mem-form-row textarea{
+    border:2px solid var(--pink-soft);border-radius:12px;
+    padding:10px 12px;font-size:14px;color:var(--text);background:#fff;outline:none;
+  }
+  .mem-form-row input:focus,.mem-form-row select:focus,.mem-form-row textarea:focus{border-color:var(--pink)}
+  .mem-form-row textarea{resize:none;height:72px}
+  .mem-form-btns{display:flex;gap:10px;margin-top:6px}
+  .mem-form-btns button{flex:1;padding:12px;border-radius:12px;border:none;font-size:14px;font-weight:700;cursor:pointer}
+  .mem-save-btn{background:linear-gradient(135deg,var(--pink-light),var(--pink));color:#fff}
+  .mem-cancel-btn{background:var(--pink-soft);color:var(--pink-deep)}
+
   /* ===== 桌面概览样式 ===== */
   .home-grid{
     display:grid;
@@ -1392,8 +1527,8 @@
       <div class="nav-label">日程</div>
     </div>
     <div class="nav-item" data-tab="memory">
-      <img src="./icons/memory.svg" class="nav-icon" alt="纪念">
-      <div class="nav-label">纪念</div>
+      <img src="./icons/memory.svg" class="nav-icon" alt="记录">
+      <div class="nav-label">记录</div>
     </div>
     <div class="nav-item" data-tab="diary">
       <img src="./icons/diary.svg" class="nav-icon" alt="日记">
@@ -1807,24 +1942,135 @@
     </div>
   </div>
 
-  <!-- 纪念栏目 -->
+  <!-- 记录栏目 -->
   <div class="tab-content" id="tab-memory">
     <div class="header">
       <div class="title-wrap">
         <div>
-          <h1><span class="bow">🌿</span> 纪念日</h1>
-          <div class="sub">每一个特别的日子～</div>
+          <h1><span class="bow">🌿</span> 迷糊成长记录</h1>
+          <div class="sub">记录每一个成长的瞬间～</div>
         </div>
       </div>
-      <div class="date-pill">💝</div>
+      <div class="date-pill" id="memoryDatePill">📋</div>
     </div>
-    <div class="card">
-      <div class="placeholder-card">
-        <div class="p-icon">💝</div>
-        <div class="p-title">纪念日</div>
-        <div class="p-desc">记录那些重要的日子<br>生日、纪念日、倒计时</div>
-        <div class="p-tag">🌸 敬请期待</div>
+
+    <!-- 宝宝档案卡 -->
+    <div class="card mem-profile-card">
+      <div class="mem-age-line">
+        <div class="mem-greeting" id="memGreeting">下午好，迷糊妈妈 ☀️</div>
+        <div class="mem-age">迷糊今天 <b id="memAgeText">--</b></div>
       </div>
+      <div class="mem-profile-body">
+        <div class="mem-avatar">👶</div>
+        <div class="mem-info">
+          <div class="mem-name-row">
+            <span class="mem-name">迷糊</span>
+            <span class="mem-edit" id="memEditProfile">编辑档案 ›</span>
+          </div>
+          <div class="mem-metrics">
+            <div class="mem-metric">
+              <div class="mem-metric-val" id="memHeight">--</div>
+              <div class="mem-metric-label">身高 cm</div>
+            </div>
+            <div class="mem-metric">
+              <div class="mem-metric-val" id="memWeight">--</div>
+              <div class="mem-metric-label">体重 kg</div>
+            </div>
+            <div class="mem-metric">
+              <div class="mem-metric-val" id="memHead">--</div>
+              <div class="mem-metric-label">头围 cm</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mem-birth-line">出生日期：<span id="memBirth">2023.06.06</span></div>
+    </div>
+
+    <!-- 快捷入口 -->
+    <div class="card mem-quick-card">
+      <div class="card-head">
+        <div class="card-title"><span class="emoji">✨</span> 快捷入口</div>
+      </div>
+      <div class="mem-quick-grid">
+        <div class="mem-quick-tile" data-mem="growth">
+          <div class="mem-q-icon" style="background:#f0e6dc;color:#b8835e">📏</div>
+          <div class="mem-q-title">生长记录</div>
+          <div class="mem-q-sub">WHO曲线</div>
+        </div>
+        <div class="mem-quick-tile" data-mem="milestone">
+          <div class="mem-q-icon" style="background:#e8f0e5;color:#6a9a78">🏆</div>
+          <div class="mem-q-title">里程碑</div>
+          <div class="mem-q-sub">记录第一次</div>
+        </div>
+        <div class="mem-quick-tile" data-mem="vaccine">
+          <div class="mem-q-icon" style="background:#fbe8e8;color:#c97a7a">💉</div>
+          <div class="mem-q-title">疫苗提醒</div>
+          <div class="mem-q-sub">健康管理</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 生长曲线 -->
+    <div class="card mem-chart-card" id="memGrowthSection">
+      <div class="card-head">
+        <div class="card-title"><span class="emoji">📈</span> 生长曲线</div>
+        <div class="card-action" id="memAddGrowth">＋新增记录</div>
+      </div>
+      <div class="mem-chart-tabs">
+        <div class="mem-chart-tab active" data-chart="height">身高</div>
+        <div class="mem-chart-tab" data-chart="weight">体重</div>
+        <div class="mem-chart-tab" data-chart="head">头围</div>
+      </div>
+      <div class="mem-chart-wrap">
+        <canvas id="memGrowthCanvas" width="340" height="180"></canvas>
+      </div>
+      <div class="mem-chart-tip">记录至少 2 条数据即可查看生长曲线</div>
+    </div>
+
+    <!-- 生长记录列表 -->
+    <div class="card mem-list-card" id="memGrowthListSection">
+      <div class="card-head">
+        <div class="card-title"><span class="emoji">📏</span> 生长记录</div>
+        <div class="card-action" id="memAddGrowth2">＋新增</div>
+      </div>
+      <div class="mem-list" id="memGrowthList">
+        <div class="mem-empty">还没有生长记录，点击新增开始记录～</div>
+      </div>
+    </div>
+
+    <!-- 疫苗记录 -->
+    <div class="card mem-list-card" id="memVaccineSection">
+      <div class="card-head">
+        <div class="card-title"><span class="emoji">💉</span> 疫苗记录</div>
+        <div class="card-action" id="memAddVaccine">＋添加</div>
+      </div>
+      <div class="mem-vaccine-soon" id="memVaccineSoon"></div>
+      <div class="mem-list" id="memVaccineList">
+        <div class="mem-empty">还没有疫苗记录，点击添加开始记录～</div>
+      </div>
+    </div>
+
+    <!-- 里程碑 -->
+    <div class="card mem-list-card" id="memMilestoneSection">
+      <div class="card-head">
+        <div class="card-title"><span class="emoji">🏆</span> 里程碑</div>
+        <div class="card-action" id="memAddMilestone">＋记录</div>
+      </div>
+      <div class="mem-list" id="memMilestoneList">
+        <div class="mem-empty">还没有里程碑，点击记录第一次翻身、走路、叫妈妈…</div>
+      </div>
+    </div>
+    <div class="footer-space"></div>
+  </div>
+
+  <!-- 生长记录/疫苗/里程碑弹窗 -->
+  <div class="modal-mask" id="memModal">
+    <div class="modal-card mem-modal-card">
+      <div class="modal-head">
+        <span class="modal-title" id="memModalTitle">新增记录</span>
+        <span class="modal-close" id="memCloseBtn">✕</span>
+      </div>
+      <div class="modal-body" id="memModalBody"></div>
     </div>
   </div>
 
@@ -2058,6 +2304,10 @@ function collectAllData(){
     diary: loadDiaryData(),
     money: loadMoneyData(),
     sched: loadSchedData(),
+    memoryProfile: loadMemProfile(),
+    memoryGrowth: loadMemGrowth(),
+    memoryVaccine: loadMemVaccine(),
+    memoryMilestone: loadMemMilestone(),
     lastSync: new Date().toISOString()
   };
 }
@@ -2071,6 +2321,10 @@ function restoreFromCloud(data){
     if(data.diary) localStorage.setItem(DIARY_KEY, JSON.stringify(data.diary));
     if(data.money) localStorage.setItem(MONEY_KEY, JSON.stringify(data.money));
     if(data.sched) localStorage.setItem(SCHED_KEY, JSON.stringify(data.sched));
+    if(data.memoryProfile) localStorage.setItem(MEMORY_PROFILE_KEY, JSON.stringify(data.memoryProfile));
+    if(data.memoryGrowth) localStorage.setItem(MEMORY_GROWTH_KEY, JSON.stringify(data.memoryGrowth));
+    if(data.memoryVaccine) localStorage.setItem(MEMORY_VACCINE_KEY, JSON.stringify(data.memoryVaccine));
+    if(data.memoryMilestone) localStorage.setItem(MEMORY_MILESTONE_KEY, JSON.stringify(data.memoryMilestone));
 }
 
 // 自动云同步（防抖，2秒内的多次保存只上传一次）
@@ -2314,6 +2568,10 @@ function switchTab(tab){
   // 日程栏目需要渲染
   if(tab === 'schedule'){
     renderSchedAll();
+  }
+  // 记录栏目需要渲染
+  if(tab === 'memory'){
+    renderMemoryAll();
   }
 }
 
@@ -2803,6 +3061,10 @@ function importData(file){
       if(data.diary) saveDiaryData(data.diary);
       if(data.money) saveMoneyData(data.money);
       if(data.sched) saveSchedData(data.sched);
+      if(data.memoryProfile) saveMemProfile(data.memoryProfile);
+      if(data.memoryGrowth) saveMemGrowth(data.memoryGrowth);
+      if(data.memoryVaccine) saveMemVaccine(data.memoryVaccine);
+      if(data.memoryMilestone) saveMemMilestone(data.memoryMilestone);
       showToast('数据导入成功 ✨');
       renderAll();
       renderPeriodAll();
@@ -2810,6 +3072,7 @@ function importData(file){
       renderDiaryAll();
       renderMoneyAll();
       renderSchedAll();
+      renderMemoryAll();
       updateDataCounts();
       closeSettings();
     }catch(err){
@@ -2828,6 +3091,10 @@ function clearAllData(){
   localStorage.removeItem(DIARY_KEY);
   localStorage.removeItem(MONEY_KEY);
   localStorage.removeItem(SCHED_KEY);
+  localStorage.removeItem(MEMORY_PROFILE_KEY);
+  localStorage.removeItem(MEMORY_GROWTH_KEY);
+  localStorage.removeItem(MEMORY_VACCINE_KEY);
+  localStorage.removeItem(MEMORY_MILESTONE_KEY);
   localStorage.removeItem('workbuddy_last_sync');
   showToast('已清空所有数据');
   renderAll();
@@ -2836,6 +3103,7 @@ function clearAllData(){
   renderDiaryAll();
   renderMoneyAll();
   renderSchedAll();
+  renderMemoryAll();
   updateDataCounts();
   closeSettings();
 }
@@ -3718,8 +3986,422 @@ function initSched(){
   };
 }
 
+/* ===== 成长记录功能 ===== */
+const MEMORY_PROFILE_KEY = 'workbuddy_memory_profile_v1';
+const MEMORY_GROWTH_KEY = 'workbuddy_memory_growth_v1';
+const MEMORY_VACCINE_KEY = 'workbuddy_memory_vaccine_v1';
+const MEMORY_MILESTONE_KEY = 'workbuddy_memory_milestone_v1';
+
+const DEFAULT_MEM_PROFILE = {
+  name: '迷糊',
+  birth: '2023-06-06',
+  gender: '男宝',
+  avatar: '👶',
+  height: '',
+  weight: '',
+  head: ''
+};
+
+const DEFAULT_VACCINES = [
+  {name:'乙肝疫苗（第一针）',date:'',done:false,note:'出生24小时内'},
+  {name:'卡介苗',date:'',done:false,note:'出生时'},
+  {name:'乙肝疫苗（第二针）',date:'',done:false,note:'1月龄'},
+  {name:'五联疫苗（第一针）',date:'',done:false,note:'2月龄'},
+  {name:'口服轮状病毒疫苗',date:'',done:false,note:'2月龄'},
+  {name:'十三价肺炎疫苗（第一针）',date:'',done:false,note:'2月龄'},
+  {name:'五联疫苗（第二针）',date:'',done:false,note:'3月龄'},
+  {name:'十三价肺炎疫苗（第二针）',date:'',done:false,note:'4月龄'},
+  {name:'五联疫苗（第三针）',date:'',done:false,note:'5月龄'},
+  {name:'乙肝疫苗（第三针）',date:'',done:false,note:'6月龄'},
+  {name:'A群流脑疫苗（第一针）',date:'',done:false,note:'6月龄'},
+  {name:'麻腮风疫苗（第一针）',date:'',done:false,note:'8月龄'},
+  {name:'乙脑减毒活疫苗',date:'',done:false,note:'8月龄'},
+  {name:'十三价肺炎疫苗（第三针）',date:'',done:false,note:'12月龄'},
+  {name:'水痘疫苗',date:'',done:false,note:'12月龄'},
+  {name:'甲肝灭活疫苗',date:'',done:false,note:'18月龄'},
+  {name:'麻腮风疫苗（第二针）',date:'',done:false,note:'18月龄'}
+];
+
+function loadMemProfile(){ return JSON.parse(localStorage.getItem(MEMORY_PROFILE_KEY) || JSON.stringify(DEFAULT_MEM_PROFILE)); }
+function saveMemProfile(p){ localStorage.setItem(MEMORY_PROFILE_KEY, JSON.stringify(p)); }
+function loadMemGrowth(){ return JSON.parse(localStorage.getItem(MEMORY_GROWTH_KEY) || '[]'); }
+function saveMemGrowth(arr){ localStorage.setItem(MEMORY_GROWTH_KEY, JSON.stringify(arr)); }
+function loadMemVaccine(){ return JSON.parse(localStorage.getItem(MEMORY_VACCINE_KEY) || JSON.stringify(DEFAULT_VACCINES)); }
+function saveMemVaccine(arr){ localStorage.setItem(MEMORY_VACCINE_KEY, JSON.stringify(arr)); }
+function loadMemMilestone(){ return JSON.parse(localStorage.getItem(MEMORY_MILESTONE_KEY) || '[]'); }
+function saveMemMilestone(arr){ localStorage.setItem(MEMORY_MILESTONE_KEY, JSON.stringify(arr)); }
+
+function calcAge(birthStr){
+  const birth = parseKeyToDate(birthStr);
+  const now = new Date();
+  let years = now.getFullYear() - birth.getFullYear();
+  let months = now.getMonth() - birth.getMonth();
+  let days = now.getDate() - birth.getDate();
+  if(days < 0){ months--; days += new Date(now.getFullYear(), now.getMonth(), 0).getDate(); }
+  if(months < 0){ years--; months += 12; }
+  if(years > 0) return `${years}岁${months}个月`;
+  if(months > 0) return `${months}个月${days}天`;
+  return `${days}天`;
+}
+
+let memChartType = 'height';
+
+function renderMemoryAll(){
+  renderMemProfile();
+  renderMemChart();
+  renderMemGrowthList();
+  renderMemVaccineList();
+  renderMemMilestoneList();
+}
+
+function renderMemProfile(){
+  const p = loadMemProfile();
+  const h = today.getHours();
+  let greet = '下午好';
+  if(h < 12) greet = '上午好';
+  else if(h < 18) greet = '下午好';
+  else greet = '晚上好';
+  const greetEl = document.getElementById('memGreeting');
+  if(greetEl) greetEl.textContent = `${greet}，${p.name}妈妈 ☀️`;
+  const ageEl = document.getElementById('memAgeText');
+  if(ageEl) ageEl.textContent = calcAge(p.birth);
+  const birthEl = document.getElementById('memBirth');
+  if(birthEl) birthEl.textContent = p.birth.replace(/-/g,'.');
+  const nameEls = document.querySelectorAll('.mem-name');
+  nameEls.forEach(el => el.textContent = p.name);
+  const avatarEl = document.querySelector('.mem-avatar');
+  if(avatarEl) avatarEl.textContent = p.avatar || '👶';
+  // 优先用档案当前值，否则取最新生长记录
+  const latest = loadMemGrowth().sort((a,b)=>b.date.localeCompare(a.date))[0];
+  document.getElementById('memHeight').textContent = p.height || (latest && latest.height) || '--';
+  document.getElementById('memWeight').textContent = p.weight || (latest && latest.weight) || '--';
+  document.getElementById('memHead').textContent = p.head || (latest && latest.head) || '--';
+}
+
+function renderMemChart(){
+  const canvas = document.getElementById('memGrowthCanvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.scale(dpr, dpr);
+  const w = rect.width, h = rect.height;
+  ctx.clearRect(0,0,w,h);
+
+  const records = loadMemGrowth().sort((a,b)=>a.date.localeCompare(b.date));
+  if(records.length < 2){
+    ctx.fillStyle = '#8aa8b8';
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('记录至少 2 条生长数据即可查看曲线', w/2, h/2);
+    return;
+  }
+  const key = memChartType;
+  const vals = records.map(r => parseFloat(r[key]) || 0).filter(v => v > 0);
+  if(vals.length < 2){
+    ctx.fillStyle = '#8aa8b8';
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('该指标数据不足', w/2, h/2);
+    return;
+  }
+  const min = Math.min(...vals), max = Math.max(...vals);
+  const pad = {l:34,r:14,t:20,b:24};
+  const cw = w - pad.l - pad.r, ch = h - pad.t - pad.b;
+  const xStep = cw / (records.length - 1);
+  const range = Math.max(max - min, 0.1);
+
+  // 网格
+  ctx.strokeStyle = 'rgba(192,224,240,.5)'; ctx.lineWidth = 1;
+  for(let i=0;i<=3;i++){
+    const y = pad.t + ch * i / 3;
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(w-pad.r, y); ctx.stroke();
+  }
+  // 标签
+  ctx.fillStyle = '#8aa8b8'; ctx.font = '10px sans-serif'; ctx.textAlign = 'right';
+  for(let i=0;i<=3;i++){
+    const v = max - range * i / 3;
+    ctx.fillText(v.toFixed(1), pad.l - 6, pad.t + ch * i / 3 + 3);
+  }
+  // 折线
+  ctx.strokeStyle = '#b8835e'; ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.beginPath();
+  records.forEach((r, i) => {
+    const v = parseFloat(r[key]) || 0;
+    const x = pad.l + i * xStep;
+    const y = pad.t + ch - ((v - min) / range) * ch;
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+  // 点
+  records.forEach((r, i) => {
+    const v = parseFloat(r[key]) || 0;
+    const x = pad.l + i * xStep;
+    const y = pad.t + ch - ((v - min) / range) * ch;
+    ctx.beginPath(); ctx.arc(x,y,4,0,Math.PI*2); ctx.fillStyle = '#fff'; ctx.fill();
+    ctx.beginPath(); ctx.arc(x,y,4,0,Math.PI*2); ctx.strokeStyle = '#b8835e'; ctx.lineWidth = 2; ctx.stroke();
+  });
+}
+
+function renderMemGrowthList(){
+  const wrap = document.getElementById('memGrowthList');
+  if(!wrap) return;
+  const records = loadMemGrowth().sort((a,b)=>b.date.localeCompare(a.date));
+  if(records.length === 0){
+    wrap.innerHTML = '<div class="mem-empty">还没有生长记录，点击新增开始记录～</div>';
+    return;
+  }
+  wrap.innerHTML = records.map(r => `
+    <div class="mem-item" data-id="${r.id}">
+      <div class="mem-item-icon" style="background:#f0e6dc;color:#b8835e">📏</div>
+      <div class="mem-item-body">
+        <div class="mem-item-title">${r.date} · ${calcAgeAt(r.date)}</div>
+        <div class="mem-item-meta">身高 ${r.height || '--'}cm · 体重 ${r.weight || '--'}kg · 头围 ${r.head || '--'}cm</div>
+        ${r.note ? `<div class="mem-item-note">${escapeHtml(r.note)}</div>` : ''}
+      </div>
+      <div class="mem-item-del" data-del="growth" data-id="${r.id}">🗑️</div>
+    </div>
+  `).join('');
+}
+
+function calcAgeAt(dateStr){
+  const p = loadMemProfile();
+  const birth = parseKeyToDate(p.birth);
+  const d = parseKeyToDate(dateStr);
+  let years = d.getFullYear() - birth.getFullYear();
+  let months = d.getMonth() - birth.getMonth();
+  let days = d.getDate() - birth.getDate();
+  if(days < 0){ months--; days += new Date(d.getFullYear(), d.getMonth(), 0).getDate(); }
+  if(months < 0){ years--; months += 12; }
+  if(years > 0) return `${years}岁${months}个月`;
+  if(months > 0) return `${months}个月`;
+  return `${days}天`;
+}
+
+function renderMemVaccineList(){
+  const wrap = document.getElementById('memVaccineList');
+  const soonEl = document.getElementById('memVaccineSoon');
+  if(!wrap) return;
+  const records = loadMemVaccine();
+  const pending = records.filter(r => !r.done);
+  const done = records.filter(r => r.done).sort((a,b)=>b.date.localeCompare(a.date));
+  const firstPending = pending[0];
+  if(firstPending && soonEl){
+    soonEl.innerHTML = `<b>💉 ${firstPending.name}</b><br>建议接种时间：${firstPending.note}`;
+  }else if(soonEl){
+    soonEl.innerHTML = '';
+  }
+  const items = [];
+  pending.forEach(r => items.push({...r, status:'pending'}));
+  done.forEach(r => items.push({...r, status:'done'}));
+  if(items.length === 0){
+    wrap.innerHTML = '<div class="mem-empty">还没有疫苗记录，点击添加开始记录～</div>';
+    return;
+  }
+  wrap.innerHTML = items.map(r => `
+    <div class="mem-item" data-id="${r.id || r.name}">
+      <div class="mem-item-icon" style="background:${r.status==='done'?'#e8f5ee':'#fbe8e8'};color:${r.status==='done'?'#4a9a78':'#c97a7a'}">${r.status==='done'?'✓':'💉'}</div>
+      <div class="mem-item-body">
+        <div class="mem-item-title">${r.name} <span class="mem-status ${r.status}">${r.status==='done'?'已完成':'待接种'}</span></div>
+        <div class="mem-item-meta">${r.date ? '接种日期：' + r.date : '建议：' + r.note}${r.reaction ? ' · 反应：' + escapeHtml(r.reaction) : ''}</div>
+      </div>
+      <div class="mem-item-del" data-del="vaccine" data-name="${r.name}">🗑️</div>
+    </div>
+  `).join('');
+}
+
+function renderMemMilestoneList(){
+  const wrap = document.getElementById('memMilestoneList');
+  if(!wrap) return;
+  const records = loadMemMilestone().sort((a,b)=>b.date.localeCompare(a.date));
+  if(records.length === 0){
+    wrap.innerHTML = '<div class="mem-empty">还没有里程碑，点击记录第一次翻身、走路、叫妈妈…</div>';
+    return;
+  }
+  wrap.innerHTML = records.map(r => `
+    <div class="mem-item" data-id="${r.id}">
+      <div class="mem-item-icon" style="background:#e8f0e5;color:#6a9a78">🏆</div>
+      <div class="mem-item-body">
+        <div class="mem-item-title">${escapeHtml(r.title)} <span style="font-size:11px;color:var(--text-light);font-weight:600">${r.date}</span></div>
+        ${r.note ? `<div class="mem-item-note">${escapeHtml(r.note)}</div>` : ''}
+      </div>
+      <div class="mem-item-del" data-del="milestone" data-id="${r.id}">🗑️</div>
+    </div>
+  `).join('');
+}
+
+function openMemModal(type, data){
+  const modal = document.getElementById('memModal');
+  const title = document.getElementById('memModalTitle');
+  const body = document.getElementById('memModalBody');
+  let html = '';
+  if(type === 'profile'){
+    const p = loadMemProfile();
+    title.textContent = '编辑宝宝档案';
+    html = `
+      <div class="mem-form-row"><label>宝宝姓名</label><input id="memFName" value="${escapeHtml(p.name)}"></div>
+      <div class="mem-form-row"><label>出生日期</label><input type="date" id="memFBirth" value="${p.birth}"></div>
+      <div class="mem-form-row"><label>性别</label><select id="memFGender"><option value="男宝" ${p.gender==='男宝'?'selected':''}>男宝</option><option value="女宝" ${p.gender==='女宝'?'selected':''}>女宝</option></select></div>
+      <div class="mem-form-row"><label>头像emoji</label><input id="memFAvatar" value="${p.avatar || '👶'}"></div>
+      <div class="mem-form-row"><label>当前身高 cm</label><input type="number" step="0.1" id="memFHeight" value="${p.height}"></div>
+      <div class="mem-form-row"><label>当前体重 kg</label><input type="number" step="0.1" id="memFWeight" value="${p.weight}"></div>
+      <div class="mem-form-row"><label>当前头围 cm</label><input type="number" step="0.1" id="memFHead" value="${p.head}"></div>
+      <div class="mem-form-btns"><button class="mem-save-btn" id="memSaveProfile">保存</button><button class="mem-cancel-btn" id="memCancelModal">取消</button></div>`;
+  }else if(type === 'growth'){
+    title.textContent = (data ? '编辑' : '新增') + '生长记录';
+    const d = data || {date:fmtKey(today), height:'', weight:'', head:'', note:''};
+    html = `
+      <div class="mem-form-row"><label>日期</label><input type="date" id="memGDate" value="${d.date}"></div>
+      <div class="mem-form-row"><label>身高 cm</label><input type="number" step="0.1" id="memGHeight" value="${d.height}" placeholder="如 82.5"></div>
+      <div class="mem-form-row"><label>体重 kg</label><input type="number" step="0.1" id="memGWeight" value="${d.weight}" placeholder="如 11.2"></div>
+      <div class="mem-form-row"><label>头围 cm</label><input type="number" step="0.1" id="memGHead" value="${d.head}" placeholder="如 47.8"></div>
+      <div class="mem-form-row"><label>备注</label><textarea id="memGNote" placeholder="如 18月龄体检">${escapeHtml(d.note || '')}</textarea></div>
+      <div class="mem-form-btns"><button class="mem-save-btn" id="memSaveGrowth">保存</button><button class="mem-cancel-btn" id="memCancelModal">取消</button></div>`;
+  }else if(type === 'vaccine'){
+    title.textContent = '添加疫苗记录';
+    html = `
+      <div class="mem-form-row"><label>疫苗名称</label><input id="memVName" placeholder="如 麻腮风疫苗（第一针）"></div>
+      <div class="mem-form-row"><label>接种日期</label><input type="date" id="memVDate" value="${fmtKey(today)}"></div>
+      <div class="mem-form-row"><label>接种反应</label><input id="memVReaction" placeholder="如无不良反应 / 轻微发热1天"></div>
+      <div class="mem-form-btns"><button class="mem-save-btn" id="memSaveVaccine">保存</button><button class="mem-cancel-btn" id="memCancelModal">取消</button></div>`;
+  }else if(type === 'milestone'){
+    title.textContent = '记录里程碑';
+    html = `
+      <div class="mem-form-row"><label>日期</label><input type="date" id="memMDate" value="${fmtKey(today)}"></div>
+      <div class="mem-form-row"><label>里程碑</label><input id="memMTitle" placeholder="如 第一次叫妈妈"></div>
+      <div class="mem-form-row"><label>备注</label><textarea id="memMNote" placeholder="记录细节..."></textarea></div>
+      <div class="mem-form-btns"><button class="mem-save-btn" id="memSaveMilestone">保存</button><button class="mem-cancel-btn" id="memCancelModal">取消</button></div>`;
+  }
+  body.innerHTML = html;
+  modal.classList.add('show');
+
+  // 绑定保存按钮
+  const close = () => modal.classList.remove('show');
+  document.getElementById('memCancelModal').onclick = close;
+  const saveP = document.getElementById('memSaveProfile');
+  if(saveP) saveP.onclick = () => {
+    const p = {
+      name: document.getElementById('memFName').value.trim() || '迷糊',
+      birth: document.getElementById('memFBirth').value || '2023-06-06',
+      gender: document.getElementById('memFGender').value,
+      avatar: document.getElementById('memFAvatar').value.trim() || '👶',
+      height: document.getElementById('memFHeight').value,
+      weight: document.getElementById('memFWeight').value,
+      head: document.getElementById('memFHead').value
+    };
+    saveMemProfile(p);
+    renderMemoryAll();
+    close();
+    showToast('档案已保存');
+  };
+  const saveG = document.getElementById('memSaveGrowth');
+  if(saveG) saveG.onclick = () => {
+    const arr = loadMemGrowth();
+    const rec = {
+      id: data ? data.id : Date.now(),
+      date: document.getElementById('memGDate').value,
+      height: document.getElementById('memGHeight').value,
+      weight: document.getElementById('memGWeight').value,
+      head: document.getElementById('memGHead').value,
+      note: document.getElementById('memGNote').value.trim()
+    };
+    if(data){
+      const idx = arr.findIndex(x => x.id === data.id);
+      if(idx >= 0) arr[idx] = rec;
+    }else{
+      arr.push(rec);
+    }
+    saveMemGrowth(arr);
+    renderMemoryAll();
+    close();
+    showToast('生长记录已保存');
+  };
+  const saveV = document.getElementById('memSaveVaccine');
+  if(saveV) saveV.onclick = () => {
+    const name = document.getElementById('memVName').value.trim();
+    if(!name){ showToast('请输入疫苗名称'); return; }
+    const arr = loadMemVaccine();
+    const exist = arr.find(x => x.name === name);
+    if(exist){
+      exist.date = document.getElementById('memVDate').value;
+      exist.reaction = document.getElementById('memVReaction').value.trim();
+      exist.done = true;
+    }else{
+      arr.push({name, date: document.getElementById('memVDate').value, reaction: document.getElementById('memVReaction').value.trim(), done: true, note:''});
+    }
+    saveMemVaccine(arr);
+    renderMemoryAll();
+    close();
+    showToast('疫苗记录已保存');
+  };
+  const saveM = document.getElementById('memSaveMilestone');
+  if(saveM) saveM.onclick = () => {
+    const title = document.getElementById('memMTitle').value.trim();
+    if(!title){ showToast('请输入里程碑内容'); return; }
+    const arr = loadMemMilestone();
+    arr.push({
+      id: Date.now(),
+      date: document.getElementById('memMDate').value,
+      title,
+      note: document.getElementById('memMNote').value.trim()
+    });
+    saveMemMilestone(arr);
+    renderMemoryAll();
+    close();
+    showToast('里程碑已记录');
+  };
+}
+
+function initMemory(){
+  document.getElementById('memEditProfile').onclick = () => openMemModal('profile');
+  document.getElementById('memAddGrowth').onclick = () => openMemModal('growth');
+  document.getElementById('memAddGrowth2').onclick = () => openMemModal('growth');
+  document.getElementById('memAddVaccine').onclick = () => openMemModal('vaccine');
+  document.getElementById('memAddMilestone').onclick = () => openMemModal('milestone');
+  document.getElementById('memCloseBtn').onclick = () => document.getElementById('memModal').classList.remove('show');
+  document.getElementById('memModal').onclick = e => {
+    if(e.target.id === 'memModal') document.getElementById('memModal').classList.remove('show');
+  };
+  document.querySelectorAll('.mem-chart-tab').forEach(tab => {
+    tab.onclick = () => {
+      memChartType = tab.dataset.chart;
+      document.querySelectorAll('.mem-chart-tab').forEach(t => t.classList.toggle('active', t === tab));
+      renderMemChart();
+    };
+  });
+  document.querySelectorAll('.mem-quick-tile').forEach(tile => {
+    tile.onclick = () => {
+      const sec = tile.dataset.mem;
+      document.getElementById('mem' + (sec==='growth'?'GrowthSection':sec==='vaccine'?'VaccineSection':'MilestoneSection')).scrollIntoView({behavior:'smooth'});
+    };
+  });
+  document.addEventListener('click', e => {
+    const del = e.target.closest('[data-del]');
+    if(!del) return;
+    const type = del.dataset.del;
+    if(type === 'growth'){
+      const arr = loadMemGrowth().filter(x => String(x.id) !== del.dataset.id);
+      saveMemGrowth(arr);
+      renderMemoryAll();
+      showToast('已删除');
+    }else if(type === 'vaccine'){
+      const arr = loadMemVaccine().map(x => x.name === del.dataset.name ? {...x, done:false, date:'', reaction:''} : x);
+      saveMemVaccine(arr);
+      renderMemoryAll();
+      showToast('已重置为未接种');
+    }else if(type === 'milestone'){
+      const arr = loadMemMilestone().filter(x => String(x.id) !== del.dataset.id);
+      saveMemMilestone(arr);
+      renderMemoryAll();
+      showToast('已删除');
+    }
+  });
+  window.addEventListener('resize', () => { if(activeTab === 'memory') renderMemChart(); });
+}
+
 function initSettings(){
-  document.getElementById('settingsBtn').onclick = openSettings;
   document.getElementById('closeSettings').onclick = closeSettings;
   document.getElementById('settingsModal').onclick = e=>{
     if(e.target.id === 'settingsModal') closeSettings();
@@ -3790,6 +4472,7 @@ initTodo();
 initDiary();
 initMoney();
 initSched();
+initMemory();
 initSettings();
 renderAll();
 renderPeriodAll();
@@ -3797,6 +4480,7 @@ renderTodoAll();
 renderDiaryAll();
 renderMoneyAll();
 renderSchedAll();
+renderMemoryAll();
 renderHome();
 
 // 启动云同步（延迟1秒，让页面先加载完）
