@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>第3步详解 · 找到添加到主屏幕</title>
+<style>
+  :root{
+    --pink:#ff8fb1;
+    --pink-light:#ffc0d6;
+    --pink-soft:#ffe3ee;
+    --pink-deep:#ff6b9d;
+    --text:#6b4a5a;
+    --text-light:#b09aa8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;
+    background:linear-gradient(160deg,#fff0f5 0%,#ffe4ef 40%,#fff8fa 100%);
+    color:var(--text);
+    padding:16px 16px 50px;
+    min-height:100vh;
+  }
+  .top-bar{
+    text-align:center;padding:12px 0 18px;
+  }
+  .top-bar h1{font-size:20px;font-weight:800}
+  .top-bar .sub{font-size:12px;color:var(--text-light);margin-top:4px}
+
+  /* 模拟 iPhone Safari 界面 */
+  .phone-mock{
+    max-width:340px;margin:0 auto;
+    background:#fff;
+    border-radius:28px;
+    overflow:hidden;
+    box-shadow:0 8px 30px rgba(255,143,177,.2);
+    border:3px solid #f0d8e0;
+  }
+  /* Safari 顶部地址栏 */
+  .safari-top{
+    background:#f5f0f2;
+    padding:10px 14px;
+    display:flex;align-items:center;gap:8px;
+    border-bottom:1px solid #e8e0e2;
+  }
+  .safari-top .back{color:#007aff;font-size:18px;font-weight:bold}
+  .safari-top .url{
+    flex:1;background:#fff;border-radius:10px;
+    padding:6px 10px;font-size:12px;color:#333;
+    text-align:center;
+  }
+  .safari-top .fwd{color:#ccc;font-size:18px}
+
+  /* 页面内容区 */
+  .page-content{
+    background:linear-gradient(160deg,#fff0f5,#ffe4ef);
+    padding:30px 16px;
+    text-align:center;
+    min-height:120px;
+  }
+  .page-content .bow{font-size:40px}
+  .page-content .title{font-size:16px;font-weight:800;margin-top:8px}
+  .page-content .desc{font-size:11px;color:var(--text-light);margin-top:4px}
+
+  /* Safari 底部工具栏 */
+  .safari-bottom{
+    background:#f5f0f2;
+    padding:8px 20px 12px;
+    display:flex;justify-content:space-around;align-items:center;
+    border-top:1px solid #e8e0e2;
+  }
+  .safari-bottom .icon-btn{
+    font-size:22px;
+    position:relative;
+  }
+  .safari-bottom .share-btn{
+    background:#fff;
+    border-radius:50%;
+    width:38px;height:38px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px;
+    box-shadow:0 2px 6px rgba(0,0,0,.1);
+    position:relative;
+  }
+  /* 指向分享按钮的箭头标注 */
+  .share-arrow{
+    position:relative;
+  }
+  .share-arrow::after{
+    content:"";
+    position:absolute;
+    top:-50px;left:50%;
+    transform:translateX(-50%);
+    width:0;height:0;
+    border-left:8px solid transparent;
+    border-right:8px solid transparent;
+    border-top:12px solid var(--pink-deep);
+  }
+  .share-label{
+    background:var(--pink-deep);
+    color:#fff;
+    padding:5px 12px;
+    border-radius:14px;
+    font-size:12px;
+    font-weight:700;
+    position:absolute;
+    top:-78px;left:50%;
+    transform:translateX(-50%);
+    white-space:nowrap;
+  }
+  .home-bar{
+    background:#f5f0f2;
+    height:18px;
+    display:flex;justify-content:center;align-items:flex-end;
+    padding-bottom:4px;
+  }
+  .home-bar::after{
+    content:"";
+    width:100px;height:4px;
+    background:#333;border-radius:3px;
+  }
+
+  /* 分享菜单弹窗模拟 */
+  .share-menu{
+    max-width:340px;margin:20px auto 0;
+    background:#fff;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 8px 30px rgba(0,0,0,.12);
+  }
+  .share-menu-title{
+    background:#f5f5f5;
+    padding:10px;text-align:center;
+    font-size:12px;color:#888;
+    border-bottom:1px solid #eee;
+  }
+  .share-menu-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:#f0f0f0;
+    padding:1px;
+  }
+  .menu-tile{
+    background:#fff;
+    padding:14px 4px 10px;
+    text-align:center;
+    font-size:10px;
+    color:#333;
+  }
+  .menu-tile .m-icon{font-size:24px;display:block;margin-bottom:4px}
+  .menu-tile.target{
+    background:linear-gradient(135deg,var(--pink-soft),#fff5f9);
+    position:relative;
+  }
+  .menu-tile.target .m-icon,
+  .menu-tile.target .m-label{
+    color:var(--pink-deep);
+    font-weight:800;
+  }
+  .menu-tile.target::before{
+    content:"👆";
+    position:absolute;
+    top:2px;right:4px;
+    font-size:14px;
+    animation:point 1s ease-in-out infinite;
+  }
+  @keyframes point{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-3px)}
+  }
+
+  /* 情况2：需要滚动 */
+  .scroll-hint{
+    max-width:340px;margin:16px auto 0;
+    background:var(--pink-soft);
+    border-radius:14px;
+    padding:14px;
+    font-size:13px;
+    color:var(--pink-deep);
+    font-weight:600;
+    line-height:1.6;
+  }
+  .scroll-hint b{color:var(--text)}
+
+  .step-box{
+    max-width:340px;margin:20px auto 0;
+    background:#fff;
+    border-radius:18px;
+    padding:16px;
+    box-shadow:0 2px 10px rgba(255,143,177,.1);
+  }
+  .step-box h3{font-size:15px;font-weight:800;margin-bottom:10px}
+  .step-box p{font-size:13px;color:var(--text);margin-bottom:8px;line-height:1.7}
+  .step-box .num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:22px;height:22px;border-radius:50%;
+    background:var(--pink);color:#fff;
+    font-size:12px;font-weight:800;
+    margin-right:6px;
+  }
+  .tip-box{
+    max-width:340px;margin:14px auto 0;
+    background:#fff3c4;
+    border-radius:14px;
+    padding:12px 14px;
+    font-size:12px;
+    color:#8a6d00;
+    line-height:1.6;
+  }
+  .alt-link{
+    max-width:340px;margin:14px auto 0;
+    background:#fff;
+    border:2px dashed var(--pink);
+    border-radius:14px;
+    padding:14px;
+    text-align:center;
+  }
+  .alt-link .lbl{font-size:11px;color:var(--pink-deep);font-weight:700;margin-bottom:6px}
+  .alt-link code{
+    font-size:12px;color:var(--text);
+    background:var(--pink-soft);
+    padding:6px 10px;border-radius:8px;
+    display:block;word-break:break-all;
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <h1>🎀 第 3 步详解</h1>
+  <div class="sub">找不到「添加到主屏幕」？看这里！</div>
+</div>
+
+<!-- 情况1：分享按钮在哪里 -->
+<div class="step-box">
+  <h3>首先：找到「分享」按钮 ⬆️</h3>
+  <p>页面打开后，看屏幕<b>最底部</b>，有一排小图标。正中间有个 <b>向上箭头的方块图标</b>，就是它：</p>
+</div>
+
+<!-- 模拟 Safari 界面 -->
+<div class="phone-mock">
+  <!-- 顶部地址栏 -->
+  <div class="safari-top">
+    <span class="back">‹</span>
+    <span class="url">balalaxiaoyue.github.io</span>
+    <span class="fwd">›</span>
+  </div>
+  <!-- 页面内容 -->
+  <div class="page-content">
+    <div class="bow">🎀</div>
+    <div class="title">Kitty 工作台</div>
+    <div class="desc">你的页面已经打开了</div>
+  </div>
+  <!-- 底部工具栏 -->
+  <div class="safari-bottom">
+    <span class="icon-btn">⬅️</span>
+    <span class="icon-btn">➡️</span>
+    <span class="icon-btn">📤</span>
+    <div class="share-btn share-arrow">
+      ⬆️
+      <div class="share-label">点这个！</div>
+    </div>
+    <span class="icon-btn">📚</span>
+    <span class="icon-btn">⬜</span>
+  </div>
+  <div class="home-bar"></div>
+</div>
+
+<div class="tip-box">
+  💡 分享按钮长得像：<b>一个方块，上面有个向上箭头</b>。在底部工具栏的正中间位置。点它会弹出一个菜单。
+</div>
+
+<!-- 情况2：弹出菜单后 -->
+<div class="step-box" style="margin-top:24px">
+  <h3>然后：在菜单里找到「添加到主屏幕」</h3>
+  <p>点完分享按钮后，会弹出一个菜单。菜单里有很多选项，<b>找到「添加到主屏幕」</b>，图标是个 ➕ 加号：</p>
+</div>
+
+<!-- 模拟分享菜单 -->
+<div class="share-menu">
+  <div class="share-menu-title">分享</div>
+  <div class="share-menu-grid">
+    <div class="menu-tile"><span class="m-icon">📨</span><span class="m-label">信息</span></div>
+    <div class="menu-tile"><span class="m-icon">📧</span><span class="m-label">邮件</span></div>
+    <div class="menu-tile"><span class="m-icon">💬</span><span class="m-label">微信</span></div>
+    <div class="menu-tile"><span class="m-icon">🔗</span><span class="m-label">拷贝</span></div>
+    <div class="menu-tile target"><span class="m-icon">➕</span><span class="m-label">添加到主屏幕</span></div>
+    <div class="menu-tile"><span class="m-icon">🔖</span><span class="m-label">加入书签</span></div>
+    <div class="menu-tile"><span class="m-icon">🖨️</span><span class="m-label">打印</span></div>
+    <div class="menu-tile"><span class="m-icon">📄</span><span class="m-label">PDF</span></div>
+  </div>
+</div>
+
+<div class="scroll-hint">
+  ⚠️ <b>如果没看到「添加到主屏幕」：</b><br>
+  ① 用手指在菜单上<b>向下滑动</b>，可能藏在下面<br>
+  ② 如果滑到底还没看到，点最下方的<b>「编辑」</b>，然后找到「添加到主屏幕」，把它<b>旁边的开关打开</b>（变成绿色）
+</div>
+
+<div class="tip-box">
+  ✅ 找到「添加到主屏幕」后点它 → 会弹出确认窗口 → 点右上角<b>「添加」</b> → 完成！桌面就会出现 🎀 图标啦！
+</div>
+
+<div class="alt-link">
+  <div class="lbl">📋 你要打开的链接（在 Safari 地址栏输入）</div>
+  <code>https://balalaxiaoyue.github.io/</code>
+</div>
+
+</body>
+</html>
