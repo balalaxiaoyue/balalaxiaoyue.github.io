@@ -1067,20 +1067,11 @@
   .sched-cal-card{padding:16px}
   .sched-cal-top{
     display:flex;justify-content:space-between;align-items:center;
-    margin-bottom:14px;
+    margin-bottom:12px;
   }
-  .sched-month-date{display:flex;align-items:baseline;gap:8px;cursor:pointer}
-  .sched-month{
-    font-size:14px;font-weight:800;
-    color:var(--text-light);letter-spacing:1px;
-  }
-  .sched-big-date{
-    font-size:32px;font-weight:800;
-    color:var(--pink-deep);line-height:1;
-  }
+  .sched-month-date{display:flex;align-items:baseline;gap:8px}
   .sched-month-full{
-    font-size:12px;font-weight:700;color:var(--text-light);
-    margin-left:4px;
+    font-size:15px;font-weight:800;color:var(--text);
   }
   .sched-quick-btns{display:flex;gap:6px}
   .sched-quick-btn{
@@ -1096,79 +1087,73 @@
     background:linear-gradient(135deg,var(--pink-light),var(--pink));
     color:#fff;border-color:var(--pink);
   }
-  .sched-week-nav{
-    display:flex;align-items:center;gap:6px;
-  }
   .sched-nav-arrow{
     background:transparent;border:none;
-    font-size:20px;color:var(--text-soft);
-    cursor:pointer;padding:4px 8px;
+    font-size:22px;color:var(--text-soft);
+    cursor:pointer;padding:4px 10px;
     font-weight:800;flex-shrink:0;
+    transition:all .15s;
   }
-  .sched-nav-arrow:active{color:var(--pink-deep)}
-  .sched-week-bar{
-    flex:1;
-    display:grid;grid-template-columns:repeat(7,1fr);gap:4px;
+  .sched-nav-arrow:active{color:var(--pink-deep);transform:scale(1.15)}
+
+  /* 月历表 */
+  .sched-month-cal{
+    background:linear-gradient(160deg,#f8fcfd 0%,var(--pink-soft) 100%);
+    border-radius:14px;
+    padding:10px 8px 8px;
   }
-  .sched-full-cal{
-    margin-top:12px;
-    padding-top:12px;
-    border-top:1.5px solid var(--pink-soft);
-    animation:fadeIn .25s ease;
-  }
-  .sched-full-cal-head{
+  .sched-month-head{
     display:flex;justify-content:space-between;align-items:center;
-    margin-bottom:8px;
+    margin-bottom:10px;padding:0 4px;
   }
-  .sched-full-cal-title{
-    font-size:15px;font-weight:800;color:var(--text);
+  .sched-month-title{
+    font-size:16px;font-weight:800;color:var(--pink-deep);
+    letter-spacing:.5px;
   }
-  .sched-full-cal .cal-grid{gap:3px;padding:0 0 4px}
-  .sched-full-cal .cal-cell{font-size:13px;cursor:pointer}
-  .sched-full-cal .cal-cell.has-sched::after{
+  .sched-cal-week{padding:0 0 6px}
+  .sched-cal-week div{
+    font-size:11px;color:var(--text-light);
+    font-weight:700;
+  }
+  .sched-cal-grid{gap:5px;padding:0 0 4px}
+  .sched-cal-grid .cal-cell{
+    font-size:13px;cursor:pointer;
+    border-radius:10px;
+    aspect-ratio:auto;
+    height:36px;
+  }
+  .sched-cal-grid .cal-cell.has-sched{
+    font-weight:800;
+  }
+  .sched-cal-grid .cal-cell.has-sched::after{
     content:"";
     position:absolute;bottom:3px;
     width:4px;height:4px;border-radius:50%;
     background:var(--pink);
   }
-  .sched-full-cal .cal-cell.today.has-sched::after,
-  .sched-full-cal .cal-cell.selected.has-sched::after{background:#fff}
-  .sched-day{
-    text-align:center;
-    padding:8px 0;
-    border-radius:11px;
-    cursor:pointer;
-    transition:all .15s;
+  .sched-cal-grid .cal-cell.today.has-sched::after,
+  .sched-cal-grid .cal-cell.selected.has-sched::after{background:#fff}
+
+  /* 选中日期信息条 */
+  .sched-selected-info{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:10px;padding:9px 12px;
+    background:linear-gradient(135deg,var(--pink-soft),#eaf4f8);
+    border-radius:12px;
   }
-  .sched-day:active{transform:scale(.9)}
-  .sched-day .sd-week{
-    font-size:10px;color:var(--text-light);
-    font-weight:700;margin-bottom:3px;
+  .ssi-date{
+    font-size:14px;font-weight:800;color:var(--text);
   }
-  .sched-day .sd-num{
-    font-size:15px;font-weight:700;color:var(--text);
+  .ssi-count{
+    font-size:12px;font-weight:700;
+    color:var(--pink-deep);
+    background:#fff;
+    padding:3px 10px;border-radius:10px;
   }
-  .sched-day.today{
-    background:linear-gradient(135deg,var(--mint),#8fe5c4);
-  }
-  .sched-day.today .sd-week,.sched-day.today .sd-num{color:#fff}
-  .sched-day.selected{
-    background:linear-gradient(135deg,var(--pink-light),var(--pink));
-  }
-  .sched-day.selected .sd-week,.sched-day.selected .sd-num{color:#fff}
-  .sched-day.has-sched::after{
-    content:"";
-    display:block;width:4px;height:4px;
-    border-radius:50%;
-    background:var(--pink);
-    margin:3px auto 0;
-  }
-  .sched-day.today.has-sched::after,
-  .sched-day.selected.has-sched::after{background:#fff}
 
   .sched-toolbar{
     display:flex;gap:8px;align-items:center;
-    margin-bottom:8px;
+    margin-bottom:10px;
   }
   .sched-search-input{
     flex:1;
@@ -1179,6 +1164,7 @@
     color:var(--text);
     background:#fff;
     outline:none;
+    transition:border-color .15s;
   }
   .sched-search-input:focus{border-color:var(--pink)}
   .sched-search-input::placeholder{color:var(--text-light)}
@@ -1192,11 +1178,6 @@
     transition:all .15s;
   }
   .sched-add-btn:active{transform:scale(.9)}
-  .sched-summary{
-    font-size:12px;color:var(--text-light);
-    font-weight:600;
-    padding:0 4px 10px;
-  }
   .sched-list-card{padding:0 0 8px}
   .sched-list-wrap{padding:4px 14px 8px}
   .sched-group{margin-bottom:16px}
@@ -1750,12 +1731,10 @@
       <div class="date-pill" id="schedDatePill">📅</div>
     </div>
 
-    <!-- 顶部日历区 -->
+    <!-- 顶部月历区 -->
     <div class="card sched-cal-card">
       <div class="sched-cal-top">
-        <div class="sched-month-date" id="schedMonthToggle">
-          <span class="sched-month" id="schedMonthAbbr">JUL</span>
-          <span class="sched-big-date" id="schedBigDate">30</span>
+        <div class="sched-month-date">
           <span class="sched-month-full" id="schedMonthFull">2026年7月</span>
         </div>
         <div class="sched-quick-btns">
@@ -1764,23 +1743,22 @@
           <div class="sched-quick-btn" data-sfilter="all">全部</div>
         </div>
       </div>
-      <!-- 周历条 + 左右切换 -->
-      <div class="sched-week-nav">
-        <button class="sched-nav-arrow" id="schedPrevWeek">‹</button>
-        <div class="sched-week-bar" id="schedWeekBar"></div>
-        <button class="sched-nav-arrow" id="schedNextWeek">›</button>
-      </div>
-      <!-- 展开式月历（点击月份切换显示） -->
-      <div class="sched-full-cal" id="schedFullCal" style="display:none">
-        <div class="sched-full-cal-head">
+      <!-- 月历表 -->
+      <div class="sched-month-cal">
+        <div class="sched-month-head">
           <button class="sched-nav-arrow" id="schedPrevMonth">‹</button>
-          <span class="sched-full-cal-title" id="schedFullCalTitle">2026年7月</span>
+          <span class="sched-month-title" id="schedMonthTitle">2026年7月</span>
           <button class="sched-nav-arrow" id="schedNextMonth">›</button>
         </div>
-        <div class="cal-week">
+        <div class="cal-week sched-cal-week">
           <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
         </div>
-        <div class="cal-grid" id="schedFullCalGrid"></div>
+        <div class="cal-grid sched-cal-grid" id="schedFullCalGrid"></div>
+      </div>
+      <!-- 选中日期信息条 -->
+      <div class="sched-selected-info" id="schedSelectedInfo">
+        <span class="ssi-date" id="schedSelectedDate">7月30日 周三</span>
+        <span class="ssi-count" id="schedSelectedCount">0 件日程</span>
       </div>
     </div>
 
@@ -1789,9 +1767,6 @@
       <input type="text" id="schedSearch" class="sched-search-input" placeholder="🔍 搜索日程标题">
       <button class="sched-add-btn" id="schedAddBtn">＋</button>
     </div>
-
-    <!-- 当日汇总 -->
-    <div class="sched-summary" id="schedSummary">今日共 0 件待办</div>
 
     <!-- 日程列表 -->
     <div class="card sched-list-card">
@@ -3477,40 +3452,18 @@ function renderSchedAll(){
 }
 
 function renderSchedCalendar(){
-  // 月份缩写 + 大号日期 + 完整月份
-  document.getElementById('schedMonthAbbr').textContent = MONTH_ABBR[schedSelectedDate.getMonth()];
-  document.getElementById('schedBigDate').textContent = schedSelectedDate.getDate();
-  document.getElementById('schedMonthFull').textContent = schedSelectedDate.getFullYear() + '年' + (schedSelectedDate.getMonth()+1) + '月';
-
-  // 星期条：显示选中日期所在周的 7 天
-  const bar = document.getElementById('schedWeekBar');
-  bar.innerHTML = '';
-  const cur = new Date(schedSelectedDate);
-  const dayOfWeek = cur.getDay();
-  const monday = new Date(cur);
-  monday.setDate(cur.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
-
-  const allSched = loadSchedData();
-  for(let i=0; i<7; i++){
-    const d = new Date(monday);
-    d.setDate(monday.getDate() + i);
-    const key = fmtKey(d);
-    const el = document.createElement('div');
-    el.className = 'sched-day';
-    if(isSameDay(d, today)) el.classList.add('today');
-    if(isSameDay(d, schedSelectedDate)) el.classList.add('selected');
-    if(allSched.some(s => s.date === key)) el.classList.add('has-sched');
-    el.innerHTML = `<div class="sd-week">${WEEK_SHORT[d.getDay()]}</div><div class="sd-num">${d.getDate()}</div>`;
-    el.onclick = ()=>{
-      schedSelectedDate = d;
-      schedFilter = 'today';
-      document.querySelectorAll('.sched-quick-btn').forEach(b=>b.classList.toggle('active', b.dataset.sfilter==='today'));
-      renderSchedAll();
-    };
-    bar.appendChild(el);
+  // 顶部月份标题
+  document.getElementById('schedMonthFull').textContent = schedFullCalYear + '年' + (schedFullCalMonth+1) + '月';
+  // 选中日期信息条
+  const wk = ['周日','周一','周二','周三','周四','周五','周六'];
+  const selDateEl = document.getElementById('schedSelectedDate');
+  const selCountEl = document.getElementById('schedSelectedCount');
+  if(selDateEl) selDateEl.textContent = `${schedSelectedDate.getMonth()+1}月${schedSelectedDate.getDate()}日 ${wk[schedSelectedDate.getDay()]}`;
+  if(selCountEl){
+    const cnt = loadSchedData().filter(s => s.date === fmtKey(schedSelectedDate)).length;
+    selCountEl.textContent = `${cnt} 件日程`;
   }
-
-  // 渲染展开式月历（如果展开着的话）
+  // 渲染月历表
   renderSchedFullCal();
 }
 
@@ -3520,7 +3473,8 @@ let schedFullCalMonth = today.getMonth();
 function renderSchedFullCal(){
   const grid = document.getElementById('schedFullCalGrid');
   if(!grid) return;
-  document.getElementById('schedFullCalTitle').textContent = schedFullCalYear + '年' + (schedFullCalMonth+1) + '月';
+  document.getElementById('schedMonthTitle').textContent = schedFullCalYear + '年' + (schedFullCalMonth+1) + '月';
+  document.getElementById('schedMonthFull').textContent = schedFullCalYear + '年' + (schedFullCalMonth+1) + '月';
   grid.innerHTML = '';
   const allSched = loadSchedData();
   const firstDay = new Date(schedFullCalYear, schedFullCalMonth, 1).getDay();
@@ -3644,8 +3598,13 @@ function renderSchedList(){
 function renderSchedSummary(){
   const key = fmtKey(schedSelectedDate);
   const count = loadSchedData().filter(r => r.date === key).length;
-  document.getElementById('schedSummary').textContent = `${schedSelectedDate.getMonth()+1}月${schedSelectedDate.getDate()}日 共 ${count} 件待办`;
-  document.getElementById('schedDatePill').textContent = `${schedSelectedDate.getMonth()+1}.${schedSelectedDate.getDate()}`;
+  const wk = ['周日','周一','周二','周三','周四','周五','周六'];
+  const selDateEl = document.getElementById('schedSelectedDate');
+  const selCountEl = document.getElementById('schedSelectedCount');
+  if(selDateEl) selDateEl.textContent = `${schedSelectedDate.getMonth()+1}月${schedSelectedDate.getDate()}日 ${wk[schedSelectedDate.getDay()]}`;
+  if(selCountEl) selCountEl.textContent = `${count} 件日程`;
+  const pill = document.getElementById('schedDatePill');
+  if(pill) pill.textContent = `${schedSelectedDate.getMonth()+1}.${schedSelectedDate.getDate()}`;
 }
 
 function openSchedModal(id){
@@ -3746,39 +3705,16 @@ function initSched(){
       renderSchedSummary();
     };
   });
-  // 点击月份区展开/收起完整月历
-  document.getElementById('schedMonthToggle').onclick = () => {
-    const cal = document.getElementById('schedFullCal');
-    const isShow = cal.style.display !== 'none';
-    if(!isShow){
-      // 展开时同步月份
-      schedFullCalYear = schedSelectedDate.getFullYear();
-      schedFullCalMonth = schedSelectedDate.getMonth();
-      renderSchedFullCal();
-    }
-    cal.style.display = isShow ? 'none' : 'block';
-  };
-  // 周历左右切换
-  document.getElementById('schedPrevWeek').onclick = () => {
-    schedSelectedDate = new Date(schedSelectedDate);
-    schedSelectedDate.setDate(schedSelectedDate.getDate() - 7);
-    renderSchedAll();
-  };
-  document.getElementById('schedNextWeek').onclick = () => {
-    schedSelectedDate = new Date(schedSelectedDate);
-    schedSelectedDate.setDate(schedSelectedDate.getDate() + 7);
-    renderSchedAll();
-  };
   // 月历左右切月
   document.getElementById('schedPrevMonth').onclick = () => {
     schedFullCalMonth--;
     if(schedFullCalMonth < 0){ schedFullCalMonth = 11; schedFullCalYear--; }
-    renderSchedFullCal();
+    renderSchedAll();
   };
   document.getElementById('schedNextMonth').onclick = () => {
     schedFullCalMonth++;
     if(schedFullCalMonth > 11){ schedFullCalMonth = 0; schedFullCalYear++; }
-    renderSchedFullCal();
+    renderSchedAll();
   };
 }
 
