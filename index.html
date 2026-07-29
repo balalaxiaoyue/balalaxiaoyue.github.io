@@ -957,6 +957,185 @@
   }
   .money-btn-del:active{transform:scale(.96)}
 
+  /* ===== 日程管理样式 ===== */
+  .sched-cal-card{padding:16px}
+  .sched-cal-top{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:14px;
+  }
+  .sched-month-date{display:flex;align-items:baseline;gap:8px}
+  .sched-month{
+    font-size:14px;font-weight:800;
+    color:var(--text-light);letter-spacing:1px;
+  }
+  .sched-big-date{
+    font-size:32px;font-weight:800;
+    color:var(--pink-deep);line-height:1;
+  }
+  .sched-quick-btns{display:flex;gap:6px}
+  .sched-quick-btn{
+    padding:5px 12px;border-radius:10px;
+    font-size:11px;font-weight:700;
+    color:var(--text-soft);
+    background:#fff;
+    border:1.5px solid var(--pink-soft);
+    cursor:pointer;transition:all .15s;
+  }
+  .sched-quick-btn:active{transform:scale(.94)}
+  .sched-quick-btn.active{
+    background:linear-gradient(135deg,var(--pink-light),var(--pink));
+    color:#fff;border-color:var(--pink);
+  }
+  .sched-week-bar{
+    display:grid;grid-template-columns:repeat(7,1fr);gap:4px;
+  }
+  .sched-day{
+    text-align:center;
+    padding:8px 0;
+    border-radius:11px;
+    cursor:pointer;
+    transition:all .15s;
+  }
+  .sched-day:active{transform:scale(.9)}
+  .sched-day .sd-week{
+    font-size:10px;color:var(--text-light);
+    font-weight:700;margin-bottom:3px;
+  }
+  .sched-day .sd-num{
+    font-size:15px;font-weight:700;color:var(--text);
+  }
+  .sched-day.today{
+    background:linear-gradient(135deg,var(--mint),#8fe5c4);
+  }
+  .sched-day.today .sd-week,.sched-day.today .sd-num{color:#fff}
+  .sched-day.selected{
+    background:linear-gradient(135deg,var(--pink-light),var(--pink));
+  }
+  .sched-day.selected .sd-week,.sched-day.selected .sd-num{color:#fff}
+  .sched-day.has-sched::after{
+    content:"";
+    display:block;width:4px;height:4px;
+    border-radius:50%;
+    background:var(--pink);
+    margin:3px auto 0;
+  }
+  .sched-day.today.has-sched::after,
+  .sched-day.selected.has-sched::after{background:#fff}
+
+  .sched-toolbar{
+    display:flex;gap:8px;align-items:center;
+    margin-bottom:8px;
+  }
+  .sched-search-input{
+    flex:1;
+    border:2px solid var(--pink-soft);
+    border-radius:12px;
+    padding:10px 14px;
+    font-size:14px;
+    color:var(--text);
+    background:#fff;
+    outline:none;
+  }
+  .sched-search-input:focus{border-color:var(--pink)}
+  .sched-search-input::placeholder{color:var(--text-light)}
+  .sched-add-btn{
+    width:42px;height:42px;
+    border:none;border-radius:12px;
+    background:linear-gradient(135deg,var(--pink-light),var(--pink));
+    color:#fff;font-size:22px;font-weight:800;
+    cursor:pointer;flex-shrink:0;
+    box-shadow:var(--shadow-soft);
+    transition:all .15s;
+  }
+  .sched-add-btn:active{transform:scale(.9)}
+  .sched-summary{
+    font-size:12px;color:var(--text-light);
+    font-weight:600;
+    padding:0 4px 10px;
+  }
+  .sched-list-card{padding:0 0 8px}
+  .sched-list-wrap{padding:4px 14px 8px}
+  .sched-group{margin-bottom:16px}
+  .sched-group:last-child{margin-bottom:4px}
+  .sched-group-head{
+    font-size:13px;font-weight:800;
+    color:var(--pink-deep);
+    padding:8px 0 6px;
+    border-bottom:2px solid var(--pink-soft);
+    margin-bottom:6px;
+  }
+  .sched-item{
+    display:flex;align-items:center;gap:12px;
+    padding:12px 0;
+    border-bottom:1px solid #eef5f8;
+    transition:all .15s;
+  }
+  .sched-item:active{background:var(--pink-soft)}
+  .sched-item:last-child{border-bottom:none}
+  .sched-time{
+    font-size:14px;font-weight:800;
+    color:var(--pink-deep);
+    width:52px;flex-shrink:0;
+    text-align:center;
+  }
+  .sched-info{flex:1;min-width:0}
+  .sched-title{
+    font-size:15px;font-weight:700;color:var(--text);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .sched-note{
+    font-size:11px;color:var(--text-light);
+    margin-top:2px;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .sched-empty{
+    text-align:center;padding:30px 10px;
+    color:var(--text-light);font-size:13px;
+  }
+  .sched-empty-icon{font-size:40px;margin-bottom:8px}
+
+  /* 日程弹窗 */
+  .sched-modal-card{max-width:380px}
+  .sched-modal-body{padding:0 4px}
+  .sched-field{margin-bottom:12px}
+  .sched-field label{
+    display:block;font-size:13px;
+    color:var(--text);font-weight:700;
+    margin-bottom:5px;
+  }
+  .sched-field input{
+    width:100%;
+    border:2px solid var(--pink-soft);
+    border-radius:12px;
+    padding:11px 14px;
+    font-size:15px;font-weight:600;
+    color:var(--text);background:#fff;
+    outline:none;transition:border-color .2s;
+  }
+  .sched-field input:focus{border-color:var(--pink)}
+  .sched-field input::placeholder{color:var(--text-light);font-weight:400}
+  .sched-modal-btns{display:flex;gap:10px;margin-top:16px}
+  .sched-btn-cancel{
+    flex:1;border:none;padding:12px;border-radius:12px;
+    background:#f0f0f0;color:var(--text-light);
+    font-size:14px;font-weight:700;cursor:pointer;
+  }
+  .sched-btn-save{
+    flex:1;border:none;padding:12px;border-radius:12px;
+    background:linear-gradient(135deg,var(--pink-light),var(--pink));
+    color:#fff;font-size:14px;font-weight:800;
+    cursor:pointer;box-shadow:var(--shadow-soft);
+  }
+  .sched-btn-cancel:active,.sched-btn-save:active{transform:scale(.96)}
+  .sched-btn-del{
+    width:100%;border:none;padding:10px;border-radius:12px;
+    background:#eaf5f0;color:#4a9a78;
+    border:1.5px solid #c8e8d8;
+    font-size:13px;font-weight:700;
+    cursor:pointer;margin-top:10px;
+  }
+  .sched-btn-del:active{transform:scale(.96)}
+
   /* ===== 设置弹窗 ===== */
   .modal-mask{
     position:fixed;inset:0;
@@ -1344,14 +1523,68 @@
           <div class="sub">规划好每一天～</div>
         </div>
       </div>
-      <div class="date-pill">📅</div>
+      <div class="date-pill" id="schedDatePill">📅</div>
     </div>
-    <div class="card">
-      <div class="placeholder-card">
-        <div class="p-icon">📅</div>
-        <div class="p-title">日程管理</div>
-        <div class="p-desc">安排你的每日行程<br>不再错过重要事项</div>
-        <div class="p-tag">📖 敬请期待</div>
+
+    <!-- 顶部日历区 -->
+    <div class="card sched-cal-card">
+      <div class="sched-cal-top">
+        <div class="sched-month-date">
+          <span class="sched-month" id="schedMonthAbbr">JUL</span>
+          <span class="sched-big-date" id="schedBigDate">30</span>
+        </div>
+        <div class="sched-quick-btns">
+          <div class="sched-quick-btn active" data-sfilter="today">今日</div>
+          <div class="sched-quick-btn" data-sfilter="week">本周</div>
+        </div>
+      </div>
+      <div class="sched-week-bar" id="schedWeekBar"></div>
+    </div>
+
+    <!-- 搜索框 + 新增按钮 -->
+    <div class="sched-toolbar">
+      <input type="text" id="schedSearch" class="sched-search-input" placeholder="🔍 搜索日程标题">
+      <button class="sched-add-btn" id="schedAddBtn">＋</button>
+    </div>
+
+    <!-- 当日汇总 -->
+    <div class="sched-summary" id="schedSummary">今日共 0 件待办</div>
+
+    <!-- 日程列表 -->
+    <div class="card sched-list-card">
+      <div id="schedList" class="sched-list-wrap"></div>
+    </div>
+  </div>
+
+  <!-- 日程录入弹窗 -->
+  <div class="modal-mask" id="schedModal">
+    <div class="modal-card sched-modal-card">
+      <div class="modal-head">
+        <span class="modal-title" id="schedModalTitle">📅 新增日程</span>
+        <span class="modal-close" id="schedCloseBtn">✕</span>
+      </div>
+      <div class="modal-body sched-modal-body">
+        <div class="sched-field">
+          <label>日程日期</label>
+          <input type="date" id="schedFormDate">
+        </div>
+        <div class="sched-field">
+          <label>日程时间</label>
+          <input type="time" id="schedFormTime">
+        </div>
+        <div class="sched-field">
+          <label>日程标题</label>
+          <input type="text" id="schedFormTitle" placeholder="如：赴宴、产检、带娃打针" maxlength="30">
+        </div>
+        <div class="sched-field">
+          <label>备注（可选）</label>
+          <input type="text" id="schedFormNote" placeholder="简短备注" maxlength="50">
+        </div>
+        <div class="sched-modal-btns">
+          <button class="sched-btn-cancel" id="schedCancelBtn">取消</button>
+          <button class="sched-btn-save" id="schedSaveFormBtn">保存</button>
+        </div>
+        <button class="sched-btn-del" id="schedDelBtn" style="display:none">🗑️ 删除此条</button>
       </div>
     </div>
   </div>
@@ -1545,6 +1778,7 @@ const CYCLE_KEY = 'workbuddy_period_cycle';
 const TODO_KEY = 'workbuddy_todo_v1';
 const DIARY_KEY = 'workbuddy_diary_v1';
 const MONEY_KEY = 'workbuddy_money_v1';
+const SCHED_KEY = 'workbuddy_sched_v1';
 
 // 云同步配置 - jsonblob 免费云存储
 const CLOUD_BLOB_ID = '019faede-32d6-72ae-a629-ea9be99a4443';
@@ -1586,6 +1820,11 @@ function saveMoneyData(arr){
   localStorage.setItem(MONEY_KEY, JSON.stringify(arr));
   cloudSync();
 }
+function loadSchedData(){ return JSON.parse(localStorage.getItem(SCHED_KEY) || '[]'); }
+function saveSchedData(arr){
+  localStorage.setItem(SCHED_KEY, JSON.stringify(arr));
+  cloudSync();
+}
 
 // 同步状态
 let syncTimer = null;
@@ -1600,6 +1839,7 @@ function collectAllData(){
     todos: loadTodoData(),
     diary: loadDiaryData(),
     money: loadMoneyData(),
+    sched: loadSchedData(),
     lastSync: new Date().toISOString()
   };
 }
@@ -1612,6 +1852,7 @@ function restoreFromCloud(data){
     if(data.todos) localStorage.setItem(TODO_KEY, JSON.stringify(data.todos));
     if(data.diary) localStorage.setItem(DIARY_KEY, JSON.stringify(data.diary));
     if(data.money) localStorage.setItem(MONEY_KEY, JSON.stringify(data.money));
+    if(data.sched) localStorage.setItem(SCHED_KEY, JSON.stringify(data.sched));
 }
 
 // 自动云同步（防抖，2秒内的多次保存只上传一次）
@@ -1686,7 +1927,7 @@ async function initCloudSync(){
     localStorage.setItem('workbuddy_last_sync', new Date().toISOString());
   }else{
     // 云端为空，把本地数据上传
-    if(Object.keys(loadData()).length > 0 || loadPeriodData().length > 0 || loadTodoData().length > 0 || Object.keys(loadDiaryData()).length > 0 || loadMoneyData().length > 0){
+    if(Object.keys(loadData()).length > 0 || loadPeriodData().length > 0 || loadTodoData().length > 0 || Object.keys(loadDiaryData()).length > 0 || loadMoneyData().length > 0 || loadSchedData().length > 0){
       doCloudSync();
     }else{
       updateSyncStatus('offline');
@@ -1753,6 +1994,10 @@ function switchTab(tab){
   // 记账栏目需要渲染
   if(tab === 'money'){
     renderMoneyAll();
+  }
+  // 日程栏目需要渲染
+  if(tab === 'schedule'){
+    renderSchedAll();
   }
 }
 
@@ -2241,12 +2486,14 @@ function importData(file){
       if(data.todos) saveTodoData(data.todos);
       if(data.diary) saveDiaryData(data.diary);
       if(data.money) saveMoneyData(data.money);
+      if(data.sched) saveSchedData(data.sched);
       showToast('数据导入成功 ✨');
       renderAll();
       renderPeriodAll();
       renderTodoAll();
       renderDiaryAll();
       renderMoneyAll();
+      renderSchedAll();
       updateDataCounts();
       closeSettings();
     }catch(err){
@@ -2264,6 +2511,7 @@ function clearAllData(){
   localStorage.removeItem(TODO_KEY);
   localStorage.removeItem(DIARY_KEY);
   localStorage.removeItem(MONEY_KEY);
+  localStorage.removeItem(SCHED_KEY);
   localStorage.removeItem('workbuddy_last_sync');
   showToast('已清空所有数据');
   renderAll();
@@ -2271,6 +2519,7 @@ function clearAllData(){
   renderTodoAll();
   renderDiaryAll();
   renderMoneyAll();
+  renderSchedAll();
   updateDataCounts();
   closeSettings();
 }
@@ -2842,6 +3091,241 @@ function initMoney(){
   });
 }
 
+/* ===== 日程管理功能 ===== */
+const MONTH_ABBR = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+const WEEK_SHORT = ['日','一','二','三','四','五','六'];
+
+let schedFilter = 'today';
+let schedSearch = '';
+let schedSelectedDate = new Date(today);
+let schedEditId = null;
+
+function renderSchedAll(){
+  renderSchedCalendar();
+  renderSchedList();
+  renderSchedSummary();
+}
+
+function renderSchedCalendar(){
+  // 月份缩写 + 大号日期
+  document.getElementById('schedMonthAbbr').textContent = MONTH_ABBR[schedSelectedDate.getMonth()];
+  document.getElementById('schedBigDate').textContent = schedSelectedDate.getDate();
+
+  // 星期条：显示选中日期所在周的 7 天
+  const bar = document.getElementById('schedWeekBar');
+  bar.innerHTML = '';
+  const cur = new Date(schedSelectedDate);
+  const dayOfWeek = cur.getDay();
+  const monday = new Date(cur);
+  monday.setDate(cur.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+
+  const allSched = loadSchedData();
+  for(let i=0; i<7; i++){
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    const key = fmtKey(d);
+    const el = document.createElement('div');
+    el.className = 'sched-day';
+    if(isSameDay(d, today)) el.classList.add('today');
+    if(isSameDay(d, schedSelectedDate)) el.classList.add('selected');
+    if(allSched.some(s => s.date === key)) el.classList.add('has-sched');
+    el.innerHTML = `<div class="sd-week">${WEEK_SHORT[d.getDay()]}</div><div class="sd-num">${d.getDate()}</div>`;
+    el.onclick = ()=>{
+      schedSelectedDate = d;
+      schedFilter = 'today';
+      document.querySelectorAll('.sched-quick-btn').forEach(b=>b.classList.toggle('active', b.dataset.sfilter==='today'));
+      renderSchedAll();
+    };
+    bar.appendChild(el);
+  }
+}
+
+function getFilteredSched(){
+  let records = loadSchedData();
+  const search = schedSearch.trim();
+  if(search){
+    records = records.filter(r => r.title.includes(search));
+  }
+  if(schedFilter === 'today'){
+    const key = fmtKey(schedSelectedDate);
+    records = records.filter(r => r.date === key);
+  }else if(schedFilter === 'week'){
+    const cur = new Date(schedSelectedDate);
+    const dow = cur.getDay();
+    const monday = new Date(cur);
+    monday.setDate(cur.getDate() - (dow === 0 ? 6 : dow - 1));
+    const sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6);
+    records = records.filter(r => {
+      const d = parseKeyToDate(r.date);
+      return d >= monday && d <= sunday;
+    });
+  }
+  return records;
+}
+
+function renderSchedList(){
+  const wrap = document.getElementById('schedList');
+  const records = getFilteredSched();
+
+  if(records.length === 0){
+    wrap.innerHTML = `
+      <div class="sched-empty">
+        <div class="sched-empty-icon">📅</div>
+        <div>当天没有日程<br>点击右上角「＋」添加</div>
+      </div>`;
+    return;
+  }
+
+  // 按日期分组
+  const groups = {};
+  records.forEach(r => {
+    if(!groups[r.date]) groups[r.date] = [];
+    groups[r.date].push(r);
+  });
+  const sortedDates = Object.keys(groups).sort();
+
+  wrap.innerHTML = '';
+  sortedDates.forEach(date => {
+    const group = groups[date].sort((a,b) => (a.time||'').localeCompare(b.time||''));
+    const d = parseKeyToDate(date);
+    const dateStr = `${d.getMonth()+1}月${d.getDate()}日 星期${WEEK_SHORT[d.getDay()]}`;
+
+    const groupDiv = document.createElement('div');
+    groupDiv.className = 'sched-group';
+    let itemsHtml = '';
+    group.forEach(r => {
+      const noteHtml = r.note ? `<div class="sched-note">${escapeHtml(r.note)}</div>` : '';
+      itemsHtml += `
+        <div class="sched-item" data-id="${r.id}">
+          <div class="sched-time">${r.time || '--:--'}</div>
+          <div class="sched-info">
+            <div class="sched-title">${escapeHtml(r.title)}</div>
+            ${noteHtml}
+          </div>
+        </div>`;
+    });
+    groupDiv.innerHTML = `<div class="sched-group-head">【${dateStr}】</div>${itemsHtml}`;
+    // 长按编辑
+    groupDiv.querySelectorAll('.sched-item').forEach(el => {
+      let pressTimer = null;
+      el.addEventListener('touchstart', () => {
+        pressTimer = setTimeout(() => openSchedModal(el.dataset.id), 600);
+      });
+      el.addEventListener('touchend', () => clearTimeout(pressTimer));
+      el.addEventListener('touchmove', () => clearTimeout(pressTimer));
+    });
+    wrap.appendChild(groupDiv);
+  });
+}
+
+function renderSchedSummary(){
+  const key = fmtKey(schedSelectedDate);
+  const count = loadSchedData().filter(r => r.date === key).length;
+  document.getElementById('schedSummary').textContent = `${schedSelectedDate.getMonth()+1}月${schedSelectedDate.getDate()}日 共 ${count} 件待办`;
+  document.getElementById('schedDatePill').textContent = `${schedSelectedDate.getMonth()+1}.${schedSelectedDate.getDate()}`;
+}
+
+function openSchedModal(id){
+  schedEditId = id || null;
+  const title = document.getElementById('schedModalTitle');
+  if(id){
+    const r = loadSchedData().find(x => x.id === id);
+    if(!r) return;
+    title.textContent = '✏️ 编辑日程';
+    document.getElementById('schedFormDate').value = r.date;
+    document.getElementById('schedFormTime').value = r.time || '';
+    document.getElementById('schedFormTitle').value = r.title || '';
+    document.getElementById('schedFormNote').value = r.note || '';
+    document.getElementById('schedDelBtn').style.display = '';
+  }else{
+    title.textContent = '📅 新增日程';
+    document.getElementById('schedFormDate').value = fmtKey(schedSelectedDate);
+    const now = new Date();
+    document.getElementById('schedFormTime').value = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+    document.getElementById('schedFormTitle').value = '';
+    document.getElementById('schedFormNote').value = '';
+    document.getElementById('schedDelBtn').style.display = 'none';
+  }
+  document.getElementById('schedModal').classList.add('show');
+}
+
+function closeSchedModal(){
+  document.getElementById('schedModal').classList.remove('show');
+  schedEditId = null;
+}
+
+function saveSchedForm(){
+  const date = document.getElementById('schedFormDate').value;
+  const time = document.getElementById('schedFormTime').value;
+  const title = document.getElementById('schedFormTitle').value.trim();
+  const note = document.getElementById('schedFormNote').value.trim();
+
+  if(!date){ showToast('请选择日期'); return; }
+  if(!title){ showToast('请输入日程标题'); return; }
+
+  const records = loadSchedData();
+  if(schedEditId){
+    const idx = records.findIndex(x => x.id === schedEditId);
+    if(idx >= 0){
+      records[idx].date = date;
+      records[idx].time = time;
+      records[idx].title = title;
+      records[idx].note = note;
+    }
+    showToast('已更新');
+  }else{
+    records.push({
+      id: 's' + Date.now(),
+      date: date,
+      time: time,
+      title: title,
+      note: note
+    });
+    showToast('日程已添加 ✨');
+  }
+  saveSchedData(records);
+  // 切换到该日程的日期
+  schedSelectedDate = parseKeyToDate(date);
+  closeSchedModal();
+  renderSchedAll();
+}
+
+function deleteSchedRecord(id){
+  if(!confirm('确定删除这条日程吗？')) return;
+  const records = loadSchedData().filter(r => r.id !== id);
+  saveSchedData(records);
+  showToast('已删除');
+  closeSchedModal();
+  renderSchedAll();
+}
+
+function initSched(){
+  document.getElementById('schedAddBtn').onclick = () => openSchedModal();
+  document.getElementById('schedCloseBtn').onclick = closeSchedModal;
+  document.getElementById('schedCancelBtn').onclick = closeSchedModal;
+  document.getElementById('schedModal').onclick = e => {
+    if(e.target.id === 'schedModal') closeSchedModal();
+  };
+  document.getElementById('schedSaveFormBtn').onclick = saveSchedForm;
+  document.getElementById('schedDelBtn').onclick = () => {
+    if(schedEditId) deleteSchedRecord(schedEditId);
+  };
+  document.getElementById('schedSearch').oninput = e => {
+    schedSearch = e.target.value;
+    renderSchedList();
+  };
+  document.querySelectorAll('.sched-quick-btn').forEach(btn => {
+    btn.onclick = () => {
+      schedFilter = btn.dataset.sfilter;
+      document.querySelectorAll('.sched-quick-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderSchedList();
+      renderSchedSummary();
+    };
+  });
+}
+
 function initSettings(){
   document.getElementById('settingsBtn').onclick = openSettings;
   document.getElementById('closeSettings').onclick = closeSettings;
@@ -2912,12 +3396,14 @@ initPeriod();
 initTodo();
 initDiary();
 initMoney();
+initSched();
 initSettings();
 renderAll();
 renderPeriodAll();
 renderTodoAll();
 renderDiaryAll();
 renderMoneyAll();
+renderSchedAll();
 
 // 启动云同步（延迟1秒，让页面先加载完）
 setTimeout(initCloudSync, 1000);
