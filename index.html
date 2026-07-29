@@ -777,6 +777,186 @@
   .diary-empty-icon{font-size:40px;margin-bottom:8px}
   .dot-mood{width:9px;height:9px;border-radius:50%;display:inline-block}
 
+  /* ===== 人情记账样式 ===== */
+  .money-top-card{padding:14px}
+  .money-date-row{margin-bottom:10px}
+  .money-date-input{
+    width:100%;
+    border:2px solid var(--pink-soft);
+    border-radius:12px;
+    padding:11px 14px;
+    font-size:15px;font-weight:700;
+    color:var(--text);
+    background:#fff;
+    outline:none;
+  }
+  .money-filter-row{
+    display:flex;gap:8px;margin-bottom:10px;
+  }
+  .money-filter-btn{
+    flex:1;
+    text-align:center;
+    padding:8px 0;
+    border-radius:11px;
+    font-size:12px;font-weight:700;
+    color:var(--text-soft);
+    background:#fff;
+    border:1.5px solid var(--pink-soft);
+    cursor:pointer;
+    transition:all .15s;
+  }
+  .money-filter-btn:active{transform:scale(.96)}
+  .money-filter-btn.active{
+    background:linear-gradient(135deg,var(--pink-light),var(--pink));
+    color:#fff;
+    border-color:var(--pink);
+  }
+  .money-search-row{margin-bottom:12px}
+  .money-search-input{
+    width:100%;
+    border:2px solid var(--pink-soft);
+    border-radius:12px;
+    padding:10px 14px;
+    font-size:14px;
+    color:var(--text);
+    background:#fff;
+    outline:none;
+  }
+  .money-search-input:focus{border-color:var(--pink)}
+  .money-search-input::placeholder{color:var(--text-light)}
+  .money-summary{
+    display:grid;grid-template-columns:1fr 1fr;gap:8px;
+  }
+  .ms-item{
+    background:linear-gradient(135deg,var(--cream),#eaf8f4);
+    border-radius:12px;
+    padding:10px 8px;
+    text-align:center;
+  }
+  .ms-label{font-size:10px;color:var(--text-light);display:block;margin-bottom:3px}
+  .ms-val{font-size:17px;font-weight:800;color:var(--pink-deep)}
+  .money-add-btn{
+    width:100%;
+    border:none;
+    padding:13px;
+    border-radius:14px;
+    background:linear-gradient(135deg,var(--pink-light),var(--pink));
+    color:#fff;
+    font-size:15px;font-weight:800;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:5px;
+    box-shadow:var(--shadow);
+    margin-bottom:12px;
+    transition:all .15s;
+  }
+  .money-add-btn:active{transform:scale(.98)}
+  .money-list-card{padding:0 0 8px}
+  .money-list-wrap{padding:4px 14px 8px}
+  .money-group{margin-bottom:16px}
+  .money-group:last-child{margin-bottom:4px}
+  .money-group-head{
+    font-size:14px;font-weight:800;
+    color:var(--pink-deep);
+    padding:8px 0 6px;
+    border-bottom:2px solid var(--pink-soft);
+    margin-bottom:6px;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .money-group-head .gh-total{
+    font-size:12px;color:var(--text-light);font-weight:700;
+  }
+  .money-item{
+    display:flex;align-items:center;gap:10px;
+    padding:11px 0;
+    border-bottom:1px solid #eef5f8;
+    transition:all .15s;
+  }
+  .money-item:active{background:var(--pink-soft)}
+  .money-item:last-child{border-bottom:none}
+  .money-seq{
+    width:24px;height:24px;
+    border-radius:50%;
+    background:linear-gradient(135deg,var(--pink-soft),#eaf8f4);
+    color:var(--pink-deep);
+    font-size:12px;font-weight:800;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .money-name{
+    flex:1;
+    font-size:15px;font-weight:700;
+    color:var(--text);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .money-amount{
+    font-size:16px;font-weight:800;
+    color:var(--pink-deep);
+  }
+  .money-empty{
+    text-align:center;padding:30px 10px;
+    color:var(--text-light);font-size:13px;
+  }
+  .money-empty-icon{font-size:40px;margin-bottom:8px}
+
+  /* 人情录入弹窗 */
+  .money-modal-card{max-width:380px}
+  .money-modal-body{padding:0 4px}
+  .money-field{margin-bottom:14px}
+  .money-field label{
+    display:block;
+    font-size:13px;color:var(--text);
+    font-weight:700;margin-bottom:6px;
+  }
+  .money-field input{
+    width:100%;
+    border:2px solid var(--pink-soft);
+    border-radius:12px;
+    padding:11px 14px;
+    font-size:15px;font-weight:600;
+    color:var(--text);
+    background:#fff;
+    outline:none;
+    transition:border-color .2s;
+  }
+  .money-field input:focus{border-color:var(--pink)}
+  .money-field input::placeholder{color:var(--text-light);font-weight:400}
+  .money-modal-btns{
+    display:flex;gap:10px;margin-top:18px;
+  }
+  .money-btn-cancel{
+    flex:1;
+    border:none;
+    padding:12px;
+    border-radius:12px;
+    background:#f0f0f0;
+    color:var(--text-light);
+    font-size:14px;font-weight:700;
+    cursor:pointer;
+  }
+  .money-btn-save{
+    flex:1;
+    border:none;
+    padding:12px;
+    border-radius:12px;
+    background:linear-gradient(135deg,var(--pink-light),var(--pink));
+    color:#fff;
+    font-size:14px;font-weight:800;
+    cursor:pointer;
+    box-shadow:var(--shadow-soft);
+  }
+  .money-btn-cancel:active,.money-btn-save:active{transform:scale(.96)}
+  .money-btn-del{
+    width:100%;
+    border:none;
+    padding:10px;
+    border-radius:12px;
+    background:#eaf5f0;color:#4a9a78;
+    border:1.5px solid #c8e8d8;
+    font-size:13px;font-weight:700;
+    cursor:pointer;margin-top:10px;
+  }
+  .money-btn-del:active{transform:scale(.96)}
+
   /* ===== 设置弹窗 ===== */
   .modal-mask{
     position:fixed;inset:0;
@@ -1084,23 +1264,73 @@
     </div>
   </div>
 
-  <!-- 记账栏目 -->
+  <!-- 记账栏目 - 人情往来 -->
   <div class="tab-content" id="tab-money">
     <div class="header">
       <div class="title-wrap">
         <div>
-          <h1><span class="bow">🌿</span> 小账本</h1>
-          <div class="sub">记账使我富有～</div>
+          <h1><span class="bow">🌿</span> 人情往来</h1>
+          <div class="sub">记录每一份心意～</div>
         </div>
       </div>
-      <div class="date-pill">💰</div>
+      <div class="date-pill" id="moneyTotalPill">0元</div>
     </div>
-    <div class="card">
-      <div class="placeholder-card">
-        <div class="p-icon">💰</div>
-        <div class="p-title">记账本</div>
-        <div class="p-desc">记录每一笔收入支出<br>月底清清楚楚</div>
-        <div class="p-tag">💝 敬请期待</div>
+
+    <!-- 顶部时间区 + 筛选 -->
+    <div class="card money-top-card">
+      <div class="money-date-row">
+        <input type="date" id="moneyDate" class="money-date-input">
+      </div>
+      <div class="money-filter-row">
+        <div class="money-filter-btn active" data-filter="today">今日</div>
+        <div class="money-filter-btn" data-filter="week">本周</div>
+        <div class="money-filter-btn" data-filter="all">全部</div>
+      </div>
+      <div class="money-search-row">
+        <input type="text" id="moneySearch" class="money-search-input" placeholder="🔍 搜索人名">
+      </div>
+      <div class="money-summary" id="moneySummary">
+        <div class="ms-item"><span class="ms-label">当日合计</span><span class="ms-val" id="moneyDayTotal">0 元</span></div>
+        <div class="ms-item"><span class="ms-label">总支出</span><span class="ms-val" id="moneyAllTotal">0 元</span></div>
+      </div>
+    </div>
+
+    <!-- 新增按钮 -->
+    <button class="money-add-btn" id="moneyAddBtn">
+      <span>＋</span> 新增人情
+    </button>
+
+    <!-- 账目列表 -->
+    <div class="card money-list-card">
+      <div id="moneyList" class="money-list-wrap"></div>
+    </div>
+  </div>
+
+  <!-- 人情录入弹窗 -->
+  <div class="modal-mask" id="moneyModal">
+    <div class="modal-card money-modal-card">
+      <div class="modal-head">
+        <span class="modal-title" id="moneyModalTitle">💐 新增人情</span>
+        <span class="modal-close" id="moneyCloseBtn">✕</span>
+      </div>
+      <div class="modal-body money-modal-body">
+        <div class="money-field">
+          <label>往来时间</label>
+          <input type="date" id="moneyFormDate">
+        </div>
+        <div class="money-field">
+          <label>对方姓名</label>
+          <input type="text" id="moneyFormName" placeholder="如：王阿姨" maxlength="20">
+        </div>
+        <div class="money-field">
+          <label>礼金金额（元）</label>
+          <input type="number" id="moneyFormAmount" placeholder="只填数字" min="0" step="1" inputmode="numeric">
+        </div>
+        <div class="money-modal-btns">
+          <button class="money-btn-cancel" id="moneyCancelBtn">取消</button>
+          <button class="money-btn-save" id="moneySaveFormBtn">保存</button>
+        </div>
+        <button class="money-btn-del" id="moneyDelBtn" style="display:none">🗑️ 删除此条</button>
       </div>
     </div>
   </div>
@@ -1314,6 +1544,7 @@ const PERIOD_KEY = 'workbuddy_period_v1';
 const CYCLE_KEY = 'workbuddy_period_cycle';
 const TODO_KEY = 'workbuddy_todo_v1';
 const DIARY_KEY = 'workbuddy_diary_v1';
+const MONEY_KEY = 'workbuddy_money_v1';
 
 // 云同步配置 - jsonblob 免费云存储
 const CLOUD_BLOB_ID = '019faede-32d6-72ae-a629-ea9be99a4443';
@@ -1350,6 +1581,11 @@ function saveDiaryData(d){
   localStorage.setItem(DIARY_KEY, JSON.stringify(d));
   cloudSync();
 }
+function loadMoneyData(){ return JSON.parse(localStorage.getItem(MONEY_KEY) || '[]'); }
+function saveMoneyData(arr){
+  localStorage.setItem(MONEY_KEY, JSON.stringify(arr));
+  cloudSync();
+}
 
 // 同步状态
 let syncTimer = null;
@@ -1363,6 +1599,7 @@ function collectAllData(){
     cycle: getCycle(),
     todos: loadTodoData(),
     diary: loadDiaryData(),
+    money: loadMoneyData(),
     lastSync: new Date().toISOString()
   };
 }
@@ -1374,6 +1611,7 @@ function restoreFromCloud(data){
     if(data.cycle) localStorage.setItem(CYCLE_KEY, String(data.cycle));
     if(data.todos) localStorage.setItem(TODO_KEY, JSON.stringify(data.todos));
     if(data.diary) localStorage.setItem(DIARY_KEY, JSON.stringify(data.diary));
+    if(data.money) localStorage.setItem(MONEY_KEY, JSON.stringify(data.money));
 }
 
 // 自动云同步（防抖，2秒内的多次保存只上传一次）
@@ -1448,7 +1686,7 @@ async function initCloudSync(){
     localStorage.setItem('workbuddy_last_sync', new Date().toISOString());
   }else{
     // 云端为空，把本地数据上传
-    if(Object.keys(loadData()).length > 0 || loadPeriodData().length > 0 || loadTodoData().length > 0 || Object.keys(loadDiaryData()).length > 0){
+    if(Object.keys(loadData()).length > 0 || loadPeriodData().length > 0 || loadTodoData().length > 0 || Object.keys(loadDiaryData()).length > 0 || loadMoneyData().length > 0){
       doCloudSync();
     }else{
       updateSyncStatus('offline');
@@ -1511,6 +1749,10 @@ function switchTab(tab){
   // 日记栏目需要渲染
   if(tab === 'diary'){
     renderDiaryAll();
+  }
+  // 记账栏目需要渲染
+  if(tab === 'money'){
+    renderMoneyAll();
   }
 }
 
@@ -1998,11 +2240,13 @@ function importData(file){
       if(data.cycle) saveCycle(data.cycle);
       if(data.todos) saveTodoData(data.todos);
       if(data.diary) saveDiaryData(data.diary);
+      if(data.money) saveMoneyData(data.money);
       showToast('数据导入成功 ✨');
       renderAll();
       renderPeriodAll();
       renderTodoAll();
       renderDiaryAll();
+      renderMoneyAll();
       updateDataCounts();
       closeSettings();
     }catch(err){
@@ -2019,12 +2263,14 @@ function clearAllData(){
   localStorage.removeItem(CYCLE_KEY);
   localStorage.removeItem(TODO_KEY);
   localStorage.removeItem(DIARY_KEY);
+  localStorage.removeItem(MONEY_KEY);
   localStorage.removeItem('workbuddy_last_sync');
   showToast('已清空所有数据');
   renderAll();
   renderPeriodAll();
   renderTodoAll();
   renderDiaryAll();
+  renderMoneyAll();
   updateDataCounts();
   closeSettings();
 }
@@ -2374,6 +2620,228 @@ function initDiary(){
   };
 }
 
+/* ===== 人情记账功能 ===== */
+let moneyFilter = 'today';
+let moneySearch = '';
+let moneyEditId = null;
+
+function renderMoneyAll(){
+  const dateInput = document.getElementById('moneyDate');
+  if(!dateInput.value) dateInput.value = fmtKey(today);
+  renderMoneyList();
+  renderMoneySummary();
+}
+
+function getFilteredRecords(){
+  let records = loadMoneyData();
+  const search = moneySearch.trim();
+
+  // 搜索过滤
+  if(search){
+    records = records.filter(r => r.name.includes(search));
+  }
+
+  // 日期筛选
+  if(moneyFilter === 'today'){
+    const todayKey = fmtKey(today);
+    records = records.filter(r => r.date === todayKey);
+  }else if(moneyFilter === 'week'){
+    const now = new Date(today);
+    const day = now.getDay();
+    const monday = new Date(now);
+    monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
+    const sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6);
+    records = records.filter(r => {
+      const d = parseKeyToDate(r.date);
+      return d >= monday && d <= sunday;
+    });
+  }
+  // all 不筛选
+
+  return records;
+}
+
+function renderMoneyList(){
+  const wrap = document.getElementById('moneyList');
+  const records = getFilteredRecords();
+
+  if(records.length === 0){
+    wrap.innerHTML = `
+      <div class="money-empty">
+        <div class="money-empty-icon">💐</div>
+        <div>还没有人情记录<br>点击下方「新增人情」开始记录</div>
+      </div>`;
+    return;
+  }
+
+  // 按日期分组
+  const groups = {};
+  records.forEach(r => {
+    if(!groups[r.date]) groups[r.date] = [];
+    groups[r.date].push(r);
+  });
+
+  // 日期排序（新的在前）
+  const sortedDates = Object.keys(groups).sort().reverse();
+
+  wrap.innerHTML = '';
+  sortedDates.forEach(date => {
+    const group = groups[date];
+    const total = group.reduce((s, r) => s + r.amount, 0);
+    const d = parseKeyToDate(date);
+    const dateStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+
+    const groupDiv = document.createElement('div');
+    groupDiv.className = 'money-group';
+    let itemsHtml = '';
+    group.forEach((r, idx) => {
+      itemsHtml += `
+        <div class="money-item" data-id="${r.id}">
+          <div class="money-seq">${idx+1}</div>
+          <div class="money-name">${escapeHtml(r.name)}</div>
+          <div class="money-amount">${r.amount}元</div>
+        </div>`;
+    });
+    groupDiv.innerHTML = `
+      <div class="money-group-head">
+        <span>【${dateStr}】</span>
+        <span class="gh-total">合计 ${total}元</span>
+      </div>
+      ${itemsHtml}
+    `;
+    // 长按编辑
+    groupDiv.querySelectorAll('.money-item').forEach(el => {
+      let pressTimer = null;
+      el.addEventListener('touchstart', () => {
+        pressTimer = setTimeout(() => {
+          openMoneyModal(el.dataset.id);
+        }, 600);
+      });
+      el.addEventListener('touchend', () => clearTimeout(pressTimer));
+      el.addEventListener('touchmove', () => clearTimeout(pressTimer));
+      el.onclick = () => {
+        // 桌面端点击也触发编辑
+        if(pressTimer === null) return;
+      };
+    });
+    wrap.appendChild(groupDiv);
+  });
+}
+
+function renderMoneySummary(){
+  const allRecords = loadMoneyData();
+  const allTotal = allRecords.reduce((s, r) => s + r.amount, 0);
+  document.getElementById('moneyAllTotal').textContent = allTotal + ' 元';
+  document.getElementById('moneyTotalPill').textContent = allTotal + '元';
+
+  // 当日合计（顶部日期）
+  const selectedDate = document.getElementById('moneyDate').value;
+  const dayRecords = allRecords.filter(r => r.date === selectedDate);
+  const dayTotal = dayRecords.reduce((s, r) => s + r.amount, 0);
+  document.getElementById('moneyDayTotal').textContent = dayTotal + ' 元';
+}
+
+function openMoneyModal(id){
+  moneyEditId = id || null;
+  const modal = document.getElementById('moneyModal');
+  const title = document.getElementById('moneyModalTitle');
+
+  if(id){
+    // 编辑
+    const records = loadMoneyData();
+    const r = records.find(x => x.id === id);
+    if(!r) return;
+    title.textContent = '✏️ 编辑人情';
+    document.getElementById('moneyFormDate').value = r.date;
+    document.getElementById('moneyFormName').value = r.name;
+    document.getElementById('moneyFormAmount').value = r.amount;
+    document.getElementById('moneyDelBtn').style.display = '';
+  }else{
+    // 新增
+    title.textContent = '💐 新增人情';
+    document.getElementById('moneyFormDate').value = document.getElementById('moneyDate').value;
+    document.getElementById('moneyFormName').value = '';
+    document.getElementById('moneyFormAmount').value = '';
+    document.getElementById('moneyDelBtn').style.display = 'none';
+  }
+  modal.classList.add('show');
+}
+
+function closeMoneyModal(){
+  document.getElementById('moneyModal').classList.remove('show');
+  moneyEditId = null;
+}
+
+function saveMoneyForm(){
+  const date = document.getElementById('moneyFormDate').value;
+  const name = document.getElementById('moneyFormName').value.trim();
+  const amount = parseInt(document.getElementById('moneyFormAmount').value, 10);
+
+  if(!date){ showToast('请选择日期'); return; }
+  if(!name){ showToast('请输入姓名'); return; }
+  if(!amount || amount < 0){ showToast('请输入有效金额'); return; }
+
+  const records = loadMoneyData();
+  if(moneyEditId){
+    // 编辑
+    const idx = records.findIndex(x => x.id === moneyEditId);
+    if(idx >= 0){
+      records[idx].date = date;
+      records[idx].name = name;
+      records[idx].amount = amount;
+    }
+    showToast('已更新');
+  }else{
+    // 新增
+    records.push({
+      id: 'm' + Date.now(),
+      date: date,
+      name: name,
+      amount: amount
+    });
+    showToast('已记录 ' + name + ' ' + amount + '元');
+  }
+  saveMoneyData(records);
+  closeMoneyModal();
+  renderMoneyAll();
+}
+
+function deleteMoneyRecord(id){
+  if(!confirm('确定删除这条记录吗？')) return;
+  const records = loadMoneyData().filter(r => r.id !== id);
+  saveMoneyData(records);
+  showToast('已删除');
+  closeMoneyModal();
+  renderMoneyAll();
+}
+
+function initMoney(){
+  document.getElementById('moneyAddBtn').onclick = () => openMoneyModal();
+  document.getElementById('moneyCloseBtn').onclick = closeMoneyModal;
+  document.getElementById('moneyCancelBtn').onclick = closeMoneyModal;
+  document.getElementById('moneyModal').onclick = e => {
+    if(e.target.id === 'moneyModal') closeMoneyModal();
+  };
+  document.getElementById('moneySaveFormBtn').onclick = saveMoneyForm;
+  document.getElementById('moneyDelBtn').onclick = () => {
+    if(moneyEditId) deleteMoneyRecord(moneyEditId);
+  };
+  document.getElementById('moneyDate').onchange = renderMoneySummary;
+  document.getElementById('moneySearch').oninput = e => {
+    moneySearch = e.target.value;
+    renderMoneyList();
+  };
+  document.querySelectorAll('.money-filter-btn').forEach(btn => {
+    btn.onclick = () => {
+      moneyFilter = btn.dataset.filter;
+      document.querySelectorAll('.money-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderMoneyList();
+    };
+  });
+}
+
 function initSettings(){
   document.getElementById('settingsBtn').onclick = openSettings;
   document.getElementById('closeSettings').onclick = closeSettings;
@@ -2443,11 +2911,13 @@ initNav();
 initPeriod();
 initTodo();
 initDiary();
+initMoney();
 initSettings();
 renderAll();
 renderPeriodAll();
 renderTodoAll();
 renderDiaryAll();
+renderMoneyAll();
 
 // 启动云同步（延迟1秒，让页面先加载完）
 setTimeout(initCloudSync, 1000);
