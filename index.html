@@ -598,6 +598,20 @@
   .vaccine-tag.free{background:#e8f5ee;color:#4a9a78}
   .vaccine-tag.paid{background:#fff3e0;color:#e8a04a}
   .vaccine-dose{display:inline-block;font-size:10px;font-weight:600;color:var(--text-light);margin-left:2px}
+  .vaccine-filter{
+    display:flex;gap:8px;padding:0 14px 10px;
+  }
+  .vaccine-filter-btn{
+    flex:1;padding:8px;border-radius:10px;border:1.5px solid var(--pink-soft);
+    background:#fff;color:var(--text);font-size:12px;font-weight:700;cursor:pointer;
+  }
+  .vaccine-filter-btn.active{background:linear-gradient(135deg,var(--pink-light),var(--pink));color:#fff;border-color:transparent}
+  .vaccine-section-title{
+    margin:6px 14px 8px;padding:6px 10px;border-radius:8px;
+    font-size:13px;font-weight:800;display:flex;align-items:center;gap:6px;
+  }
+  .pending-title{background:#fff8e1;color:#e8a04a}
+  .done-title{background:#e8f5ee;color:#4a9a78}
 
   .mem-modal-card .modal-body{display:flex;flex-direction:column;gap:10px}
   .mem-form-row{display:flex;flex-direction:column;gap:4px}
@@ -2258,6 +2272,12 @@
         <div class="card-action" id="memAddVaccine">＋添加</div>
       </div>
       <div class="mem-vaccine-soon" id="memVaccineSoon"></div>
+      <div class="vaccine-progress" id="vaccineProgress"></div>
+      <div class="vaccine-filter" id="vaccineFilter">
+        <button class="vaccine-filter-btn active" data-vfilter="all">全部</button>
+        <button class="vaccine-filter-btn" data-vfilter="free">免费</button>
+        <button class="vaccine-filter-btn" data-vfilter="paid">自费</button>
+      </div>
       <div class="mem-list" id="memVaccineList">
         <div class="mem-empty">还没有疫苗记录，点击添加开始记录～</div>
       </div>
@@ -4697,36 +4717,43 @@ const DEFAULT_MEM_PROFILE = {
 };
 
 const DEFAULT_VACCINES = [
-  {name:'乙肝疫苗（第一针）',date:'',done:false,note:'出生24小时内',age:'出生',dose:1,free:true},
-  {name:'卡介苗',date:'',done:false,note:'出生时',age:'出生',dose:1,free:true},
-  {name:'乙肝疫苗（第二针）',date:'',done:false,note:'1月龄',age:'1月龄',dose:2,free:true},
-  {name:'五联疫苗（第一针）',date:'',done:false,note:'2月龄',age:'2月龄',dose:1,free:false},
-  {name:'口服轮状病毒疫苗',date:'',done:false,note:'2月龄',age:'2月龄',dose:1,free:false},
-  {name:'十三价肺炎疫苗（第一针）',date:'',done:false,note:'2月龄',age:'2月龄',dose:1,free:false},
-  {name:'脊灰灭活疫苗（第一针）',date:'',done:false,note:'2月龄',age:'2月龄',dose:1,free:true},
-  {name:'五联疫苗（第二针）',date:'',done:false,note:'3月龄',age:'3月龄',dose:2,free:false},
-  {name:'脊灰灭活疫苗（第二针）',date:'',done:false,note:'3月龄',age:'3月龄',dose:2,free:true},
-  {name:'十三价肺炎疫苗（第二针）',date:'',done:false,note:'4月龄',age:'4月龄',dose:2,free:false},
-  {name:'百白破疫苗（第一针）',date:'',done:false,note:'3月龄',age:'3月龄',dose:1,free:true},
-  {name:'五联疫苗（第三针）',date:'',done:false,note:'5月龄',age:'5月龄',dose:3,free:false},
-  {name:'百白破疫苗（第二针）',date:'',done:false,note:'4月龄',age:'4月龄',dose:2,free:true},
-  {name:'百白破疫苗（第三针）',date:'',done:false,note:'5月龄',age:'5月龄',dose:3,free:true},
-  {name:'乙肝疫苗（第三针）',date:'',done:false,note:'6月龄',age:'6月龄',dose:3,free:true},
-  {name:'A群流脑疫苗（第一针）',date:'',done:false,note:'6月龄',age:'6月龄',dose:1,free:true},
-  {name:'麻腮风疫苗（第一针）',date:'',done:false,note:'8月龄',age:'8月龄',dose:1,free:true},
-  {name:'乙脑减毒活疫苗',date:'',done:false,note:'8月龄',age:'8月龄',dose:1,free:true},
-  {name:'十三价肺炎疫苗（第三针）',date:'',done:false,note:'12月龄',age:'12月龄',dose:3,free:false},
-  {name:'水痘疫苗（第一针）',date:'',done:false,note:'12月龄',age:'12月龄',dose:1,free:false},
-  {name:'A群流脑疫苗（第二针）',date:'',done:false,note:'9月龄',age:'9月龄',dose:2,free:true},
-  {name:'甲肝灭活疫苗（第一针）',date:'',done:false,note:'18月龄',age:'18月龄',dose:1,free:false},
-  {name:'麻腮风疫苗（第二针）',date:'',done:false,note:'18月龄',age:'18月龄',dose:2,free:true},
-  {name:'百白破疫苗（第四针）',date:'',done:false,note:'18月龄',age:'18月龄',dose:4,free:true},
-  {name:'甲肝灭活疫苗（第二针）',date:'',done:false,note:'24月龄',age:'24月龄',dose:2,free:false},
-  {name:'乙脑减毒活疫苗（第二针）',date:'',done:false,note:'24月龄',age:'24月龄',dose:2,free:true},
-  {name:'A群C群流脑疫苗（第一针）',date:'',done:false,note:'3岁',age:'3岁',dose:1,free:true},
-  {name:'水痘疫苗（第二针）',date:'',done:false,note:'4岁',age:'4岁',dose:2,free:false},
-  {name:'脊灰减毒活疫苗（第四针）',date:'',done:false,note:'4岁',age:'4岁',dose:4,free:true},
-  {name:'A群C群流脑疫苗（第二针）',date:'',done:false,note:'6岁',age:'6岁',dose:2,free:true}
+  // ===== 免费疫苗（国家免疫规划）=====
+  {name:'乙肝疫苗（第1针）',date:'',done:false,note:'出生24小时内',age:'出生24小时内',dose:1,free:true,disease:'预防乙型肝炎'},
+  {name:'卡介苗',date:'',done:false,note:'出生时',age:'出生',dose:1,free:true,disease:'预防结核性脑膜炎'},
+  {name:'乙肝疫苗（第2针）',date:'',done:false,note:'1月龄',age:'1月龄',dose:2,free:true,disease:'预防乙型肝炎'},
+  {name:'脊灰灭活疫苗（IPV 第1针）',date:'',done:false,note:'2月龄',age:'2月龄',dose:1,free:true,disease:'预防脊髓灰质炎'},
+  {name:'脊灰减毒活疫苗（bOPV 第1剂）',date:'',done:false,note:'3月龄',age:'3月龄',dose:1,free:true,disease:'预防脊髓灰质炎'},
+  {name:'百白破疫苗（第1针）',date:'',done:false,note:'3月龄',age:'3月龄',dose:1,free:true,disease:'预防百日咳/白喉/破伤风'},
+  {name:'脊灰减毒活疫苗（bOPV 第2剂）',date:'',done:false,note:'4月龄',age:'4月龄',dose:2,free:true,disease:'预防脊髓灰质炎'},
+  {name:'百白破疫苗（第2针）',date:'',done:false,note:'4月龄',age:'4月龄',dose:2,free:true,disease:'预防百日咳/白喉/破伤风'},
+  {name:'百白破疫苗（第3针）',date:'',done:false,note:'5月龄',age:'5月龄',dose:3,free:true,disease:'预防百日咳/白喉/破伤风'},
+  {name:'乙肝疫苗（第3针）',date:'',done:false,note:'6月龄',age:'6月龄',dose:3,free:true,disease:'预防乙型肝炎'},
+  {name:'A群流脑多糖疫苗（第1针）',date:'',done:false,note:'6月龄',age:'6月龄',dose:1,free:true,disease:'预防A群流行性脑脊髓膜炎'},
+  {name:'麻腮风疫苗（第1针）',date:'',done:false,note:'8月龄',age:'8月龄',dose:1,free:true,disease:'预防麻疹/腮腺炎/风疹'},
+  {name:'乙脑减毒活疫苗（第1针）',date:'',done:false,note:'8月龄',age:'8月龄',dose:1,free:true,disease:'预防流行性乙型脑炎'},
+  {name:'A群流脑多糖疫苗（第2针）',date:'',done:false,note:'9月龄',age:'9月龄',dose:2,free:true,disease:'预防A群流行性脑脊髓膜炎'},
+  {name:'百白破疫苗（加强针）',date:'',done:false,note:'18月龄',age:'18月龄',dose:4,free:true,disease:'预防百日咳/白喉/破伤风'},
+  {name:'麻腮风疫苗（第2针）',date:'',done:false,note:'18月龄',age:'18月龄',dose:2,free:true,disease:'预防麻疹/腮腺炎/风疹'},
+  {name:'甲肝减毒活疫苗',date:'',done:false,note:'18月龄',age:'18月龄',dose:1,free:true,disease:'预防甲型肝炎'},
+  {name:'乙脑减毒活疫苗（第2针）',date:'',done:false,note:'2周岁',age:'2周岁',dose:2,free:true,disease:'预防流行性乙型脑炎'},
+  {name:'A+C群流脑多糖疫苗（第1针）',date:'',done:false,note:'3周岁',age:'3周岁',dose:1,free:true,disease:'预防A/C群流行性脑脊髓膜炎'},
+  {name:'脊灰减毒活疫苗（bOPV 加强剂）',date:'',done:false,note:'4周岁',age:'4周岁',dose:3,free:true,disease:'预防脊髓灰质炎'},
+  {name:'A+C群流脑多糖疫苗（第2针）',date:'',done:false,note:'6周岁',age:'6周岁',dose:2,free:true,disease:'预防A/C群流行性脑脊髓膜炎'},
+  {name:'白破二联疫苗',date:'',done:false,note:'6周岁',age:'6周岁',dose:1,free:true,disease:'预防白喉/破伤风'},
+
+  // ===== 自费疫苗（二类疫苗）=====
+  {name:'五联疫苗（第1针）',date:'',done:false,note:'2月龄',age:'2月龄',dose:1,free:false,disease:'替代百白破+脊灰+Hib'},
+  {name:'五联疫苗（第2针）',date:'',done:false,note:'3月龄',age:'3月龄',dose:2,free:false,disease:'替代百白破+脊灰+Hib'},
+  {name:'五联疫苗（第3针）',date:'',done:false,note:'5月龄',age:'5月龄',dose:3,free:false,disease:'替代百白破+脊灰+Hib'},
+  {name:'五联疫苗（加强针）',date:'',done:false,note:'18月龄',age:'18月龄',dose:4,free:false,disease:'替代百白破+脊灰+Hib'},
+  {name:'口服轮状病毒疫苗',date:'',done:false,note:'2月龄',age:'2月龄',dose:1,free:false,disease:'预防轮状病毒腹泻'},
+  {name:'十三价肺炎疫苗（第1针）',date:'',done:false,note:'2月龄',age:'2月龄',dose:1,free:false,disease:'预防肺炎球菌性疾病'},
+  {name:'十三价肺炎疫苗（第2针）',date:'',done:false,note:'4月龄',age:'4月龄',dose:2,free:false,disease:'预防肺炎球菌性疾病'},
+  {name:'十三价肺炎疫苗（第3针）',date:'',done:false,note:'12月龄',age:'12月龄',dose:3,free:false,disease:'预防肺炎球菌性疾病'},
+  {name:'水痘疫苗（第1针）',date:'',done:false,note:'12月龄',age:'12月龄',dose:1,free:false,disease:'预防水痘'},
+  {name:'水痘疫苗（第2针）',date:'',done:false,note:'4周岁',age:'4周岁',dose:2,free:false,disease:'预防水痘'},
+  {name:'甲肝灭活疫苗（第1针）',date:'',done:false,note:'18月龄',age:'18月龄',dose:1,free:false,disease:'预防甲型肝炎'},
+  {name:'甲肝灭活疫苗（第2针）',date:'',done:false,note:'24月龄',age:'24月龄',dose:2,free:false,disease:'预防甲型肝炎'}
 ];
 
 function loadMemProfile(){ return JSON.parse(localStorage.getItem(MEMORY_PROFILE_KEY) || JSON.stringify(DEFAULT_MEM_PROFILE)); }
@@ -4756,6 +4783,7 @@ function calcAge(birthStr){
 }
 
 let memChartType = 'height';
+let vaccineFilter = 'all';
 
 function renderMemoryAll(){
   renderMemProfile();
@@ -4897,60 +4925,89 @@ function calcAgeAt(dateStr){
 function renderMemVaccineList(){
   const wrap = document.getElementById('memVaccineList');
   const soonEl = document.getElementById('memVaccineSoon');
+  const progressEl = document.getElementById('vaccineProgress');
   if(!wrap) return;
   const records = loadMemVaccine();
-  const doneCount = records.filter(r => r.done).length;
-  const totalCount = records.length;
-  const pending = records.filter(r => !r.done);
-  const done = records.filter(r => r.done);
+
+  // 根据筛选过滤
+  const filtered = vaccineFilter === 'all' ? records : records.filter(r => vaccineFilter === 'free' ? r.free : !r.free);
+  const done = filtered.filter(r => r.done);
+  const pending = filtered.filter(r => !r.done);
+  const doneCount = done.length;
+  const totalCount = filtered.length;
 
   // 下一个待接种
-  const firstPending = pending[0];
+  const firstPending = records.find(r => !r.done);
   if(firstPending && soonEl){
-    soonEl.innerHTML = `<b>💉 ${firstPending.name}</b><br>建议接种时间：${firstPending.note} ${firstPending.free ? '· 🆓免费' : '· 💰自费'}`;
+    soonEl.innerHTML = `<b>💉 ${firstPending.name}</b><br>建议接种时间：${firstPending.note}`;
   }else if(soonEl){
     soonEl.innerHTML = '';
   }
 
+  // 整体进度条（全部数据）
+  if(progressEl){
+    const allDone = records.filter(r => r.done).length;
+    const allTotal = records.length;
+    progressEl.innerHTML = `<div class="vp-text">已完成 <b>${allDone}</b> / ${allTotal} 剂 · 未接种 ${allTotal - allDone} 剂</div>
+      <div class="vp-bar"><div class="vp-fill" style="width:${allTotal?Math.round(allDone/allTotal*100):0}%"></div></div>`;
+  }
+
   if(totalCount === 0){
-    wrap.innerHTML = '<div class="mem-empty">还没有疫苗记录，点击添加开始记录～</div>';
+    wrap.innerHTML = `<div class="mem-empty">${vaccineFilter==='free'?'暂无免费疫苗':(vaccineFilter==='paid'?'暂无自费疫苗':'还没有疫苗记录，点击添加开始记录～')}</div>`;
     return;
   }
 
-  // 进度条
-  let html = `<div class="vaccine-progress">
-    <div class="vp-text">已完成 <b>${doneCount}</b> / ${totalCount} 剂</div>
-    <div class="vp-bar"><div class="vp-fill" style="width:${Math.round(doneCount/totalCount*100)}%"></div></div>
-  </div>`;
+  let html = '';
 
-  // 按月龄分组
-  const ageOrder = ['出生','1月龄','2月龄','3月龄','4月龄','5月龄','6月龄','9月龄','8月龄','12月龄','18月龄','24月龄','3岁','4岁','6岁'];
+  // 未接种分组
+  if(pending.length > 0){
+    html += `<div class="vaccine-section-title pending-title">⏳ 待接种 (${pending.length})</div>`;
+    html += renderVaccineGroup(pending);
+  }
+
+  // 已接种分组
+  if(done.length > 0){
+    html += `<div class="vaccine-section-title done-title">✅ 已接种 (${done.length})</div>`;
+    html += renderVaccineGroup(done, true);
+  }
+
+  wrap.innerHTML = html;
+}
+
+// 渲染疫苗分组（按时间排序）
+function renderVaccineGroup(list, isDoneGroup){
+  const ageOrder = ['出生24小时内','出生','1月龄','2月龄','3月龄','4月龄','5月龄','6月龄','8月龄','9月龄','12月龄','18月龄','24月龄','2周岁','3周岁','4周岁','6周岁'];
   const groups = {};
-  records.forEach(r => {
+  list.forEach(r => {
     const age = r.age || r.note || '其他';
     if(!groups[age]) groups[age] = [];
     groups[age].push(r);
   });
-  const sortedAges = Object.keys(groups).sort((a,b) => ageOrder.indexOf(a) - ageOrder.indexOf(b));
+  const sortedAges = Object.keys(groups).sort((a,b) => {
+    const ai = ageOrder.indexOf(a);
+    const bi = ageOrder.indexOf(b);
+    if(ai === -1 && bi === -1) return a.localeCompare(b);
+    if(ai === -1) return 1;
+    if(bi === -1) return -1;
+    return ai - bi;
+  });
 
+  let html = '';
   sortedAges.forEach(age => {
-    const ageDone = groups[age].filter(r => r.done).length;
-    const ageTotal = groups[age].length;
     html += `<div class="vaccine-group">
       <div class="vg-head">
         <span class="vg-age">📅 ${age}</span>
-        <span class="vg-count">${ageDone}/${ageTotal}</span>
+        <span class="vg-count">${groups[age].length} 剂</span>
       </div>`;
     groups[age].forEach(r => {
       const isDone = r.done;
       const freeTag = r.free === true ? '<span class="vaccine-tag free">免费</span>' : (r.free === false ? '<span class="vaccine-tag paid">自费</span>' : '');
-      const doseTag = r.dose ? `<span class="vaccine-dose">第${r.dose}剂</span>` : '';
       html += `
       <div class="vaccine-item ${isDone?'done':'pending'}">
         <div class="vaccine-check ${isDone?'checked':''}" ${!isDone?`data-quick-vaccine="${r.name}"`:''}>${isDone?'✓':'○'}</div>
         <div class="vaccine-body" ${isDone ? `data-edit="vaccine" data-name="${r.name}"` : `data-quick-vaccine="${r.name}"`}>
-          <div class="vaccine-name">${r.name} ${doseTag} ${freeTag}</div>
-          <div class="vaccine-meta">${isDone ? '✅ 接种日期：' + r.date : '⏳ 建议：' + r.note}${r.reaction ? ' · 反应：' + escapeHtml(r.reaction) : ''}</div>
+          <div class="vaccine-name">${r.name} ${freeTag}</div>
+          <div class="vaccine-meta">${r.disease ? '<span style="color:#8aa8b8">💊 ' + escapeHtml(r.disease) + '</span> · ' : ''}${isDone ? '接种日期：' + r.date : '建议：' + r.note}${r.reaction ? ' · 反应：' + escapeHtml(r.reaction) : ''}</div>
         </div>
         ${isDone ? `<div class="mem-item-edit" data-edit="vaccine" data-name="${r.name}">✏️</div>` : ''}
         <div class="mem-item-del" data-del="vaccine" data-name="${r.name}">🗑️</div>
@@ -4958,7 +5015,7 @@ function renderMemVaccineList(){
     });
     html += `</div>`;
   });
-  wrap.innerHTML = html;
+  return html;
 }
 
 function renderMemSicknessList(){
@@ -5227,6 +5284,14 @@ function initMemory(){
       const el = document.getElementById('mem' + (map[sec] || 'GrowthSection'));
       if(el) el.scrollIntoView({behavior:'smooth'});
     };
+  });
+  // 疫苗筛选
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.vaccine-filter-btn');
+    if(!btn) return;
+    vaccineFilter = btn.dataset.vfilter;
+    document.querySelectorAll('.vaccine-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+    renderMemVaccineList();
   });
   document.addEventListener('click', e => {
     const del = e.target.closest('[data-del]');
