@@ -567,6 +567,46 @@
   .mem-save-btn{background:linear-gradient(135deg,var(--pink-light),var(--pink));color:#fff}
   .mem-cancel-btn{background:var(--pink-soft);color:var(--pink-deep)}
 
+  /* 双卡布局（过敏/体检） */
+  .mem-duo-card{
+    display:grid;grid-template-columns:1fr 1fr;gap:10px;
+    margin-bottom:12px;
+  }
+  .mem-mini-card{margin:0;padding-bottom:10px}
+  .mem-mini-body{padding:0 14px 4px}
+  .mem-checkup-next{
+    font-size:12px;color:var(--text-light);font-weight:600;
+    margin-top:4px;
+  }
+  .mem-checkup-next span{color:var(--pink-deep);font-weight:800}
+  .mem-checkup-date{
+    font-size:18px;font-weight:800;color:var(--text);
+    margin:4px 0 8px;
+  }
+  .mem-checkup-last{
+    font-size:11px;color:var(--text-light);font-weight:600;
+    line-height:1.5;margin-bottom:8px;
+  }
+  .mem-checkup-add{display:inline-block;margin-top:2px}
+  .mem-allergy-item{
+    display:flex;align-items:center;justify-content:space-between;
+    background:#f8fcfa;border-radius:10px;padding:8px 10px;margin-bottom:6px;
+  }
+  .mem-allergy-item:last-child{margin-bottom:0}
+  .mem-allergy-name{font-size:13px;font-weight:700;color:var(--text)}
+  .mem-allergy-level{
+    font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;
+  }
+  .mem-allergy-level.轻度{background:#e8f5ee;color:#4a9a78}
+  .mem-allergy-level.中度{background:#fff3e0;color:#e8a04a}
+  .mem-allergy-level.重度{background:#ffe8e8;color:#e85a5a}
+  .mem-sick-status{
+    display:inline-block;font-size:10px;font-weight:700;
+    padding:2px 8px;border-radius:8px;margin-left:6px;
+  }
+  .mem-sick-status.已痊愈{background:#e8f5ee;color:#4a9a78}
+  .mem-sick-status.治疗中{background:#fff3e0;color:#e8a04a}
+
   /* ===== 桌面概览样式 ===== */
   .home-grid{
     display:grid;
@@ -1997,10 +2037,10 @@
           <div class="mem-q-title">生长记录</div>
           <div class="mem-q-sub">WHO曲线</div>
         </div>
-        <div class="mem-quick-tile" data-mem="milestone">
-          <div class="mem-q-icon" style="background:#e8f0e5;color:#6a9a78">🏆</div>
-          <div class="mem-q-title">里程碑</div>
-          <div class="mem-q-sub">记录第一次</div>
+        <div class="mem-quick-tile" data-mem="sickness">
+          <div class="mem-q-icon" style="background:#e8f0e5;color:#6a9a78">🌡️</div>
+          <div class="mem-q-title">生病记录</div>
+          <div class="mem-q-sub">健康管理</div>
         </div>
         <div class="mem-quick-tile" data-mem="vaccine">
           <div class="mem-q-icon" style="background:#fbe8e8;color:#c97a7a">💉</div>
@@ -2050,20 +2090,44 @@
       </div>
     </div>
 
-    <!-- 里程碑 -->
-    <div class="card mem-list-card" id="memMilestoneSection">
+    <!-- 生病记录 -->
+    <div class="card mem-list-card" id="memSicknessSection">
       <div class="card-head">
-        <div class="card-title"><span class="emoji">🏆</span> 里程碑</div>
-        <div class="card-action" id="memAddMilestone">＋记录</div>
+        <div class="card-title"><span class="emoji">🌡️</span> 生病记录</div>
+        <div class="card-action" id="memAddSickness">＋新增</div>
       </div>
-      <div class="mem-list" id="memMilestoneList">
-        <div class="mem-empty">还没有里程碑，点击记录第一次翻身、走路、叫妈妈…</div>
+      <div class="mem-list" id="memSicknessList">
+        <div class="mem-empty">还没有生病记录，点击新增开始记录～</div>
+      </div>
+    </div>
+
+    <!-- 过敏 & 体检（双卡） -->
+    <div class="mem-duo-card">
+      <div class="card mem-mini-card">
+        <div class="card-head">
+          <div class="card-title"><span class="emoji">⚠️</span> 过敏 & 特殊注意</div>
+          <div class="card-action" id="memAddAllergy">＋添加</div>
+        </div>
+        <div class="mem-mini-body" id="memAllergyList">
+          <div class="mem-empty">点击添加过敏项～</div>
+        </div>
+      </div>
+      <div class="card mem-mini-card">
+        <div class="card-head">
+          <div class="card-title"><span class="emoji">🩺</span> 儿保体检</div>
+        </div>
+        <div class="mem-mini-body">
+          <div class="mem-checkup-next">下次：<span id="memNextCheckup">15月龄体检</span></div>
+          <div class="mem-checkup-date" id="memNextCheckupDate">2026.08.01</div>
+          <div class="mem-checkup-last" id="memLastCheckup">上次：15月龄 · 一切正常</div>
+          <div class="card-action mem-checkup-add" id="memAddCheckup">＋ 添加体检记录</div>
+        </div>
       </div>
     </div>
     <div class="footer-space"></div>
   </div>
 
-  <!-- 生长记录/疫苗/里程碑弹窗 -->
+  <!-- 生长记录/疫苗/生病/过敏/体检弹窗 -->
   <div class="modal-mask" id="memModal">
     <div class="modal-card mem-modal-card">
       <div class="modal-head">
@@ -2307,7 +2371,9 @@ function collectAllData(){
     memoryProfile: loadMemProfile(),
     memoryGrowth: loadMemGrowth(),
     memoryVaccine: loadMemVaccine(),
-    memoryMilestone: loadMemMilestone(),
+    memorySickness: loadMemSickness(),
+    memoryAllergy: loadMemAllergy(),
+    memoryCheckup: loadMemCheckup(),
     lastSync: new Date().toISOString()
   };
 }
@@ -2324,7 +2390,9 @@ function restoreFromCloud(data){
     if(data.memoryProfile) localStorage.setItem(MEMORY_PROFILE_KEY, JSON.stringify(data.memoryProfile));
     if(data.memoryGrowth) localStorage.setItem(MEMORY_GROWTH_KEY, JSON.stringify(data.memoryGrowth));
     if(data.memoryVaccine) localStorage.setItem(MEMORY_VACCINE_KEY, JSON.stringify(data.memoryVaccine));
-    if(data.memoryMilestone) localStorage.setItem(MEMORY_MILESTONE_KEY, JSON.stringify(data.memoryMilestone));
+    if(data.memorySickness) localStorage.setItem(MEMORY_SICKNESS_KEY, JSON.stringify(data.memorySickness));
+    if(data.memoryAllergy) localStorage.setItem(MEMORY_ALLERGY_KEY, JSON.stringify(data.memoryAllergy));
+    if(data.memoryCheckup) localStorage.setItem(MEMORY_CHECKUP_KEY, JSON.stringify(data.memoryCheckup));
 }
 
 // 自动云同步（防抖，2秒内的多次保存只上传一次）
@@ -3064,7 +3132,9 @@ function importData(file){
       if(data.memoryProfile) saveMemProfile(data.memoryProfile);
       if(data.memoryGrowth) saveMemGrowth(data.memoryGrowth);
       if(data.memoryVaccine) saveMemVaccine(data.memoryVaccine);
-      if(data.memoryMilestone) saveMemMilestone(data.memoryMilestone);
+      if(data.memorySickness) saveMemSickness(data.memorySickness);
+      if(data.memoryAllergy) saveMemAllergy(data.memoryAllergy);
+      if(data.memoryCheckup) saveMemCheckup(data.memoryCheckup);
       showToast('数据导入成功 ✨');
       renderAll();
       renderPeriodAll();
@@ -3094,7 +3164,9 @@ function clearAllData(){
   localStorage.removeItem(MEMORY_PROFILE_KEY);
   localStorage.removeItem(MEMORY_GROWTH_KEY);
   localStorage.removeItem(MEMORY_VACCINE_KEY);
-  localStorage.removeItem(MEMORY_MILESTONE_KEY);
+  localStorage.removeItem(MEMORY_SICKNESS_KEY);
+  localStorage.removeItem(MEMORY_ALLERGY_KEY);
+  localStorage.removeItem(MEMORY_CHECKUP_KEY);
   localStorage.removeItem('workbuddy_last_sync');
   showToast('已清空所有数据');
   renderAll();
@@ -3990,7 +4062,9 @@ function initSched(){
 const MEMORY_PROFILE_KEY = 'workbuddy_memory_profile_v1';
 const MEMORY_GROWTH_KEY = 'workbuddy_memory_growth_v1';
 const MEMORY_VACCINE_KEY = 'workbuddy_memory_vaccine_v1';
-const MEMORY_MILESTONE_KEY = 'workbuddy_memory_milestone_v1';
+const MEMORY_SICKNESS_KEY = 'workbuddy_memory_sickness_v1';
+const MEMORY_ALLERGY_KEY = 'workbuddy_memory_allergy_v1';
+const MEMORY_CHECKUP_KEY = 'workbuddy_memory_checkup_v1';
 
 const DEFAULT_MEM_PROFILE = {
   name: '迷糊',
@@ -4028,8 +4102,12 @@ function loadMemGrowth(){ return JSON.parse(localStorage.getItem(MEMORY_GROWTH_K
 function saveMemGrowth(arr){ localStorage.setItem(MEMORY_GROWTH_KEY, JSON.stringify(arr)); }
 function loadMemVaccine(){ return JSON.parse(localStorage.getItem(MEMORY_VACCINE_KEY) || JSON.stringify(DEFAULT_VACCINES)); }
 function saveMemVaccine(arr){ localStorage.setItem(MEMORY_VACCINE_KEY, JSON.stringify(arr)); }
-function loadMemMilestone(){ return JSON.parse(localStorage.getItem(MEMORY_MILESTONE_KEY) || '[]'); }
-function saveMemMilestone(arr){ localStorage.setItem(MEMORY_MILESTONE_KEY, JSON.stringify(arr)); }
+function loadMemSickness(){ return JSON.parse(localStorage.getItem(MEMORY_SICKNESS_KEY) || '[]'); }
+function saveMemSickness(arr){ localStorage.setItem(MEMORY_SICKNESS_KEY, JSON.stringify(arr)); }
+function loadMemAllergy(){ return JSON.parse(localStorage.getItem(MEMORY_ALLERGY_KEY) || '[]'); }
+function saveMemAllergy(arr){ localStorage.setItem(MEMORY_ALLERGY_KEY, JSON.stringify(arr)); }
+function loadMemCheckup(){ return JSON.parse(localStorage.getItem(MEMORY_CHECKUP_KEY) || '[]'); }
+function saveMemCheckup(arr){ localStorage.setItem(MEMORY_CHECKUP_KEY, JSON.stringify(arr)); }
 
 function calcAge(birthStr){
   const birth = parseKeyToDate(birthStr);
@@ -4051,7 +4129,9 @@ function renderMemoryAll(){
   renderMemChart();
   renderMemGrowthList();
   renderMemVaccineList();
-  renderMemMilestoneList();
+  renderMemSicknessList();
+  renderMemAllergyList();
+  renderMemCheckupInfo();
 }
 
 function renderMemProfile(){
@@ -4212,24 +4292,73 @@ function renderMemVaccineList(){
   `).join('');
 }
 
-function renderMemMilestoneList(){
-  const wrap = document.getElementById('memMilestoneList');
+function renderMemSicknessList(){
+  const wrap = document.getElementById('memSicknessList');
   if(!wrap) return;
-  const records = loadMemMilestone().sort((a,b)=>b.date.localeCompare(a.date));
+  const records = loadMemSickness().sort((a,b)=>b.startDate.localeCompare(a.startDate));
   if(records.length === 0){
-    wrap.innerHTML = '<div class="mem-empty">还没有里程碑，点击记录第一次翻身、走路、叫妈妈…</div>';
+    wrap.innerHTML = '<div class="mem-empty">还没有生病记录，点击新增开始记录～</div>';
     return;
   }
   wrap.innerHTML = records.map(r => `
     <div class="mem-item" data-id="${r.id}">
-      <div class="mem-item-icon" style="background:#e8f0e5;color:#6a9a78">🏆</div>
+      <div class="mem-item-icon" style="background:#fbe8e8;color:#c97a7a">🌡️</div>
       <div class="mem-item-body">
-        <div class="mem-item-title">${escapeHtml(r.title)} <span style="font-size:11px;color:var(--text-light);font-weight:600">${r.date}</span></div>
-        ${r.note ? `<div class="mem-item-note">${escapeHtml(r.note)}</div>` : ''}
+        <div class="mem-item-title">${escapeHtml(r.name)} <span class="mem-sick-status ${r.status}">${r.status}</span></div>
+        <div class="mem-item-meta">${r.startDate} ~ ${r.endDate || '至今'}${r.symptom ? ' · ' + escapeHtml(r.symptom) : ''}</div>
+        ${r.treatment ? `<div class="mem-item-note">用药/处理：${escapeHtml(r.treatment)}</div>` : ''}
       </div>
-      <div class="mem-item-del" data-del="milestone" data-id="${r.id}">🗑️</div>
+      <div class="mem-item-del" data-del="sickness" data-id="${r.id}">🗑️</div>
     </div>
   `).join('');
+}
+
+function renderMemAllergyList(){
+  const wrap = document.getElementById('memAllergyList');
+  if(!wrap) return;
+  const records = loadMemAllergy();
+  if(records.length === 0){
+    wrap.innerHTML = '<div class="mem-empty">点击添加过敏项～</div>';
+    return;
+  }
+  wrap.innerHTML = records.map(r => `
+    <div class="mem-allergy-item">
+      <span class="mem-allergy-name">${escapeHtml(r.name)}</span>
+      <span class="mem-allergy-level ${r.level}">${r.level}</span>
+    </div>
+  `).join('');
+}
+
+const CHECKUP_SCHEDULE = [
+  {age:'新生儿期',month:0}, {age:'满月体检',month:1}, {age:'3月龄体检',month:3},
+  {age:'6月龄体检',month:6}, {age:'9月龄体检',month:9}, {age:'12月龄体检',month:12},
+  {age:'18月龄体检',month:18}, {age:'2岁体检',month:24}, {age:'2岁半体检',month:30},
+  {age:'3岁体检',month:36}, {age:'4岁体检',month:48}, {age:'5岁体检',month:60},
+  {age:'6岁体检',month:72}
+];
+
+function renderMemCheckupInfo(){
+  const p = loadMemProfile();
+  const birth = parseKeyToDate(p.birth);
+  const now = new Date();
+  const ageMonths = (now.getFullYear()-birth.getFullYear())*12 + (now.getMonth()-birth.getMonth());
+  const records = loadMemCheckup().sort((a,b)=>b.date.localeCompare(a.date));
+  const last = records[0];
+  // 找下一个未做的体检
+  const doneAges = records.map(r => r.ageMonth);
+  let nextSched = CHECKUP_SCHEDULE.find(s => s.month > ageMonths && !doneAges.includes(s.month));
+  if(!nextSched) nextSched = CHECKUP_SCHEDULE[CHECKUP_SCHEDULE.length-1];
+  const nextDate = new Date(birth);
+  nextDate.setMonth(nextDate.getMonth() + nextSched.month);
+  const nextEl = document.getElementById('memNextCheckup');
+  if(nextEl) nextEl.textContent = nextSched.age;
+  const nextDateEl = document.getElementById('memNextCheckupDate');
+  if(nextDateEl) nextDateEl.textContent = `${nextDate.getFullYear()}.${String(nextDate.getMonth()+1).padStart(2,'0')}.${String(nextDate.getDate()).padStart(2,'0')}`;
+  const lastEl = document.getElementById('memLastCheckup');
+  if(lastEl){
+    if(last) lastEl.textContent = `上次：${last.age} · ${last.result || '已体检'}`;
+    else lastEl.textContent = '上次：暂无记录';
+  }
 }
 
 function openMemModal(type, data){
@@ -4266,13 +4395,29 @@ function openMemModal(type, data){
       <div class="mem-form-row"><label>接种日期</label><input type="date" id="memVDate" value="${fmtKey(today)}"></div>
       <div class="mem-form-row"><label>接种反应</label><input id="memVReaction" placeholder="如无不良反应 / 轻微发热1天"></div>
       <div class="mem-form-btns"><button class="mem-save-btn" id="memSaveVaccine">保存</button><button class="mem-cancel-btn" id="memCancelModal">取消</button></div>`;
-  }else if(type === 'milestone'){
-    title.textContent = '记录里程碑';
+  }else if(type === 'sickness'){
+    title.textContent = '新增生病记录';
     html = `
-      <div class="mem-form-row"><label>日期</label><input type="date" id="memMDate" value="${fmtKey(today)}"></div>
-      <div class="mem-form-row"><label>里程碑</label><input id="memMTitle" placeholder="如 第一次叫妈妈"></div>
-      <div class="mem-form-row"><label>备注</label><textarea id="memMNote" placeholder="记录细节..."></textarea></div>
-      <div class="mem-form-btns"><button class="mem-save-btn" id="memSaveMilestone">保存</button><button class="mem-cancel-btn" id="memCancelModal">取消</button></div>`;
+      <div class="mem-form-row"><label>病名</label><input id="memSName" placeholder="如 幼儿急疹/感冒/发烧"></div>
+      <div class="mem-form-row"><label>开始日期</label><input type="date" id="memSStart" value="${fmtKey(today)}"></div>
+      <div class="mem-form-row"><label>结束日期</label><input type="date" id="memSEnd" placeholder="如已痊愈填此日期"></div>
+      <div class="mem-form-row"><label>状态</label><select id="memSStatus"><option value="治疗中">治疗中</option><option value="已痊愈">已痊愈</option></select></div>
+      <div class="mem-form-row"><label>症状</label><input id="memSSymptom" placeholder="如 高烧3天/流鼻涕/咳嗽"></div>
+      <div class="mem-form-row"><label>用药/处理</label><textarea id="memSTreatment" placeholder="如 美林退烧/多喝水休息"></textarea></div>
+      <div class="mem-form-btns"><button class="mem-save-btn" id="memSaveSickness">保存</button><button class="mem-cancel-btn" id="memCancelModal">取消</button></div>`;
+  }else if(type === 'allergy'){
+    title.textContent = '添加过敏 & 特殊注意';
+    html = `
+      <div class="mem-form-row"><label>过敏项</label><input id="memAName" placeholder="如 牛奶蛋白/青霉素/花粉"></div>
+      <div class="mem-form-row"><label>严重程度</label><select id="memALevel"><option value="轻度">轻度</option><option value="中度">中度</option><option value="重度">重度</option></select></div>
+      <div class="mem-form-btns"><button class="mem-save-btn" id="memSaveAllergy">保存</button><button class="mem-cancel-btn" id="memCancelModal">取消</button></div>`;
+  }else if(type === 'checkup'){
+    title.textContent = '添加体检记录';
+    html = `
+      <div class="mem-form-row"><label>体检月龄</label><select id="memCAge">${CHECKUP_SCHEDULE.map(s=>`<option value="${s.month}">${s.age}</option>`).join('')}</select></div>
+      <div class="mem-form-row"><label>体检日期</label><input type="date" id="memCDate" value="${fmtKey(today)}"></div>
+      <div class="mem-form-row"><label>体检结果</label><textarea id="memCResult" placeholder="如 一切正常/轻度贫血/建议补充维D"></textarea></div>
+      <div class="mem-form-btns"><button class="mem-save-btn" id="memSaveCheckup">保存</button><button class="mem-cancel-btn" id="memCancelModal">取消</button></div>`;
   }
   body.innerHTML = html;
   modal.classList.add('show');
@@ -4336,21 +4481,52 @@ function openMemModal(type, data){
     close();
     showToast('疫苗记录已保存');
   };
-  const saveM = document.getElementById('memSaveMilestone');
-  if(saveM) saveM.onclick = () => {
-    const title = document.getElementById('memMTitle').value.trim();
-    if(!title){ showToast('请输入里程碑内容'); return; }
-    const arr = loadMemMilestone();
+  const saveS = document.getElementById('memSaveSickness');
+  if(saveS) saveS.onclick = () => {
+    const name = document.getElementById('memSName').value.trim();
+    if(!name){ showToast('请输入病名'); return; }
+    const arr = loadMemSickness();
     arr.push({
       id: Date.now(),
-      date: document.getElementById('memMDate').value,
-      title,
-      note: document.getElementById('memMNote').value.trim()
+      name,
+      startDate: document.getElementById('memSStart').value,
+      endDate: document.getElementById('memSEnd').value,
+      status: document.getElementById('memSStatus').value,
+      symptom: document.getElementById('memSSymptom').value.trim(),
+      treatment: document.getElementById('memSTreatment').value.trim()
     });
-    saveMemMilestone(arr);
+    saveMemSickness(arr);
     renderMemoryAll();
     close();
-    showToast('里程碑已记录');
+    showToast('生病记录已保存');
+  };
+  const saveA = document.getElementById('memSaveAllergy');
+  if(saveA) saveA.onclick = () => {
+    const name = document.getElementById('memAName').value.trim();
+    if(!name){ showToast('请输入过敏项'); return; }
+    const arr = loadMemAllergy();
+    arr.push({id: Date.now(), name, level: document.getElementById('memALevel').value});
+    saveMemAllergy(arr);
+    renderMemoryAll();
+    close();
+    showToast('过敏项已添加');
+  };
+  const saveC = document.getElementById('memSaveCheckup');
+  if(saveC) saveC.onclick = () => {
+    const month = parseInt(document.getElementById('memCAge').value);
+    const sched = CHECKUP_SCHEDULE.find(s => s.month === month);
+    const arr = loadMemCheckup();
+    arr.push({
+      id: Date.now(),
+      age: sched ? sched.age : month+'月龄',
+      ageMonth: month,
+      date: document.getElementById('memCDate').value,
+      result: document.getElementById('memCResult').value.trim()
+    });
+    saveMemCheckup(arr);
+    renderMemoryAll();
+    close();
+    showToast('体检记录已保存');
   };
 }
 
@@ -4359,7 +4535,9 @@ function initMemory(){
   document.getElementById('memAddGrowth').onclick = () => openMemModal('growth');
   document.getElementById('memAddGrowth2').onclick = () => openMemModal('growth');
   document.getElementById('memAddVaccine').onclick = () => openMemModal('vaccine');
-  document.getElementById('memAddMilestone').onclick = () => openMemModal('milestone');
+  document.getElementById('memAddSickness').onclick = () => openMemModal('sickness');
+  document.getElementById('memAddAllergy').onclick = () => openMemModal('allergy');
+  document.getElementById('memAddCheckup').onclick = () => openMemModal('checkup');
   document.getElementById('memCloseBtn').onclick = () => document.getElementById('memModal').classList.remove('show');
   document.getElementById('memModal').onclick = e => {
     if(e.target.id === 'memModal') document.getElementById('memModal').classList.remove('show');
@@ -4374,7 +4552,9 @@ function initMemory(){
   document.querySelectorAll('.mem-quick-tile').forEach(tile => {
     tile.onclick = () => {
       const sec = tile.dataset.mem;
-      document.getElementById('mem' + (sec==='growth'?'GrowthSection':sec==='vaccine'?'VaccineSection':'MilestoneSection')).scrollIntoView({behavior:'smooth'});
+      const map = {growth:'GrowthSection', vaccine:'VaccineSection', sickness:'SicknessSection'};
+      const el = document.getElementById('mem' + (map[sec] || 'GrowthSection'));
+      if(el) el.scrollIntoView({behavior:'smooth'});
     };
   });
   document.addEventListener('click', e => {
@@ -4391,9 +4571,9 @@ function initMemory(){
       saveMemVaccine(arr);
       renderMemoryAll();
       showToast('已重置为未接种');
-    }else if(type === 'milestone'){
-      const arr = loadMemMilestone().filter(x => String(x.id) !== del.dataset.id);
-      saveMemMilestone(arr);
+    }else if(type === 'sickness'){
+      const arr = loadMemSickness().filter(x => String(x.id) !== del.dataset.id);
+      saveMemSickness(arr);
       renderMemoryAll();
       showToast('已删除');
     }
