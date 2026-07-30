@@ -1683,12 +1683,16 @@
       <img src="./icons/period.svg" class="nav-icon" alt="经期">
       <div class="nav-label">经期</div>
     </div>
+    <div class="nav-item" data-tab="backup">
+      <img src="./icons/settings.svg" class="nav-icon" alt="备份">
+      <div class="nav-label">备份</div>
+    </div>
   </div>
   <div class="nav-divider"></div>
   <div class="sync-status" id="syncStatus">📱 本地模式</div>
   <div class="nav-item" id="settingsBtn" style="margin-bottom:4px">
-    <img src="./icons/settings.svg" class="nav-icon" alt="备份">
-    <div class="nav-label">备份</div>
+    <img src="./icons/settings.svg" class="nav-icon" alt="设置">
+    <div class="nav-label">设置</div>
   </div>
 </nav>
 
@@ -2452,7 +2456,88 @@
     </div>
   </div>
 
-  <!-- ===== 备份弹窗 ===== -->
+  <!-- ===== 备份栏目 ===== -->
+  <div class="tab-content" id="tab-backup">
+    <div class="header">
+      <div class="title-wrap">
+        <div>
+          <h1><span class="bow">💾</span> 数据备份</h1>
+          <div class="sub">守护你的每一份记录～</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 云端同步区 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title"><span class="emoji">☁️</span> 云端同步</div>
+        <div class="card-action" id="backupSyncStatus" style="font-size:12px;color:#8aa8b8">连接中...</div>
+      </div>
+      <div style="padding:0 14px 12px">
+        <div class="di-row"><span>🕐 上次同步</span><b id="backupSyncTime" style="font-size:13px;color:var(--pink-deep)">--</b></div>
+        <div class="di-row"><span>📦 云端记录</span><b id="backupCloudCount" style="font-size:13px;color:var(--pink-deep)">--</b></div>
+        <div class="di-row" style="border:none"><span>🔄 本地记录</span><b id="backupLocalCount" style="font-size:13px;color:var(--pink-deep)">--</b></div>
+      </div>
+      <button class="modal-btn import" id="backupSyncBtn" style="margin:0 14px 14px">
+        <span>☁️</span> <span id="backupSyncBtnText">立即云同步</span>
+      </button>
+    </div>
+
+    <!-- 数据统计区 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title"><span class="emoji">📊</span> 数据总览</div>
+      </div>
+      <div style="padding:0 14px 12px">
+        <div class="di-row di-total">
+          <span>合计</span>
+          <b id="backupDataTotal" style="font-size:18px">0</b> 条
+        </div>
+        <div class="di-row"><span>⚖️ 体重记录</span><b id="backupCountWeight">0</b></div>
+        <div class="di-row"><span>📋 待办事项</span><b id="backupCountTodo">0</b></div>
+        <div class="di-row"><span>📅 日程安排</span><b id="backupCountSched">0</b></div>
+        <div class="di-row"><span>💰 记账记录</span><b id="backupCountMoney">0</b></div>
+        <div class="di-row"><span>📔 日记记录</span><b id="backupCountDiary">0</b></div>
+        <div class="di-row"><span>👶 成长记录</span><b id="backupCountMemory">0</b></div>
+        <div class="di-row" style="border:none"><span>🌸 经期记录</span><b id="backupCountPeriod">0</b></div>
+      </div>
+    </div>
+
+    <!-- 手动备份区 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title"><span class="emoji">📁</span> 手动备份</div>
+      </div>
+      <div style="padding:0 14px 14px">
+        <button class="modal-btn export" id="backupExportBtn" style="width:100%;margin-bottom:8px">
+          <span>📤</span> 导出备份文件
+        </button>
+        <button class="modal-btn import" id="backupImportBtn" style="width:100%;margin-bottom:8px">
+          <span>📥</span> 导入恢复数据
+        </button>
+        <button class="modal-btn danger" id="backupClearBtn" style="width:100%">
+          <span>🗑️</span> 清空所有数据
+        </button>
+        <input type="file" id="backupImportFile" accept=".json" style="display:none">
+      </div>
+    </div>
+
+    <!-- 说明 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title"><span class="emoji">💡</span> 使用说明</div>
+      </div>
+      <div style="padding:0 14px 14px;font-size:12px;color:var(--text-light);line-height:1.8">
+        ☁️ <b>云同步</b>：数据自动保存到云端，换手机打开会自动同步<br>
+        📶 <b>离线模式</b>：断网时数据保存在本地，联网后自动上传<br>
+        📤 <b>导出备份</b>：下载 JSON 文件，可手动备份或迁移数据<br>
+        📥 <b>导入恢复</b>：选择备份文件恢复数据<br>
+        ⚠️ <b>清空数据</b>：删除所有本地和云端数据，不可恢复
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 设置弹窗 ===== -->
 <div class="modal-mask" id="settingsModal">
   <div class="modal-card">
     <div class="modal-head">
@@ -2913,6 +2998,10 @@ function switchTab(tab){
   // 记录栏目需要渲染
   if(tab === 'memory'){
     renderMemoryAll();
+  }
+  // 备份栏目需要渲染
+  if(tab === 'backup'){
+    renderBackupTab();
   }
 }
 
@@ -5161,6 +5250,108 @@ function initMemory(){
   window.addEventListener('resize', () => { if(activeTab === 'memory') renderMemChart(); });
 }
 
+/* ===== 备份栏目 ===== */
+function renderBackupTab(){
+  // 数据统计
+  const set = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+  const w = Object.keys(loadData()).length;
+  const todo = loadTodoData().length;
+  const sched = loadSchedData().length;
+  const money = loadMoneyData().length;
+  const diary = Object.keys(loadDiaryData()).length;
+  const mem = loadMemGrowth().length + loadMemVaccine().filter(v=>v.done).length + loadMemSickness().length + loadMemAllergy().length + loadMemCheckup().length;
+  const period = loadPeriodData().length;
+  const total = w + todo + sched + money + diary + mem + period;
+  set('backupCountWeight', w);
+  set('backupCountTodo', todo);
+  set('backupCountSched', sched);
+  set('backupCountMoney', money);
+  set('backupCountDiary', diary);
+  set('backupCountMemory', mem);
+  set('backupCountPeriod', period);
+  set('backupDataTotal', total);
+  // 云同步信息
+  updateBackupSyncInfo();
+}
+
+function updateBackupSyncInfo(){
+  const statusEl = document.getElementById('backupSyncStatus');
+  const timeEl = document.getElementById('backupSyncTime');
+  const cloudCntEl = document.getElementById('backupCloudCount');
+  const localCntEl = document.getElementById('backupLocalCount');
+  if(!statusEl) return;
+  const last = localStorage.getItem('workbuddy_last_sync');
+  const cloudCount = localStorage.getItem('workbuddy_cloud_count');
+  const syncStatus = statusEl.dataset.status || 'offline';
+  // 本地记录数
+  if(localCntEl){
+    localCntEl.textContent = countDataRecords(collectAllData()) + ' 条';
+  }
+  if(cloudCntEl){
+    cloudCntEl.textContent = cloudCount ? (cloudCount + ' 条') : '--';
+  }
+  if(syncStatus === 'syncing'){
+    statusEl.textContent = '🔄 同步中';
+    statusEl.style.color = '#4a9ec4';
+    if(timeEl){ timeEl.textContent = '同步中...'; timeEl.style.color = '#4a9ec4'; }
+  }else if(syncStatus === 'error'){
+    statusEl.textContent = '❌ 同步失败';
+    statusEl.style.color = '#e8a060';
+    if(timeEl){ timeEl.textContent = last ? formatSyncTime(last) : '尚未成功同步'; timeEl.style.color = '#e8a060'; }
+  }else if(syncStatus === 'synced' && last){
+    statusEl.textContent = '✅ 已云同步';
+    statusEl.style.color = '#4a9a78';
+    if(timeEl){ timeEl.textContent = formatSyncTime(last); timeEl.style.color = '#4a9a78'; }
+  }else{
+    statusEl.textContent = last ? '📱 本地模式' : '等待同步';
+    statusEl.style.color = '#8aa8b8';
+    if(timeEl){ timeEl.textContent = last ? formatSyncTime(last) : '尚未同步'; timeEl.style.color = '#8aa8b8'; }
+  }
+}
+
+let backupSyncTimer = null;
+function initBackupTab(){
+  const syncBtn = document.getElementById('backupSyncBtn');
+  if(syncBtn) syncBtn.onclick = async () => {
+    const btnText = document.getElementById('backupSyncBtnText');
+    const originalText = btnText.textContent;
+    syncBtn.disabled = true;
+    syncBtn.style.opacity = '0.6';
+    btnText.textContent = '同步中...';
+    try{
+      await doCloudSync();
+      showToast('云同步完成 ☁️');
+      renderBackupTab();
+    }catch(e){
+      showToast('云同步失败，请稍后重试 ❌');
+    }
+    syncBtn.disabled = false;
+    syncBtn.style.opacity = '1';
+    btnText.textContent = originalText;
+  };
+  const exportBtn = document.getElementById('backupExportBtn');
+  if(exportBtn) exportBtn.onclick = exportData;
+  const importBtn = document.getElementById('backupImportBtn');
+  if(importBtn) importBtn.onclick = () => document.getElementById('backupImportFile').click();
+  const importFile = document.getElementById('backupImportFile');
+  if(importFile) importFile.onchange = e => {
+    if(e.target.files[0]) importData(e.target.files[0]);
+    e.target.value = '';
+  };
+  const clearBtn = document.getElementById('backupClearBtn');
+  if(clearBtn) clearBtn.onclick = () => {
+    clearAllData();
+    renderBackupTab();
+  };
+  // 每10秒刷新云同步时间
+  if(backupSyncTimer) clearInterval(backupSyncTimer);
+  backupSyncTimer = setInterval(() => {
+    if(document.getElementById('tab-backup')?.classList.contains('active')){
+      updateBackupSyncInfo();
+    }
+  }, 10000);
+}
+
 function initSettings(){
   document.getElementById('closeSettings').onclick = closeSettings;
   document.getElementById('settingsModal').onclick = e=>{
@@ -5262,10 +5453,17 @@ function formatSyncTime(isoStr){
 const _origUpdateSync = updateSyncStatus;
 updateSyncStatus = function(status){
   _origUpdateSync(status);
+  // 设置弹窗
   const statusEl = document.getElementById('cloudSyncStatus');
   if(statusEl){
     statusEl.dataset.status = status;
     updateCloudSyncInfo();
+  }
+  // 备份栏目
+  const backupStatusEl = document.getElementById('backupSyncStatus');
+  if(backupStatusEl){
+    backupStatusEl.dataset.status = status;
+    updateBackupSyncInfo();
   }
 };
 
@@ -5287,6 +5485,7 @@ initMoney();
 initSched();
 initMemory();
 initSettings();
+initBackupTab();
 renderAll();
 renderPeriodAll();
 renderTodoAll();
