@@ -1576,6 +1576,12 @@
   .cloud-info-box .di-row b{font-size:12px;font-weight:700}
   .cloud-info-box .di-total{font-size:14px}
   .cloud-info-box .di-total b{font-size:13px}
+  .backup-info-box{
+    background:linear-gradient(135deg,#fef6f0,#fff5f5) !important;
+    padding:14px;
+  }
+  .backup-info-box .di-total{font-size:14px}
+  .backup-info-box .modal-btn{margin:0}
   .modal-btn{
     border:none;cursor:pointer;
     padding:13px;border-radius:14px;
@@ -2479,12 +2485,16 @@
       <button class="modal-btn import" id="syncBtn">
         <span>☁️</span> <span id="syncBtnText">立即云同步</span>
       </button>
-      <div style="display:flex;gap:10px">
-        <button class="modal-btn export" id="exportBtn" style="flex:1">
-          <span>📤</span> 导出备份
+      <div class="data-info backup-info-box">
+        <div class="di-row di-total" style="border:none;padding-bottom:8px;margin-bottom:4px">
+          <span>💾 数据备份</span>
+          <b style="font-size:11px;font-weight:600;color:#8aa8b8">手动管理</b>
+        </div>
+        <button class="modal-btn export" id="exportBtn" style="width:100%;margin-bottom:8px">
+          <span>📤</span> 导出备份文件
         </button>
-        <button class="modal-btn import" id="importBtn" style="flex:1">
-          <span>📥</span> 导入恢复
+        <button class="modal-btn import" id="importBtn" style="width:100%">
+          <span>📥</span> 导入恢复数据
         </button>
       </div>
       <input type="file" id="importFile" accept=".json" style="display:none">
