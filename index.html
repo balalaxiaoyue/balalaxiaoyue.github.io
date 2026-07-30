@@ -1531,9 +1531,12 @@
     background:#fff;
     border-radius:22px 22px 0 0;
     width:100%;max-width:460px;
+    max-height:85vh;
     padding:18px 18px 26px;
     animation:slideUp .3s ease;
     box-shadow:0 -4px 24px rgba(0,0,0,.12);
+    display:flex;flex-direction:column;
+    overflow:hidden;
   }
   @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
   .modal-head{
@@ -1545,7 +1548,7 @@
     font-size:16px;color:var(--text-light);
     cursor:pointer;padding:4px 8px;
   }
-  .modal-body{display:flex;flex-direction:column;gap:10px}
+  .modal-body{display:flex;flex-direction:column;gap:10px;overflow-y:auto;}
   .data-info{
     background:linear-gradient(135deg,var(--pink-soft),#eaf8f4);
     border-radius:14px;padding:12px 14px;
