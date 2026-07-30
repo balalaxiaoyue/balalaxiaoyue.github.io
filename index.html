@@ -940,8 +940,8 @@
     color:var(--text);margin-bottom:14px;
   }
   .mood-picker{
-    display:flex;justify-content:space-between;
-    margin-bottom:16px;
+    display:flex;justify-content:space-around;gap:4px;
+    margin-bottom:16px;padding:0 6px;
   }
   .mood-item{
     display:flex;flex-direction:column;
@@ -950,24 +950,17 @@
     padding:8px 4px;
     border-radius:14px;
     transition:all .2s;
-    flex:1;
+    flex:0 0 42px;
+    font-size:34px;
+    border:2px solid transparent;
   }
   .mood-item:active{transform:scale(.9)}
-  .mood-item .emoji-fz{font-size:28px}
-  .mood-item > span:first-of-type,
-  .mood-item > text{
-    font-size:28px;display:block;margin-bottom:3px;
-  }
-  .mood-item span{
-    font-size:10px;color:var(--text-light);font-weight:600;
-  }
   .mood-item.selected{
     background:linear-gradient(135deg,var(--pink-soft),#eaf8f4);
-    border:2px solid var(--pink);
+    border-color:var(--pink);
     transform:translateY(-3px);
     box-shadow:var(--shadow-soft);
   }
-  .mood-item.selected span{color:var(--pink-deep);font-weight:700}
   .diary-input{
     width:100%;
     border:2px solid var(--pink-soft);
@@ -2206,12 +2199,12 @@
       <div class="diary-today-date" id="diaryTodayDate">今天</div>
       <div class="diary-mood-title">今天心情怎么样？</div>
       <div class="mood-picker" id="moodPicker">
-        <div class="mood-item" data-mood="amazing">🥰<span>超棒</span></div>
-        <div class="mood-item" data-mood="happy">😊<span>开心</span></div>
-        <div class="mood-item" data-mood="normal">😌<span>还行</span></div>
-        <div class="mood-item" data-mood="sad">😔<span>难过</span></div>
-        <div class="mood-item" data-mood="angry">😠<span>生气</span></div>
-        <div class="mood-item" data-mood="tired">😴<span>疲惫</span></div>
+        <div class="mood-item" data-mood="amazing">🥰</div>
+        <div class="mood-item" data-mood="happy">😊</div>
+        <div class="mood-item" data-mood="normal">😌</div>
+        <div class="mood-item" data-mood="sad">😔</div>
+        <div class="mood-item" data-mood="angry">😠</div>
+        <div class="mood-item" data-mood="tired">😴</div>
       </div>
       <textarea id="diaryInput" class="diary-input" placeholder="写点什么吧～今天发生了什么有趣的事？" rows="4"></textarea>
       <button class="diary-save-btn" id="diarySaveBtn">保存今日心情</button>
