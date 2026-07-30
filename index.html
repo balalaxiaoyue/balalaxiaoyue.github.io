@@ -1574,6 +1574,8 @@
     background:linear-gradient(135deg,#eaf4f8,#e8f5ee) !important;
   }
   .cloud-info-box .di-row b{font-size:12px;font-weight:700}
+  .cloud-info-box .di-total{font-size:14px}
+  .cloud-info-box .di-total b{font-size:13px}
   .modal-btn{
     border:none;cursor:pointer;
     padding:13px;border-radius:14px;
@@ -2466,10 +2468,13 @@
         <div class="di-row"><span>🌸 经期记录</span><b id="dataCountPeriod">0</b> 条</div>
       </div>
       <div class="data-info cloud-info-box">
-        <div class="di-row" style="border:none">
-          <span>☁️ 云备份</span>
-          <b id="cloudSyncInfo" style="font-size:12px">连接中...</b>
+        <div class="di-row di-total" style="border:none;padding-bottom:6px;margin-bottom:0">
+          <span>☁️ 云端同步</span>
+          <b id="cloudSyncStatus" style="font-size:13px">连接中...</b>
         </div>
+        <div class="di-row"><span>🕐 上次同步</span><b id="cloudSyncTime" style="font-size:12px">--</b></div>
+        <div class="di-row"><span>📦 云端记录</span><b id="cloudDataCount" style="font-size:12px">--</b></div>
+        <div class="di-row" style="border:none"><span>🔄 本地记录</span><b id="localDataCount" style="font-size:12px">--</b></div>
       </div>
       <button class="modal-btn import" id="syncBtn">
         <span>☁️</span> <span id="syncBtnText">立即云同步</span>
@@ -2489,7 +2494,8 @@
       <div class="modal-tip">
         💡 <b>云同步</b>：数据自动保存到云端，换手机打开会自动同步<br>
         📶 <b>离线模式</b>：断网时数据保存在本地，联网后自动上传<br>
-        📤 <b>导出备份</b>：下载 JSON 文件，可手动备份或迁移数据
+        📤 <b>导出备份</b>：下载 JSON 文件，可手动备份或迁移数据<br>
+        📥 <b>导入恢复</b>：选择备份文件恢复数据
       </div>
     </div>
   </div>
@@ -2611,6 +2617,13 @@ function cloudSync(){
   syncTimer = setTimeout(doCloudSync, 2000);
 }
 
+// 统计一次数据 payload 的总记录条数
+function countDataRecords(d){
+  if(!d) return 0;
+  const mem = (d.memoryGrowth||[]).length + (d.memoryVaccine||[]).filter(v=>v.done).length + (d.memorySickness||[]).length + (d.memoryAllergy||[]).length + (d.memoryCheckup||[]).length;
+  return Object.keys(d.weight||{}).length + (d.todos||[]).length + (d.sched||[]).length + (d.money||[]).length + Object.keys(d.diary||{}).length + mem + (d.period||[]).length;
+}
+
 // 执行上传
 async function doCloudSync(){
   if(isSyncing) return;
@@ -2626,6 +2639,7 @@ async function doCloudSync(){
     if(resp.ok){
       updateSyncStatus('synced');
       localStorage.setItem('workbuddy_last_sync', new Date().toISOString());
+      localStorage.setItem('workbuddy_cloud_count', String(countDataRecords(payload)));
     }else{
       updateSyncStatus('error');
     }
@@ -2654,6 +2668,7 @@ async function initCloudSync(){
   updateSyncStatus('syncing');
   const cloudData = await cloudPull();
   if(cloudData && cloudData.lastSync){
+    localStorage.setItem('workbuddy_cloud_count', String(countDataRecords(cloudData)));
     const cloudTime = new Date(cloudData.lastSync).getTime();
     const localSyncStr = localStorage.getItem('workbuddy_last_sync');
     const localTime = localSyncStr ? new Date(localSyncStr).getTime() : 0;
@@ -3696,6 +3711,7 @@ function clearAllData(){
   localStorage.removeItem(MEMORY_ALLERGY_KEY);
   localStorage.removeItem(MEMORY_CHECKUP_KEY);
   localStorage.removeItem('workbuddy_last_sync');
+  localStorage.removeItem('workbuddy_cloud_count');
   showToast('已清空所有数据');
   renderAll();
   renderPeriodAll();
@@ -3708,21 +3724,17 @@ function clearAllData(){
   closeSettings();
 }
 
+let syncInfoTimer = null;
 function openSettings(){
   updateDataCounts();
-  // 打开弹窗时刷新云同步状态显示（相对时间等）
-  const info = document.getElementById('cloudSyncInfo');
-  if(info){
-    // 根据当前同步状态刷新显示
-    updateCloudSyncInfo();
-    // 若已同步，每30秒刷新一次相对时间
-    if(info.dataset.status === 'synced'){
-      // 仅在弹窗打开期间刷新
-    }
-  }
+  updateCloudSyncInfo();
+  // 打开弹窗时每 10 秒刷新相对时间
+  if(syncInfoTimer) clearInterval(syncInfoTimer);
+  syncInfoTimer = setInterval(updateCloudSyncInfo, 10000);
   document.getElementById('settingsModal').classList.add('show');
 }
 function closeSettings(){
+  if(syncInfoTimer){ clearInterval(syncInfoTimer); syncInfoTimer = null; }
   document.getElementById('settingsModal').classList.remove('show');
 }
 
@@ -5165,46 +5177,81 @@ function initSettings(){
 
 // 更新设置弹窗里的云同步信息
 function updateCloudSyncInfo(){
-  const el = document.getElementById('cloudSyncInfo');
-  if(!el) return;
+  const statusEl = document.getElementById('cloudSyncStatus');
+  const timeEl = document.getElementById('cloudSyncTime');
+  const cloudCntEl = document.getElementById('cloudDataCount');
+  const localCntEl = document.getElementById('localDataCount');
+  if(!statusEl) return;
   const last = localStorage.getItem('workbuddy_last_sync');
-  const syncStatus = el.dataset.status || 'offline';
-  if(syncStatus === 'syncing'){
-    el.textContent = '🔄 同步中...';
-    el.style.color = '#4a9ec4';
-  }else if(syncStatus === 'error'){
-    el.textContent = '❌ 同步失败，点击重试';
-    el.style.color = '#e8a060';
-  }else if(syncStatus === 'synced' && last){
-    const t = new Date(last);
-    const now = new Date();
-    const diff = (now - t) / 60000; // 分钟
-    // 具体时间
-    const dateStr = String(t.getMonth()+1).padStart(2,'0') + '/' + String(t.getDate()).padStart(2,'0') + ' ' + String(t.getHours()).padStart(2,'0') + ':' + String(t.getMinutes()).padStart(2,'0');
-    // 相对时间
-    let relStr;
-    if(diff < 1) relStr = '刚刚';
-    else if(diff < 60) relStr = Math.floor(diff) + '分钟前';
-    else if(diff < 1440) relStr = Math.floor(diff/60) + '小时前';
-    else relStr = Math.floor(diff/1440) + '天前';
-    el.textContent = '✅ ' + dateStr + '（' + relStr + '）';
-    el.style.color = '#4a9a78';
-  }else if(syncStatus === 'offline'){
-    el.textContent = last ? '📱 本地模式（未联网）' : '等待同步';
-    el.style.color = '#8aa8b8';
-  }else{
-    el.textContent = '等待同步';
-    el.style.color = '#8aa8b8';
+  const cloudCount = localStorage.getItem('workbuddy_cloud_count');
+  const syncStatus = statusEl.dataset.status || 'offline';
+
+  // 本地记录数（实时计算）
+  if(localCntEl){
+    const localData = collectAllData();
+    localCntEl.textContent = countDataRecords(localData) + ' 条';
   }
+  // 云端记录数
+  if(cloudCntEl){
+    cloudCntEl.textContent = cloudCount ? (cloudCount + ' 条') : '--';
+  }
+
+  // 状态 + 时间
+  if(syncStatus === 'syncing'){
+    statusEl.textContent = '🔄 同步中';
+    statusEl.style.color = '#4a9ec4';
+    if(timeEl){ timeEl.textContent = '同步中...'; timeEl.style.color = '#4a9ec4'; }
+  }else if(syncStatus === 'error'){
+    statusEl.textContent = '❌ 同步失败';
+    statusEl.style.color = '#e8a060';
+    if(timeEl){
+      if(last){
+        timeEl.textContent = formatSyncTime(last);
+        timeEl.style.color = '#e8a060';
+      }else{
+        timeEl.textContent = '尚未成功同步';
+        timeEl.style.color = '#e8a060';
+      }
+    }
+  }else if(syncStatus === 'synced' && last){
+    statusEl.textContent = '✅ 已云同步';
+    statusEl.style.color = '#4a9a78';
+    if(timeEl){ timeEl.textContent = formatSyncTime(last); timeEl.style.color = '#4a9a78'; }
+  }else if(syncStatus === 'offline'){
+    statusEl.textContent = last ? '📱 本地模式' : '等待同步';
+    statusEl.style.color = '#8aa8b8';
+    if(timeEl){
+      timeEl.textContent = last ? formatSyncTime(last) : '尚未同步';
+      timeEl.style.color = '#8aa8b8';
+    }
+  }else{
+    statusEl.textContent = '等待同步';
+    statusEl.style.color = '#8aa8b8';
+    if(timeEl){ timeEl.textContent = '尚未同步'; timeEl.style.color = '#8aa8b8'; }
+  }
+}
+
+// 格式化同步时间：具体时间 + 相对时间
+function formatSyncTime(isoStr){
+  const t = new Date(isoStr);
+  const now = new Date();
+  const diff = (now - t) / 60000; // 分钟
+  const dateStr = String(t.getMonth()+1).padStart(2,'0') + '/' + String(t.getDate()).padStart(2,'0') + ' ' + String(t.getHours()).padStart(2,'0') + ':' + String(t.getMinutes()).padStart(2,'0') + ':' + String(t.getSeconds()).padStart(2,'0');
+  let relStr;
+  if(diff < 1) relStr = '刚刚';
+  else if(diff < 60) relStr = Math.floor(diff) + '分钟前';
+  else if(diff < 1440) relStr = Math.floor(diff/60) + '小时前';
+  else relStr = Math.floor(diff/1440) + '天前';
+  return dateStr + '（' + relStr + '）';
 }
 
 // 覆盖 updateSyncStatus，同时更新侧边栏和弹窗
 const _origUpdateSync = updateSyncStatus;
 updateSyncStatus = function(status){
   _origUpdateSync(status);
-  const info = document.getElementById('cloudSyncInfo');
-  if(info){
-    info.dataset.status = status;
+  const statusEl = document.getElementById('cloudSyncStatus');
+  if(statusEl){
+    statusEl.dataset.status = status;
     updateCloudSyncInfo();
   }
 };
