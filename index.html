@@ -1687,8 +1687,8 @@
   <div class="nav-divider"></div>
   <div class="sync-status" id="syncStatus">📱 本地模式</div>
   <div class="nav-item" id="settingsBtn" style="margin-bottom:4px">
-    <img src="./icons/settings.svg" class="nav-icon" alt="设置">
-    <div class="nav-label">设置</div>
+    <img src="./icons/settings.svg" class="nav-icon" alt="备份">
+    <div class="nav-label">备份</div>
   </div>
 </nav>
 
@@ -2452,43 +2452,47 @@
     </div>
   </div>
 
-  <!-- ===== 设置弹窗 ===== -->
+  <!-- ===== 备份弹窗 ===== -->
 <div class="modal-mask" id="settingsModal">
   <div class="modal-card">
     <div class="modal-head">
-      <span class="modal-title">⚙️ 数据管理</span>
+      <span class="modal-title">💾 数据备份</span>
       <span class="modal-close" id="closeSettings">✕</span>
     </div>
     <div class="modal-body">
-      <div class="data-info">
-        <div class="di-row di-total">
-          <span>📊 数据总览</span>
-          <b id="dataCountTotal">0</b> 条记录
-        </div>
-        <div class="di-row"><span>⚖️ 体重记录</span><b id="dataCountWeight">0</b> 条</div>
-        <div class="di-row"><span>📋 待办事项</span><b id="dataCountTodo">0</b> 条</div>
-        <div class="di-row"><span>📅 日程安排</span><b id="dataCountSched">0</b> 条</div>
-        <div class="di-row"><span>💰 记账记录</span><b id="dataCountMoney">0</b> 条</div>
-        <div class="di-row"><span>📔 日记记录</span><b id="dataCountDiary">0</b> 条</div>
-        <div class="di-row"><span>👶 成长记录</span><b id="dataCountMemory">0</b> 条</div>
-        <div class="di-row"><span>🌸 经期记录</span><b id="dataCountPeriod">0</b> 条</div>
-      </div>
+      <!-- 云端同步区 -->
       <div class="data-info cloud-info-box">
         <div class="di-row di-total" style="border:none;padding-bottom:6px;margin-bottom:0">
           <span>☁️ 云端同步</span>
           <b id="cloudSyncStatus" style="font-size:13px">连接中...</b>
         </div>
         <div class="di-row"><span>🕐 上次同步</span><b id="cloudSyncTime" style="font-size:12px">--</b></div>
-        <div class="di-row"><span>📦 云端记录</span><b id="cloudDataCount" style="font-size:12px">--</b></div>
-        <div class="di-row" style="border:none"><span>🔄 本地记录</span><b id="localDataCount" style="font-size:12px">--</b></div>
+        <div class="di-row" style="border:none"><span>📦 同步记录</span><b id="cloudDataCount" style="font-size:12px">--</b></div>
       </div>
       <button class="modal-btn import" id="syncBtn">
         <span>☁️</span> <span id="syncBtnText">立即云同步</span>
       </button>
+
+      <!-- 本地数据总览 -->
+      <div class="data-info">
+        <div class="di-row di-total">
+          <span>📊 本地数据</span>
+          <b id="dataCountTotal">0</b> 条
+        </div>
+        <div class="di-row"><span>⚖️ 体重</span><b id="dataCountWeight">0</b></div>
+        <div class="di-row"><span>📋 待办</span><b id="dataCountTodo">0</b></div>
+        <div class="di-row"><span>📅 日程</span><b id="dataCountSched">0</b></div>
+        <div class="di-row"><span>💰 记账</span><b id="dataCountMoney">0</b></div>
+        <div class="di-row"><span>📔 日记</span><b id="dataCountDiary">0</b></div>
+        <div class="di-row"><span>👶 成长</span><b id="dataCountMemory">0</b></div>
+        <div class="di-row" style="border:none"><span>🌸 经期</span><b id="dataCountPeriod">0</b></div>
+      </div>
+
+      <!-- 手动备份区 -->
       <div class="data-info backup-info-box">
         <div class="di-row di-total" style="border:none;padding-bottom:8px;margin-bottom:4px">
-          <span>💾 数据备份</span>
-          <b style="font-size:11px;font-weight:600;color:#8aa8b8">手动管理</b>
+          <span>📁 手动备份</span>
+          <b style="font-size:11px;font-weight:600;color:#8aa8b8">导入 / 导出</b>
         </div>
         <button class="modal-btn export" id="exportBtn" style="width:100%;margin-bottom:8px">
           <span>📤</span> 导出备份文件
@@ -2504,8 +2508,7 @@
       <div class="modal-tip">
         💡 <b>云同步</b>：数据自动保存到云端，换手机打开会自动同步<br>
         📶 <b>离线模式</b>：断网时数据保存在本地，联网后自动上传<br>
-        📤 <b>导出备份</b>：下载 JSON 文件，可手动备份或迁移数据<br>
-        📥 <b>导入恢复</b>：选择备份文件恢复数据
+        📤 <b>导出</b>：下载 JSON 文件备份 · 📥 <b>导入</b>：选择备份文件恢复
       </div>
     </div>
   </div>
@@ -5190,17 +5193,11 @@ function updateCloudSyncInfo(){
   const statusEl = document.getElementById('cloudSyncStatus');
   const timeEl = document.getElementById('cloudSyncTime');
   const cloudCntEl = document.getElementById('cloudDataCount');
-  const localCntEl = document.getElementById('localDataCount');
   if(!statusEl) return;
   const last = localStorage.getItem('workbuddy_last_sync');
   const cloudCount = localStorage.getItem('workbuddy_cloud_count');
   const syncStatus = statusEl.dataset.status || 'offline';
 
-  // 本地记录数（实时计算）
-  if(localCntEl){
-    const localData = collectAllData();
-    localCntEl.textContent = countDataRecords(localData) + ' 条';
-  }
   // 云端记录数
   if(cloudCntEl){
     cloudCntEl.textContent = cloudCount ? (cloudCount + ' 条') : '--';
