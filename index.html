@@ -1495,6 +1495,16 @@
     padding:4px 0;font-weight:600;
   }
   .di-row b{color:var(--pink-deep);font-size:16px;margin:0 3px}
+  .di-total{
+    border-bottom:1.5px dashed rgba(0,0,0,.1);
+    padding-bottom:6px;margin-bottom:2px;
+    font-size:14px;
+  }
+  .di-total b{font-size:18px;color:var(--pink-deep)}
+  .cloud-info-box{
+    background:linear-gradient(135deg,#eaf4f8,#e8f5ee) !important;
+  }
+  .cloud-info-box .di-row b{font-size:12px;font-weight:700}
   .modal-btn{
     border:none;cursor:pointer;
     padding:13px;border-radius:14px;
@@ -2314,6 +2324,10 @@
     </div>
     <div class="modal-body">
       <div class="data-info">
+        <div class="di-row di-total">
+          <span>📊 数据总览</span>
+          <b id="dataCountTotal">0</b> 条记录
+        </div>
         <div class="di-row"><span>⚖️ 体重记录</span><b id="dataCountWeight">0</b> 条</div>
         <div class="di-row"><span>📋 待办事项</span><b id="dataCountTodo">0</b> 条</div>
         <div class="di-row"><span>📅 日程安排</span><b id="dataCountSched">0</b> 条</div>
@@ -2322,9 +2336,9 @@
         <div class="di-row"><span>👶 成长记录</span><b id="dataCountMemory">0</b> 条</div>
         <div class="di-row"><span>🌸 经期记录</span><b id="dataCountPeriod">0</b> 条</div>
       </div>
-      <div class="data-info" style="background:linear-gradient(135deg,#eaf4f8,#e8f5ee)">
+      <div class="data-info cloud-info-box">
         <div class="di-row" style="border:none">
-          <span>☁️ 云同步状态</span>
+          <span>☁️ 云备份</span>
           <b id="cloudSyncInfo" style="font-size:12px">连接中...</b>
         </div>
       </div>
@@ -3204,6 +3218,9 @@ function updateDataCounts(){
   const memCount = loadMemGrowth().length + loadMemVaccine().filter(v=>v.done).length + loadMemSickness().length + loadMemAllergy().length + loadMemCheckup().length;
   set('dataCountMemory', memCount);
   set('dataCountPeriod', loadPeriodData().length);
+  // 总计
+  const total = Object.keys(loadData()).length + loadTodoData().length + loadSchedData().length + loadMoneyData().length + Object.keys(loadDiaryData()).length + memCount + loadPeriodData().length;
+  set('dataCountTotal', total);
 }
 
 function exportData(){
@@ -4740,24 +4757,27 @@ function updateCloudSyncInfo(){
   const last = localStorage.getItem('workbuddy_last_sync');
   const syncStatus = el.dataset.status || 'offline';
   if(syncStatus === 'syncing'){
-    el.textContent = '同步中...';
+    el.textContent = '🔄 同步中...';
     el.style.color = '#4a9ec4';
   }else if(syncStatus === 'error'){
-    el.textContent = '同步失败';
+    el.textContent = '❌ 同步失败，点击重试';
     el.style.color = '#e8a060';
   }else if(syncStatus === 'synced' && last){
     const t = new Date(last);
     const now = new Date();
     const diff = (now - t) / 60000; // 分钟
-    let timeStr;
-    if(diff < 1) timeStr = '刚刚';
-    else if(diff < 60) timeStr = Math.floor(diff) + '分钟前';
-    else if(diff < 1440) timeStr = Math.floor(diff/60) + '小时前';
-    else timeStr = (t.getMonth()+1) + '/' + t.getDate();
-    el.textContent = '✅ ' + timeStr;
+    // 具体时间
+    const dateStr = String(t.getMonth()+1).padStart(2,'0') + '/' + String(t.getDate()).padStart(2,'0') + ' ' + String(t.getHours()).padStart(2,'0') + ':' + String(t.getMinutes()).padStart(2,'0');
+    // 相对时间
+    let relStr;
+    if(diff < 1) relStr = '刚刚';
+    else if(diff < 60) relStr = Math.floor(diff) + '分钟前';
+    else if(diff < 1440) relStr = Math.floor(diff/60) + '小时前';
+    else relStr = Math.floor(diff/1440) + '天前';
+    el.textContent = '✅ ' + dateStr + '（' + relStr + '）';
     el.style.color = '#4a9a78';
   }else if(syncStatus === 'offline'){
-    el.textContent = last ? '📱 本地模式' : '等待同步';
+    el.textContent = last ? '📱 本地模式（未联网）' : '等待同步';
     el.style.color = '#8aa8b8';
   }else{
     el.textContent = '等待同步';
