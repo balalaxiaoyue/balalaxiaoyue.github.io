@@ -666,6 +666,31 @@
     font-size:12px;color:var(--text-light);
   }
   .home-quick-card{padding-bottom:14px}
+  .home-baby-card{padding-bottom:12px;cursor:pointer;transition:all .15s}
+  .home-baby-card:active{transform:scale(.99)}
+  .home-baby-body{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+    padding:0 14px 8px;
+  }
+  .baby-stat{
+    text-align:center;
+    background:linear-gradient(160deg,#f8fcfb 0%,var(--pink-soft) 100%);
+    border-radius:12px;padding:12px 6px;
+  }
+  .baby-stat-icon{
+    width:36px;height:36px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px;margin:0 auto 6px;
+  }
+  .baby-stat-val{font-size:15px;font-weight:800;color:var(--text);margin-bottom:2px;line-height:1.2}
+  .baby-stat-label{font-size:10px;color:var(--text-light);font-weight:600}
+  .home-baby-tip{
+    margin:0 14px;padding:8px 12px;
+    background:#fff5f0;border-radius:10px;
+    font-size:11px;color:#c97a5a;font-weight:600;
+    line-height:1.5;display:none;
+  }
+  .home-baby-tip:empty{display:none}
   .home-quick-grid{
     display:grid;grid-template-columns:repeat(6,1fr);
     gap:6px;padding:4px 12px 0;
@@ -1711,11 +1736,11 @@
         </div>
         <div class="ht-arrow">›</div>
       </div>
-      <div class="home-tile" data-go="diary">
-        <div class="ht-icon" style="background:#f0e8ff;color:#8a78d0">📔</div>
+      <div class="home-tile" data-go="memory">
+        <div class="ht-icon" style="background:#f0e6dc;color:#b8835e">👶</div>
         <div class="ht-body">
-          <div class="ht-label">今日日记</div>
-          <div class="ht-val" id="hmDiary">未记录</div>
+          <div class="ht-label">迷糊成长</div>
+          <div class="ht-val" id="hmBabyAge">--</div>
         </div>
         <div class="ht-arrow">›</div>
       </div>
@@ -1732,6 +1757,32 @@
       </div>
     </div>
 
+    <!-- 迷糊速览 -->
+    <div class="card home-baby-card" data-go="memory">
+      <div class="card-head">
+        <div class="card-title"><span class="emoji">👶</span> 迷糊速览</div>
+        <div class="card-action">查看详情 ›</div>
+      </div>
+      <div class="home-baby-body">
+        <div class="baby-stat">
+          <div class="baby-stat-icon" style="background:#f0e6dc;color:#b8835e">🎂</div>
+          <div class="baby-stat-val" id="hmBabyAge2">--</div>
+          <div class="baby-stat-label">当前年龄</div>
+        </div>
+        <div class="baby-stat">
+          <div class="baby-stat-icon" style="background:#e8f0e5;color:#6a9a78">🩺</div>
+          <div class="baby-stat-val" id="hmBabyCheckup">--</div>
+          <div class="baby-stat-label">下次体检</div>
+        </div>
+        <div class="baby-stat">
+          <div class="baby-stat-icon" style="background:#fce8f0;color:#d080a0">💉</div>
+          <div class="baby-stat-val" id="hmBabyVaccine">--</div>
+          <div class="baby-stat-label">待接种疫苗</div>
+        </div>
+      </div>
+      <div class="home-baby-tip" id="hmBabyTip"></div>
+    </div>
+
     <!-- 快速入口 -->
     <div class="card home-quick-card">
       <div class="card-head">
@@ -1742,7 +1793,7 @@
         <div class="quick-btn" data-go="diet"><span>⚖️</span><label>减脂</label></div>
         <div class="quick-btn" data-go="money"><span>💰</span><label>记账</label></div>
         <div class="quick-btn" data-go="schedule"><span>📅</span><label>日程</label></div>
-        <div class="quick-btn" data-go="diary"><span>📔</span><label>日记</label></div>
+        <div class="quick-btn" data-go="memory"><span>👶</span><label>记录</label></div>
         <div class="quick-btn" data-go="period"><span>🌸</span><label>经期</label></div>
       </div>
     </div>
@@ -2578,11 +2629,45 @@ function renderHome(){
     }
   }
 
-  // 日记
-  const hmD = document.getElementById('hmDiary');
-  if(hmD){
-    const entry = loadDiaryData()[todayKey];
-    hmD.textContent = entry && entry.content ? '已记录' : '未记录';
+  // 迷糊成长
+  const memProfile = loadMemProfile();
+  const babyAge = calcAge(memProfile.birth);
+  const hmBabyAge = document.getElementById('hmBabyAge');
+  if(hmBabyAge) hmBabyAge.innerHTML = `<b>${babyAge.split('个月')[0]}</b><span>个月</span>`;
+  const hmBabyAge2 = document.getElementById('hmBabyAge2');
+  if(hmBabyAge2) hmBabyAge2.textContent = babyAge;
+  // 下次体检
+  const hmBabyCheckup = document.getElementById('hmBabyCheckup');
+  if(hmBabyCheckup){
+    const birth = parseKeyToDate(memProfile.birth);
+    const now = new Date();
+    const ageMonths = (now.getFullYear()-birth.getFullYear())*12 + (now.getMonth()-birth.getMonth());
+    const doneAges = loadMemCheckup().map(r => r.ageMonth);
+    let nextSched = CHECKUP_SCHEDULE.find(s => s.month > ageMonths && !doneAges.includes(s.month)) || CHECKUP_SCHEDULE[CHECKUP_SCHEDULE.length-1];
+    const nextDate = new Date(birth);
+    nextDate.setMonth(nextDate.getMonth() + nextSched.month);
+    const days = Math.round((nextDate - now) / (24*60*60*1000));
+    hmBabyCheckup.innerHTML = days > 0 ? `还有 <b>${days}</b>天` : '已到期';
+  }
+  // 待接种疫苗
+  const hmBabyVaccine = document.getElementById('hmBabyVaccine');
+  const pendingVaccines = loadMemVaccine().filter(v => !v.done);
+  if(hmBabyVaccine){
+    hmBabyVaccine.innerHTML = pendingVaccines.length > 0 ? `<b>${pendingVaccines.length}</b><span>针</span>` : '<b>0</b><span>针</span>';
+  }
+  // 提示：最近生病治疗中
+  const hmBabyTip = document.getElementById('hmBabyTip');
+  if(hmBabyTip){
+    const sicking = loadMemSickness().find(s => s.status === '治疗中');
+    if(sicking){
+      hmBabyTip.style.display = 'block';
+      hmBabyTip.textContent = `🌡️ ${sicking.name} 治疗中（${sicking.startDate}起）`;
+    }else if(pendingVaccines.length > 0){
+      hmBabyTip.style.display = 'block';
+      hmBabyTip.textContent = `💉 待接种：${pendingVaccines[0].name}`;
+    }else{
+      hmBabyTip.style.display = 'none';
+    }
   }
 }
 
