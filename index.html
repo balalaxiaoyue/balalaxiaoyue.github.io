@@ -4660,17 +4660,17 @@ const DEFAULT_VACCINES = [
 ];
 
 function loadMemProfile(){ return JSON.parse(localStorage.getItem(MEMORY_PROFILE_KEY) || JSON.stringify(DEFAULT_MEM_PROFILE)); }
-function saveMemProfile(p){ localStorage.setItem(MEMORY_PROFILE_KEY, JSON.stringify(p)); }
+function saveMemProfile(p){ localStorage.setItem(MEMORY_PROFILE_KEY, JSON.stringify(p)); cloudSync(); }
 function loadMemGrowth(){ return JSON.parse(localStorage.getItem(MEMORY_GROWTH_KEY) || '[]'); }
-function saveMemGrowth(arr){ localStorage.setItem(MEMORY_GROWTH_KEY, JSON.stringify(arr)); }
+function saveMemGrowth(arr){ localStorage.setItem(MEMORY_GROWTH_KEY, JSON.stringify(arr)); cloudSync(); }
 function loadMemVaccine(){ return JSON.parse(localStorage.getItem(MEMORY_VACCINE_KEY) || JSON.stringify(DEFAULT_VACCINES)); }
-function saveMemVaccine(arr){ localStorage.setItem(MEMORY_VACCINE_KEY, JSON.stringify(arr)); }
+function saveMemVaccine(arr){ localStorage.setItem(MEMORY_VACCINE_KEY, JSON.stringify(arr)); cloudSync(); }
 function loadMemSickness(){ return JSON.parse(localStorage.getItem(MEMORY_SICKNESS_KEY) || '[]'); }
-function saveMemSickness(arr){ localStorage.setItem(MEMORY_SICKNESS_KEY, JSON.stringify(arr)); }
+function saveMemSickness(arr){ localStorage.setItem(MEMORY_SICKNESS_KEY, JSON.stringify(arr)); cloudSync(); }
 function loadMemAllergy(){ return JSON.parse(localStorage.getItem(MEMORY_ALLERGY_KEY) || '[]'); }
-function saveMemAllergy(arr){ localStorage.setItem(MEMORY_ALLERGY_KEY, JSON.stringify(arr)); }
+function saveMemAllergy(arr){ localStorage.setItem(MEMORY_ALLERGY_KEY, JSON.stringify(arr)); cloudSync(); }
 function loadMemCheckup(){ return JSON.parse(localStorage.getItem(MEMORY_CHECKUP_KEY) || '[]'); }
-function saveMemCheckup(arr){ localStorage.setItem(MEMORY_CHECKUP_KEY, JSON.stringify(arr)); }
+function saveMemCheckup(arr){ localStorage.setItem(MEMORY_CHECKUP_KEY, JSON.stringify(arr)); cloudSync(); }
 
 function calcAge(birthStr){
   const birth = parseKeyToDate(birthStr);
