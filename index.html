@@ -2294,29 +2294,6 @@
       </div>
     </div>
 
-    <!-- 过敏 & 体检（双卡） -->
-    <div class="mem-duo-card">
-      <div class="card mem-mini-card">
-        <div class="card-head">
-          <div class="card-title"><span class="emoji">⚠️</span> 过敏 & 特殊注意</div>
-          <div class="card-action" id="memAddAllergy">＋添加</div>
-        </div>
-        <div class="mem-mini-body" id="memAllergyList">
-          <div class="mem-empty">点击添加过敏项～</div>
-        </div>
-      </div>
-      <div class="card mem-mini-card">
-        <div class="card-head">
-          <div class="card-title"><span class="emoji">🩺</span> 儿保体检</div>
-        </div>
-        <div class="mem-mini-body">
-          <div class="mem-checkup-next">下次：<span id="memNextCheckup">15月龄体检</span></div>
-          <div class="mem-checkup-date" id="memNextCheckupDate">2026.08.01</div>
-          <div class="mem-checkup-last" id="memLastCheckup">上次：15月龄 · 一切正常</div>
-          <div class="card-action mem-checkup-add" id="memAddCheckup">＋ 添加体检记录</div>
-        </div>
-      </div>
-    </div>
     <div class="footer-space"></div>
   </div>
 
@@ -5264,8 +5241,6 @@ function initMemory(){
   document.getElementById('memAddGrowth2').onclick = () => openMemModal('growth');
   document.getElementById('memAddVaccine').onclick = () => openMemModal('vaccine');
   document.getElementById('memAddSickness').onclick = () => openMemModal('sickness');
-  document.getElementById('memAddAllergy').onclick = () => openMemModal('allergy');
-  document.getElementById('memAddCheckup').onclick = () => openMemModal('checkup');
   document.getElementById('memCloseBtn').onclick = () => document.getElementById('memModal').classList.remove('show');
   document.getElementById('memModal').onclick = e => {
     if(e.target.id === 'memModal') document.getElementById('memModal').classList.remove('show');
