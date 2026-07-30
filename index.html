@@ -557,6 +557,48 @@
   .mem-status.done{background:#e8f5ee;color:#4a9a78}
   .mem-status.pending{background:#fff3e0;color:#e8a04a}
 
+  /* 疫苗记录优化样式 */
+  .vaccine-progress{
+    margin:0 0 12px;padding:12px 14px;
+    background:linear-gradient(135deg,#eaf4f8,#e8f5ee);
+    border-radius:12px;
+  }
+  .vp-text{font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px}
+  .vp-text b{font-size:16px;color:var(--pink-deep)}
+  .vp-bar{height:8px;background:#e0e8ec;border-radius:4px;overflow:hidden}
+  .vp-fill{height:100%;background:linear-gradient(90deg,#7fc8ff,#4a9a78);border-radius:4px;transition:width .4s ease}
+  .vaccine-group{margin-bottom:14px}
+  .vg-head{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:6px 10px;margin-bottom:6px;
+    background:#f8fcfa;border-radius:8px;
+  }
+  .vg-age{font-size:13px;font-weight:800;color:var(--text)}
+  .vg-count{font-size:11px;font-weight:700;color:var(--text-light)}
+  .vaccine-item{
+    display:flex;align-items:flex-start;gap:10px;
+    padding:10px 12px;margin-bottom:6px;
+    border-radius:12px;background:#fff;
+    border:1.5px solid #f0e8e4;
+  }
+  .vaccine-item.done{background:#f6fbf8;border-color:#d8e8dc}
+  .vaccine-item.pending{background:#fffdf7;border-color:#f0e8d8}
+  .vaccine-check{
+    width:26px;height:26px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;font-weight:700;flex-shrink:0;cursor:pointer;
+    border:2px solid #ddd;
+  }
+  .vaccine-check.checked{background:#4a9a78;color:#fff;border-color:#4a9a78}
+  .vaccine-check:not(.checked){background:#fff;color:#c97a7a;border-color:#f0d0c8}
+  .vaccine-body{flex:1;min-width:0;cursor:pointer}
+  .vaccine-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;display:flex;align-items:center;flex-wrap:wrap;gap:4px}
+  .vaccine-meta{font-size:11px;color:var(--text-light);font-weight:600;line-height:1.5}
+  .vaccine-tag{display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:6px;margin-left:4px}
+  .vaccine-tag.free{background:#e8f5ee;color:#4a9a78}
+  .vaccine-tag.paid{background:#fff3e0;color:#e8a04a}
+  .vaccine-dose{display:inline-block;font-size:10px;font-weight:600;color:var(--text-light);margin-left:2px}
+
   .mem-modal-card .modal-body{display:flex;flex-direction:column;gap:10px}
   .mem-form-row{display:flex;flex-direction:column;gap:4px}
   .mem-form-row label{font-size:12px;color:var(--text);font-weight:700}
@@ -4655,23 +4697,36 @@ const DEFAULT_MEM_PROFILE = {
 };
 
 const DEFAULT_VACCINES = [
-  {name:'乙肝疫苗（第一针）',date:'',done:false,note:'出生24小时内'},
-  {name:'卡介苗',date:'',done:false,note:'出生时'},
-  {name:'乙肝疫苗（第二针）',date:'',done:false,note:'1月龄'},
-  {name:'五联疫苗（第一针）',date:'',done:false,note:'2月龄'},
-  {name:'口服轮状病毒疫苗',date:'',done:false,note:'2月龄'},
-  {name:'十三价肺炎疫苗（第一针）',date:'',done:false,note:'2月龄'},
-  {name:'五联疫苗（第二针）',date:'',done:false,note:'3月龄'},
-  {name:'十三价肺炎疫苗（第二针）',date:'',done:false,note:'4月龄'},
-  {name:'五联疫苗（第三针）',date:'',done:false,note:'5月龄'},
-  {name:'乙肝疫苗（第三针）',date:'',done:false,note:'6月龄'},
-  {name:'A群流脑疫苗（第一针）',date:'',done:false,note:'6月龄'},
-  {name:'麻腮风疫苗（第一针）',date:'',done:false,note:'8月龄'},
-  {name:'乙脑减毒活疫苗',date:'',done:false,note:'8月龄'},
-  {name:'十三价肺炎疫苗（第三针）',date:'',done:false,note:'12月龄'},
-  {name:'水痘疫苗',date:'',done:false,note:'12月龄'},
-  {name:'甲肝灭活疫苗',date:'',done:false,note:'18月龄'},
-  {name:'麻腮风疫苗（第二针）',date:'',done:false,note:'18月龄'}
+  {name:'乙肝疫苗（第一针）',date:'',done:false,note:'出生24小时内',age:'出生',dose:1,free:true},
+  {name:'卡介苗',date:'',done:false,note:'出生时',age:'出生',dose:1,free:true},
+  {name:'乙肝疫苗（第二针）',date:'',done:false,note:'1月龄',age:'1月龄',dose:2,free:true},
+  {name:'五联疫苗（第一针）',date:'',done:false,note:'2月龄',age:'2月龄',dose:1,free:false},
+  {name:'口服轮状病毒疫苗',date:'',done:false,note:'2月龄',age:'2月龄',dose:1,free:false},
+  {name:'十三价肺炎疫苗（第一针）',date:'',done:false,note:'2月龄',age:'2月龄',dose:1,free:false},
+  {name:'脊灰灭活疫苗（第一针）',date:'',done:false,note:'2月龄',age:'2月龄',dose:1,free:true},
+  {name:'五联疫苗（第二针）',date:'',done:false,note:'3月龄',age:'3月龄',dose:2,free:false},
+  {name:'脊灰灭活疫苗（第二针）',date:'',done:false,note:'3月龄',age:'3月龄',dose:2,free:true},
+  {name:'十三价肺炎疫苗（第二针）',date:'',done:false,note:'4月龄',age:'4月龄',dose:2,free:false},
+  {name:'百白破疫苗（第一针）',date:'',done:false,note:'3月龄',age:'3月龄',dose:1,free:true},
+  {name:'五联疫苗（第三针）',date:'',done:false,note:'5月龄',age:'5月龄',dose:3,free:false},
+  {name:'百白破疫苗（第二针）',date:'',done:false,note:'4月龄',age:'4月龄',dose:2,free:true},
+  {name:'百白破疫苗（第三针）',date:'',done:false,note:'5月龄',age:'5月龄',dose:3,free:true},
+  {name:'乙肝疫苗（第三针）',date:'',done:false,note:'6月龄',age:'6月龄',dose:3,free:true},
+  {name:'A群流脑疫苗（第一针）',date:'',done:false,note:'6月龄',age:'6月龄',dose:1,free:true},
+  {name:'麻腮风疫苗（第一针）',date:'',done:false,note:'8月龄',age:'8月龄',dose:1,free:true},
+  {name:'乙脑减毒活疫苗',date:'',done:false,note:'8月龄',age:'8月龄',dose:1,free:true},
+  {name:'十三价肺炎疫苗（第三针）',date:'',done:false,note:'12月龄',age:'12月龄',dose:3,free:false},
+  {name:'水痘疫苗（第一针）',date:'',done:false,note:'12月龄',age:'12月龄',dose:1,free:false},
+  {name:'A群流脑疫苗（第二针）',date:'',done:false,note:'9月龄',age:'9月龄',dose:2,free:true},
+  {name:'甲肝灭活疫苗（第一针）',date:'',done:false,note:'18月龄',age:'18月龄',dose:1,free:false},
+  {name:'麻腮风疫苗（第二针）',date:'',done:false,note:'18月龄',age:'18月龄',dose:2,free:true},
+  {name:'百白破疫苗（第四针）',date:'',done:false,note:'18月龄',age:'18月龄',dose:4,free:true},
+  {name:'甲肝灭活疫苗（第二针）',date:'',done:false,note:'24月龄',age:'24月龄',dose:2,free:false},
+  {name:'乙脑减毒活疫苗（第二针）',date:'',done:false,note:'24月龄',age:'24月龄',dose:2,free:true},
+  {name:'A群C群流脑疫苗（第一针）',date:'',done:false,note:'3岁',age:'3岁',dose:1,free:true},
+  {name:'水痘疫苗（第二针）',date:'',done:false,note:'4岁',age:'4岁',dose:2,free:false},
+  {name:'脊灰减毒活疫苗（第四针）',date:'',done:false,note:'4岁',age:'4岁',dose:4,free:true},
+  {name:'A群C群流脑疫苗（第二针）',date:'',done:false,note:'6岁',age:'6岁',dose:2,free:true}
 ];
 
 function loadMemProfile(){ return JSON.parse(localStorage.getItem(MEMORY_PROFILE_KEY) || JSON.stringify(DEFAULT_MEM_PROFILE)); }
@@ -4844,32 +4899,66 @@ function renderMemVaccineList(){
   const soonEl = document.getElementById('memVaccineSoon');
   if(!wrap) return;
   const records = loadMemVaccine();
+  const doneCount = records.filter(r => r.done).length;
+  const totalCount = records.length;
   const pending = records.filter(r => !r.done);
-  const done = records.filter(r => r.done).sort((a,b)=>b.date.localeCompare(a.date));
+  const done = records.filter(r => r.done);
+
+  // 下一个待接种
   const firstPending = pending[0];
   if(firstPending && soonEl){
-    soonEl.innerHTML = `<b>💉 ${firstPending.name}</b><br>建议接种时间：${firstPending.note}`;
+    soonEl.innerHTML = `<b>💉 ${firstPending.name}</b><br>建议接种时间：${firstPending.note} ${firstPending.free ? '· 🆓免费' : '· 💰自费'}`;
   }else if(soonEl){
     soonEl.innerHTML = '';
   }
-  const items = [];
-  pending.forEach(r => items.push({...r, status:'pending'}));
-  done.forEach(r => items.push({...r, status:'done'}));
-  if(items.length === 0){
+
+  if(totalCount === 0){
     wrap.innerHTML = '<div class="mem-empty">还没有疫苗记录，点击添加开始记录～</div>';
     return;
   }
-  wrap.innerHTML = items.map(r => `
-    <div class="mem-item" data-id="${r.id || r.name}">
-      <div class="mem-item-icon" style="background:${r.status==='done'?'#e8f5ee':'#fbe8e8'};color:${r.status==='done'?'#4a9a78':'#c97a7a'}">${r.status==='done'?'✓':'💉'}</div>
-      <div class="mem-item-body" ${r.status==='done' ? `data-edit="vaccine" data-name="${r.name}"` : ''}>
-        <div class="mem-item-title">${r.name} <span class="mem-status ${r.status}">${r.status==='done'?'已完成':'待接种'}</span></div>
-        <div class="mem-item-meta">${r.date ? '接种日期：' + r.date : '建议：' + r.note}${r.reaction ? ' · 反应：' + escapeHtml(r.reaction) : ''}</div>
-      </div>
-      ${r.status==='done' ? `<div class="mem-item-edit" data-edit="vaccine" data-name="${r.name}">✏️</div>` : ''}
-      <div class="mem-item-del" data-del="vaccine" data-name="${r.name}">🗑️</div>
-    </div>
-  `).join('');
+
+  // 进度条
+  let html = `<div class="vaccine-progress">
+    <div class="vp-text">已完成 <b>${doneCount}</b> / ${totalCount} 剂</div>
+    <div class="vp-bar"><div class="vp-fill" style="width:${Math.round(doneCount/totalCount*100)}%"></div></div>
+  </div>`;
+
+  // 按月龄分组
+  const ageOrder = ['出生','1月龄','2月龄','3月龄','4月龄','5月龄','6月龄','9月龄','8月龄','12月龄','18月龄','24月龄','3岁','4岁','6岁'];
+  const groups = {};
+  records.forEach(r => {
+    const age = r.age || r.note || '其他';
+    if(!groups[age]) groups[age] = [];
+    groups[age].push(r);
+  });
+  const sortedAges = Object.keys(groups).sort((a,b) => ageOrder.indexOf(a) - ageOrder.indexOf(b));
+
+  sortedAges.forEach(age => {
+    const ageDone = groups[age].filter(r => r.done).length;
+    const ageTotal = groups[age].length;
+    html += `<div class="vaccine-group">
+      <div class="vg-head">
+        <span class="vg-age">📅 ${age}</span>
+        <span class="vg-count">${ageDone}/${ageTotal}</span>
+      </div>`;
+    groups[age].forEach(r => {
+      const isDone = r.done;
+      const freeTag = r.free === true ? '<span class="vaccine-tag free">免费</span>' : (r.free === false ? '<span class="vaccine-tag paid">自费</span>' : '');
+      const doseTag = r.dose ? `<span class="vaccine-dose">第${r.dose}剂</span>` : '';
+      html += `
+      <div class="vaccine-item ${isDone?'done':'pending'}">
+        <div class="vaccine-check ${isDone?'checked':''}" ${!isDone?`data-quick-vaccine="${r.name}"`:''}>${isDone?'✓':'○'}</div>
+        <div class="vaccine-body" ${isDone ? `data-edit="vaccine" data-name="${r.name}"` : `data-quick-vaccine="${r.name}"`}>
+          <div class="vaccine-name">${r.name} ${doseTag} ${freeTag}</div>
+          <div class="vaccine-meta">${isDone ? '✅ 接种日期：' + r.date : '⏳ 建议：' + r.note}${r.reaction ? ' · 反应：' + escapeHtml(r.reaction) : ''}</div>
+        </div>
+        ${isDone ? `<div class="mem-item-edit" data-edit="vaccine" data-name="${r.name}">✏️</div>` : ''}
+        <div class="mem-item-del" data-del="vaccine" data-name="${r.name}">🗑️</div>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+  wrap.innerHTML = html;
 }
 
 function renderMemSicknessList(){
@@ -5171,6 +5260,22 @@ function initMemory(){
     }else if(type === 'vaccine'){
       const rec = loadMemVaccine().find(x => x.name === edit.dataset.name && x.done);
       if(rec) openMemModal('vaccine', rec);
+    }
+  });
+  // 快速标记疫苗已接种
+  document.addEventListener('click', e => {
+    const quick = e.target.closest('[data-quick-vaccine]');
+    if(!quick) return;
+    const name = quick.dataset.quickVaccine;
+    const arr = loadMemVaccine();
+    const rec = arr.find(x => x.name === name && !x.done);
+    if(rec){
+      rec.done = true;
+      rec.date = fmtKey(today);
+      rec.reaction = '';
+      saveMemVaccine(arr);
+      renderMemoryAll();
+      showToast('已标记接种：' + name);
     }
   });
   window.addEventListener('resize', () => { if(activeTab === 'memory') renderMemChart(); });
