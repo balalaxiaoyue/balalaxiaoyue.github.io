@@ -1690,10 +1690,6 @@
   </div>
   <div class="nav-divider"></div>
   <div class="sync-status" id="syncStatus">📱 本地模式</div>
-  <div class="nav-item" id="settingsBtn" style="margin-bottom:4px">
-    <img src="./icons/settings.svg" class="nav-icon" alt="设置">
-    <div class="nav-label">设置</div>
-  </div>
 </nav>
 
 <!-- ===== 主内容区 ===== -->
@@ -2537,69 +2533,7 @@
     </div>
   </div>
 
-  <!-- ===== 设置弹窗 ===== -->
-<div class="modal-mask" id="settingsModal">
-  <div class="modal-card">
-    <div class="modal-head">
-      <span class="modal-title">💾 数据备份</span>
-      <span class="modal-close" id="closeSettings">✕</span>
-    </div>
-    <div class="modal-body">
-      <!-- 云端同步区 -->
-      <div class="data-info cloud-info-box">
-        <div class="di-row di-total" style="border:none;padding-bottom:6px;margin-bottom:0">
-          <span>☁️ 云端同步</span>
-          <b id="cloudSyncStatus" style="font-size:13px">连接中...</b>
-        </div>
-        <div class="di-row"><span>🕐 上次同步</span><b id="cloudSyncTime" style="font-size:12px">--</b></div>
-        <div class="di-row" style="border:none"><span>📦 同步记录</span><b id="cloudDataCount" style="font-size:12px">--</b></div>
-      </div>
-      <button class="modal-btn import" id="syncBtn">
-        <span>☁️</span> <span id="syncBtnText">立即云同步</span>
-      </button>
-
-      <!-- 本地数据总览 -->
-      <div class="data-info">
-        <div class="di-row di-total">
-          <span>📊 本地数据</span>
-          <b id="dataCountTotal">0</b> 条
-        </div>
-        <div class="di-row"><span>⚖️ 体重</span><b id="dataCountWeight">0</b></div>
-        <div class="di-row"><span>📋 待办</span><b id="dataCountTodo">0</b></div>
-        <div class="di-row"><span>📅 日程</span><b id="dataCountSched">0</b></div>
-        <div class="di-row"><span>💰 记账</span><b id="dataCountMoney">0</b></div>
-        <div class="di-row"><span>📔 日记</span><b id="dataCountDiary">0</b></div>
-        <div class="di-row"><span>👶 成长</span><b id="dataCountMemory">0</b></div>
-        <div class="di-row" style="border:none"><span>🌸 经期</span><b id="dataCountPeriod">0</b></div>
-      </div>
-
-      <!-- 手动备份区 -->
-      <div class="data-info backup-info-box">
-        <div class="di-row di-total" style="border:none;padding-bottom:8px;margin-bottom:4px">
-          <span>📁 手动备份</span>
-          <b style="font-size:11px;font-weight:600;color:#8aa8b8">导入 / 导出</b>
-        </div>
-        <button class="modal-btn export" id="exportBtn" style="width:100%;margin-bottom:8px">
-          <span>📤</span> 导出备份文件
-        </button>
-        <button class="modal-btn import" id="importBtn" style="width:100%">
-          <span>📥</span> 导入恢复数据
-        </button>
-      </div>
-      <input type="file" id="importFile" accept=".json" style="display:none">
-      <button class="modal-btn danger" id="clearBtn">
-        <span>🗑️</span> 清空所有数据
-      </button>
-      <div class="modal-tip">
-        💡 <b>云同步</b>：数据自动保存到云端，换手机打开会自动同步<br>
-        📶 <b>离线模式</b>：断网时数据保存在本地，联网后自动上传<br>
-        📤 <b>导出</b>：下载 JSON 文件备份 · 📥 <b>导入</b>：选择备份文件恢复
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
+  <div class="toast" id="toast"></div>
 
 <script>
 /* ===== 数据层（带云同步）===== */
@@ -3827,17 +3761,9 @@ function clearAllData(){
 }
 
 let syncInfoTimer = null;
-function openSettings(){
-  updateDataCounts();
-  updateCloudSyncInfo();
-  // 打开弹窗时每 10 秒刷新相对时间
-  if(syncInfoTimer) clearInterval(syncInfoTimer);
-  syncInfoTimer = setInterval(updateCloudSyncInfo, 10000);
-  document.getElementById('settingsModal').classList.add('show');
-}
+function openSettings(){}
 function closeSettings(){
   if(syncInfoTimer){ clearInterval(syncInfoTimer); syncInfoTimer = null; }
-  document.getElementById('settingsModal').classList.remove('show');
 }
 
 /* ===== 待办功能 ===== */
@@ -5353,43 +5279,12 @@ function initBackupTab(){
 }
 
 function initSettings(){
-  document.getElementById('closeSettings').onclick = closeSettings;
-  document.getElementById('settingsModal').onclick = e=>{
-    if(e.target.id === 'settingsModal') closeSettings();
-  };
-  document.getElementById('syncBtn').onclick = async ()=>{
-    const btn = document.getElementById('syncBtn');
-    const btnText = document.getElementById('syncBtnText');
-    const originalText = btnText.textContent;
-    btn.disabled = true;
-    btn.style.opacity = '0.6';
-    btnText.textContent = '同步中...';
-    try{
-      await doCloudSync();
-      showToast('云同步完成 ☁️');
-    }catch(e){
-      showToast('云同步失败，请稍后重试 ❌');
-    }
-    btn.disabled = false;
-    btn.style.opacity = '1';
-    btnText.textContent = originalText;
-  };
-  document.getElementById('exportBtn').onclick = exportData;
-  document.getElementById('importBtn').onclick = ()=>{
-    document.getElementById('importFile').click();
-  };
-  document.getElementById('importFile').onchange = e=>{
-    if(e.target.files[0]) importData(e.target.files[0]);
-    e.target.value = '';
-  };
-  document.getElementById('clearBtn').onclick = clearAllData;
+  // 设置弹窗已移除，功能在备份栏目里
 }
 
-// 更新设置弹窗里的云同步信息
+// 更新设置弹窗里的云同步信息（弹窗已移除，保留空函数避免报错）
 function updateCloudSyncInfo(){
   const statusEl = document.getElementById('cloudSyncStatus');
-  const timeEl = document.getElementById('cloudSyncTime');
-  const cloudCntEl = document.getElementById('cloudDataCount');
   if(!statusEl) return;
   const last = localStorage.getItem('workbuddy_last_sync');
   const cloudCount = localStorage.getItem('workbuddy_cloud_count');
