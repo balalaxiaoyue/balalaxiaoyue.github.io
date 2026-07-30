@@ -4847,10 +4847,11 @@ function renderMemVaccineList(){
   wrap.innerHTML = items.map(r => `
     <div class="mem-item" data-id="${r.id || r.name}">
       <div class="mem-item-icon" style="background:${r.status==='done'?'#e8f5ee':'#fbe8e8'};color:${r.status==='done'?'#4a9a78':'#c97a7a'}">${r.status==='done'?'✓':'💉'}</div>
-      <div class="mem-item-body">
+      <div class="mem-item-body" ${r.status==='done' ? `data-edit="vaccine" data-name="${r.name}"` : ''}>
         <div class="mem-item-title">${r.name} <span class="mem-status ${r.status}">${r.status==='done'?'已完成':'待接种'}</span></div>
         <div class="mem-item-meta">${r.date ? '接种日期：' + r.date : '建议：' + r.note}${r.reaction ? ' · 反应：' + escapeHtml(r.reaction) : ''}</div>
       </div>
+      ${r.status==='done' ? `<div class="mem-item-edit" data-edit="vaccine" data-name="${r.name}">✏️</div>` : ''}
       <div class="mem-item-del" data-del="vaccine" data-name="${r.name}">🗑️</div>
     </div>
   `).join('');
@@ -4953,11 +4954,13 @@ function openMemModal(type, data){
       <div class="mem-form-row"><label>备注</label><textarea id="memGNote" placeholder="如 18月龄体检">${escapeHtml(d.note || '')}</textarea></div>
       <div class="mem-form-btns"><button class="mem-save-btn" id="memSaveGrowth">保存</button><button class="mem-cancel-btn" id="memCancelModal">取消</button></div>`;
   }else if(type === 'vaccine'){
-    title.textContent = '添加疫苗记录';
+    const isEdit = !!data;
+    title.textContent = isEdit ? '编辑疫苗记录' : '添加疫苗记录';
+    const d = data || {name:'', date:fmtKey(today), reaction:'', note:''};
     html = `
-      <div class="mem-form-row"><label>疫苗名称</label><input id="memVName" placeholder="如 麻腮风疫苗（第一针）"></div>
-      <div class="mem-form-row"><label>接种日期</label><input type="date" id="memVDate" value="${fmtKey(today)}"></div>
-      <div class="mem-form-row"><label>接种反应</label><input id="memVReaction" placeholder="如无不良反应 / 轻微发热1天"></div>
+      <div class="mem-form-row"><label>疫苗名称</label><input id="memVName" value="${escapeHtml(d.name || '')}" placeholder="如 麻腮风疫苗（第一针）" ${isEdit ? 'readonly style="background:#f5f5f5"' : ''}></div>
+      <div class="mem-form-row"><label>接种日期</label><input type="date" id="memVDate" value="${d.date || ''}"></div>
+      <div class="mem-form-row"><label>接种反应</label><input id="memVReaction" value="${escapeHtml(d.reaction || '')}" placeholder="如无不良反应 / 轻微发热1天"></div>
       <div class="mem-form-btns"><button class="mem-save-btn" id="memSaveVaccine">保存</button><button class="mem-cancel-btn" id="memCancelModal">取消</button></div>`;
   }else if(type === 'sickness'){
     title.textContent = '新增生病记录';
@@ -5043,7 +5046,7 @@ function openMemModal(type, data){
     saveMemVaccine(arr);
     renderMemoryAll();
     close();
-    showToast('疫苗记录已保存');
+    showToast(isEdit ? '疫苗记录已更新' : '疫苗记录已保存');
   };
   const saveS = document.getElementById('memSaveSickness');
   if(saveS) saveS.onclick = () => {
@@ -5142,7 +5145,7 @@ function initMemory(){
       showToast('已删除');
     }
   });
-  // 点击编辑生长记录
+  // 点击编辑生长记录 / 疫苗记录
   document.addEventListener('click', e => {
     const edit = e.target.closest('[data-edit]');
     if(!edit) return;
@@ -5150,6 +5153,9 @@ function initMemory(){
     if(type === 'growth'){
       const rec = loadMemGrowth().find(x => String(x.id) === edit.dataset.id);
       if(rec) openMemModal('growth', rec);
+    }else if(type === 'vaccine'){
+      const rec = loadMemVaccine().find(x => x.name === edit.dataset.name && x.done);
+      if(rec) openMemModal('vaccine', rec);
     }
   });
   window.addEventListener('resize', () => { if(activeTab === 'memory') renderMemChart(); });
