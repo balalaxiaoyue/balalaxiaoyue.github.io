@@ -539,6 +539,10 @@
     font-size:18px;color:var(--text-light);cursor:pointer;padding:2px 4px;
   }
   .mem-item-del:active{color:#e85a5a}
+  .mem-item-edit{
+    font-size:16px;color:var(--text-light);cursor:pointer;padding:2px 4px;
+  }
+  .mem-item-edit:active{color:#4a9ec4}
   .mem-vaccine-soon{
     margin:0 14px 10px;
     background:#fff5f5;border:1.5px solid #f8d8d8;
@@ -4770,11 +4774,12 @@ function renderMemGrowthList(){
   wrap.innerHTML = records.map(r => `
     <div class="mem-item" data-id="${r.id}">
       <div class="mem-item-icon" style="background:#f0e6dc;color:#b8835e">📏</div>
-      <div class="mem-item-body">
+      <div class="mem-item-body" data-edit="growth" data-id="${r.id}">
         <div class="mem-item-title">${r.date} · ${calcAgeAt(r.date)}</div>
         <div class="mem-item-meta">身高 ${r.height || '--'}cm · 体重 ${r.weight || '--'}kg · 头围 ${r.head || '--'}cm</div>
         ${r.note ? `<div class="mem-item-note">${escapeHtml(r.note)}</div>` : ''}
       </div>
+      <div class="mem-item-edit" data-edit="growth" data-id="${r.id}">✏️</div>
       <div class="mem-item-del" data-del="growth" data-id="${r.id}">🗑️</div>
     </div>
   `).join('');
@@ -5110,6 +5115,16 @@ function initMemory(){
       saveMemSickness(arr);
       renderMemoryAll();
       showToast('已删除');
+    }
+  });
+  // 点击编辑生长记录
+  document.addEventListener('click', e => {
+    const edit = e.target.closest('[data-edit]');
+    if(!edit) return;
+    const type = edit.dataset.edit;
+    if(type === 'growth'){
+      const rec = loadMemGrowth().find(x => String(x.id) === edit.dataset.id);
+      if(rec) openMemModal('growth', rec);
     }
   });
   window.addEventListener('resize', () => { if(activeTab === 'memory') renderMemChart(); });
