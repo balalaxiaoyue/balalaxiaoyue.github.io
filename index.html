@@ -2314,26 +2314,39 @@
     </div>
     <div class="modal-body">
       <div class="data-info">
-        <div class="di-row"><span>📊 体重记录</span><b id="dataCountWeight">0</b> 条</div>
+        <div class="di-row"><span>⚖️ 体重记录</span><b id="dataCountWeight">0</b> 条</div>
+        <div class="di-row"><span>📋 待办事项</span><b id="dataCountTodo">0</b> 条</div>
+        <div class="di-row"><span>📅 日程安排</span><b id="dataCountSched">0</b> 条</div>
+        <div class="di-row"><span>💰 记账记录</span><b id="dataCountMoney">0</b> 条</div>
+        <div class="di-row"><span>📔 日记记录</span><b id="dataCountDiary">0</b> 条</div>
+        <div class="di-row"><span>👶 成长记录</span><b id="dataCountMemory">0</b> 条</div>
         <div class="di-row"><span>🌸 经期记录</span><b id="dataCountPeriod">0</b> 条</div>
-        <div class="di-row"><span>☁️ 云同步状态</span><b id="cloudSyncInfo" style="font-size:12px">连接中...</b></div>
+      </div>
+      <div class="data-info" style="background:linear-gradient(135deg,#eaf4f8,#e8f5ee)">
+        <div class="di-row" style="border:none">
+          <span>☁️ 云同步状态</span>
+          <b id="cloudSyncInfo" style="font-size:12px">连接中...</b>
+        </div>
       </div>
       <button class="modal-btn import" id="syncBtn">
-        <span>☁️</span> 立即云同步
+        <span>☁️</span> <span id="syncBtnText">立即云同步</span>
       </button>
-      <button class="modal-btn export" id="exportBtn">
-        <span>📤</span> 导出备份
-      </button>
-      <button class="modal-btn import" id="importBtn">
-        <span>📥</span> 导入恢复
-      </button>
+      <div style="display:flex;gap:10px">
+        <button class="modal-btn export" id="exportBtn" style="flex:1">
+          <span>📤</span> 导出备份
+        </button>
+        <button class="modal-btn import" id="importBtn" style="flex:1">
+          <span>📥</span> 导入恢复
+        </button>
+      </div>
       <input type="file" id="importFile" accept=".json" style="display:none">
       <button class="modal-btn danger" id="clearBtn">
         <span>🗑️</span> 清空所有数据
       </button>
       <div class="modal-tip">
-        💡 云同步已开启：数据会自动保存到云端，换手机打开会自动同步。<br>
-        📶 断网时数据保存在本地，联网后自动上传。
+        💡 <b>云同步</b>：数据自动保存到云端，换手机打开会自动同步<br>
+        📶 <b>离线模式</b>：断网时数据保存在本地，联网后自动上传<br>
+        📤 <b>导出备份</b>：下载 JSON 文件，可手动备份或迁移数据
       </div>
     </div>
   </div>
@@ -2511,7 +2524,8 @@ async function initCloudSync(){
     localStorage.setItem('workbuddy_last_sync', new Date().toISOString());
   }else{
     // 云端为空，把本地数据上传
-    if(Object.keys(loadData()).length > 0 || loadPeriodData().length > 0 || loadTodoData().length > 0 || Object.keys(loadDiaryData()).length > 0 || loadMoneyData().length > 0 || loadSchedData().length > 0){
+    const hasLocalData = Object.keys(loadData()).length > 0 || loadPeriodData().length > 0 || loadTodoData().length > 0 || Object.keys(loadDiaryData()).length > 0 || loadMoneyData().length > 0 || loadSchedData().length > 0 || loadMemGrowth().length > 0 || loadMemSickness().length > 0 || loadMemAllergy().length > 0 || loadMemCheckup().length > 0;
+    if(hasLocalData){
       doCloudSync();
     }else{
       updateSyncStatus('offline');
@@ -3166,13 +3180,30 @@ function getAllData(){
     exportDate: new Date().toISOString(),
     weight: loadData(),
     period: loadPeriodData(),
-    cycle: getCycle()
+    cycle: getCycle(),
+    todos: loadTodoData(),
+    diary: loadDiaryData(),
+    money: loadMoneyData(),
+    sched: loadSchedData(),
+    memoryProfile: loadMemProfile(),
+    memoryGrowth: loadMemGrowth(),
+    memoryVaccine: loadMemVaccine(),
+    memorySickness: loadMemSickness(),
+    memoryAllergy: loadMemAllergy(),
+    memoryCheckup: loadMemCheckup()
   };
 }
 
 function updateDataCounts(){
-  document.getElementById('dataCountWeight').textContent = Object.keys(loadData()).length;
-  document.getElementById('dataCountPeriod').textContent = loadPeriodData().length;
+  const set = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+  set('dataCountWeight', Object.keys(loadData()).length);
+  set('dataCountTodo', loadTodoData().length);
+  set('dataCountSched', loadSchedData().length);
+  set('dataCountMoney', loadMoneyData().length);
+  set('dataCountDiary', Object.keys(loadDiaryData()).length);
+  const memCount = loadMemGrowth().length + loadMemVaccine().filter(v=>v.done).length + loadMemSickness().length + loadMemAllergy().length + loadMemCheckup().length;
+  set('dataCountMemory', memCount);
+  set('dataCountPeriod', loadPeriodData().length);
 }
 
 function exportData(){
@@ -3260,6 +3291,16 @@ function clearAllData(){
 
 function openSettings(){
   updateDataCounts();
+  // 打开弹窗时刷新云同步状态显示（相对时间等）
+  const info = document.getElementById('cloudSyncInfo');
+  if(info){
+    // 根据当前同步状态刷新显示
+    updateCloudSyncInfo();
+    // 若已同步，每30秒刷新一次相对时间
+    if(info.dataset.status === 'synced'){
+      // 仅在弹窗打开期间刷新
+    }
+  }
   document.getElementById('settingsModal').classList.add('show');
 }
 function closeSettings(){
@@ -4665,10 +4706,21 @@ function initSettings(){
     if(e.target.id === 'settingsModal') closeSettings();
   };
   document.getElementById('syncBtn').onclick = async ()=>{
-    showToast('正在云同步...');
-    await initCloudSync();
-    setTimeout(()=>doCloudSync(), 500);
-    showToast('云同步完成 ☁️');
+    const btn = document.getElementById('syncBtn');
+    const btnText = document.getElementById('syncBtnText');
+    const originalText = btnText.textContent;
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+    btnText.textContent = '同步中...';
+    try{
+      await doCloudSync();
+      showToast('云同步完成 ☁️');
+    }catch(e){
+      showToast('云同步失败，请稍后重试 ❌');
+    }
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btnText.textContent = originalText;
   };
   document.getElementById('exportBtn').onclick = exportData;
   document.getElementById('importBtn').onclick = ()=>{
@@ -4686,10 +4738,27 @@ function updateCloudSyncInfo(){
   const el = document.getElementById('cloudSyncInfo');
   if(!el) return;
   const last = localStorage.getItem('workbuddy_last_sync');
-  if(last){
+  const syncStatus = el.dataset.status || 'offline';
+  if(syncStatus === 'syncing'){
+    el.textContent = '同步中...';
+    el.style.color = '#4a9ec4';
+  }else if(syncStatus === 'error'){
+    el.textContent = '同步失败';
+    el.style.color = '#e8a060';
+  }else if(syncStatus === 'synced' && last){
     const t = new Date(last);
-    el.textContent = '已同步 ' + (t.getMonth()+1) + '/' + t.getDate() + ' ' + String(t.getHours()).padStart(2,'0') + ':' + String(t.getMinutes()).padStart(2,'0');
+    const now = new Date();
+    const diff = (now - t) / 60000; // 分钟
+    let timeStr;
+    if(diff < 1) timeStr = '刚刚';
+    else if(diff < 60) timeStr = Math.floor(diff) + '分钟前';
+    else if(diff < 1440) timeStr = Math.floor(diff/60) + '小时前';
+    else timeStr = (t.getMonth()+1) + '/' + t.getDate();
+    el.textContent = '✅ ' + timeStr;
     el.style.color = '#4a9a78';
+  }else if(syncStatus === 'offline'){
+    el.textContent = last ? '📱 本地模式' : '等待同步';
+    el.style.color = '#8aa8b8';
   }else{
     el.textContent = '等待同步';
     el.style.color = '#8aa8b8';
@@ -4702,16 +4771,9 @@ updateSyncStatus = function(status){
   _origUpdateSync(status);
   const info = document.getElementById('cloudSyncInfo');
   if(info){
-    const map = {
-      'syncing': '同步中...',
-      'synced':  '✅ 已同步',
-      'error':   '❌ 同步失败',
-      'offline': '本地模式'
-    };
-    info.textContent = map[status] || '本地模式';
-    info.style.color = status === 'synced' ? '#4a9a78' : (status === 'error' ? '#e8a060' : '#8aa8b8');
+    info.dataset.status = status;
+    updateCloudSyncInfo();
   }
-  if(status === 'synced') updateCloudSyncInfo();
 };
 
 /* ===== 注册 Service Worker（离线可用） ===== */
